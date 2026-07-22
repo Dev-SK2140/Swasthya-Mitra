@@ -12,6 +12,8 @@ const AIAssistant = () => {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  
+  const API_URL = import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-btuu.onrender.com/api';
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -27,26 +29,25 @@ const AIAssistant = () => {
     if (!input.trim()) return;
 
     const userMessage = input.trim();
-    setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+    const newMessages = [...messages, { role: 'user', content: userMessage }];
+    setMessages(newMessages);
     setInput('');
     setLoading(true);
 
-    // Simulate AI network delay (mock integration since we don't have Gemini API key yet)
-    setTimeout(() => {
-      let aiResponse = "Based on government protocols, please proceed with standard observation. If symptoms worsen, escalate to District Hospital.";
-      
-      const lowerInput = userMessage.toLowerCase();
-      if (lowerInput.includes('fever') && lowerInput.includes('child')) {
-        aiResponse = "For pediatric fever above 102°F, administer Paracetamol 15mg/kg every 6 hours and perform tepid sponging. Test for Malaria and Dengue if fever persists >3 days.";
-      } else if (lowerInput.includes('pregnant') && lowerInput.includes('bleeding')) {
-        aiResponse = "URGENT ALARM: Any bleeding in pregnancy requires immediate escalation to the nearest CHC/District Hospital. Arrange 108 ambulance immediately.";
-      } else if (lowerInput.includes('drug') || lowerInput.includes('interaction')) {
-        aiResponse = "I have checked the drug database. There are no severe contraindications between those two medications for adult patients without renal impairment.";
-      }
-
-      setMessages(prev => [...prev, { role: 'assistant', content: aiResponse }]);
+    try {
+      const res = await fetch(`${API_URL}/ai/assistant`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ history: messages, currentInput: userMessage })
+      });
+      const data = await res.json();
+      setMessages([...newMessages, { role: 'assistant', content: data.reply }]);
+    } catch (err) {
+      console.error(err);
+      setMessages([...newMessages, { role: 'assistant', content: 'Sorry, I encountered a network error connecting to the AI.' }]);
+    } finally {
       setLoading(false);
-    }, 1500);
+    }
   };
 
   return (

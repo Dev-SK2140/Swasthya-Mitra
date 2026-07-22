@@ -99,6 +99,30 @@ Output JSON with:
   }
 };
 
+const generalAssistantChat = async (history, currentInput) => {
+  if (!process.env.GEMINI_API_KEY) {
+    return { reply: "Mock Reply: Based on government protocols, please proceed with standard observation. (Add API Key to enable real AI)" };
+  }
+
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: `Conversation History:\n${JSON.stringify(history)}\n\nUser Input: ${currentInput}`,
+      config: {
+        systemInstruction: `You are Swasthya Sahayak (સ્વાસ્થ્ય સહાયક), a Government Medical Assistant AI for Doctors and Nurses in rural Indian clinics.
+Answer medical queries regarding treatment protocols, drug interactions, and triage escalation.
+Keep answers concise, actionable, and aligned with standard rural healthcare protocols (like referring complex cases to CHC or District Hospitals).
+Do not output JSON, just plain text.`,
+      }
+    });
+
+    return { reply: response.text() };
+  } catch (error) {
+    console.error("General AI Chat Error:", error);
+    throw new Error("Failed to process AI assistant chat");
+  }
+};
+
 // Fallback mock function if no API key is present
 const generateMockAnalysis = (context) => {
   return {
@@ -119,4 +143,4 @@ const generateMockAnalysis = (context) => {
   };
 };
 
-module.exports = { analyzeTriageData, chatFollowUp };
+module.exports = { analyzeTriageData, chatFollowUp, generalAssistantChat };

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { analyzeTriageData, chatFollowUp } = require('../services/aiService');
+const { analyzeTriageData, chatFollowUp, generalAssistantChat } = require('../services/aiService');
 const Patient = require('../models/Patient');
 
 // @route   POST /api/ai/chat
@@ -68,6 +68,23 @@ router.post('/analyze', async (req, res) => {
   } catch (error) {
     console.error('AI Analyze Error:', error);
     res.status(500).json({ message: 'Error analyzing patient data' });
+  }
+});
+
+// @route   POST /api/ai/assistant
+// @desc    General medical assistant chat for doctors/nurses
+router.post('/assistant', async (req, res) => {
+  try {
+    const { history, currentInput } = req.body;
+    if (!currentInput) {
+      return res.status(400).json({ message: 'Input is required' });
+    }
+
+    const response = await generalAssistantChat(history || [], currentInput);
+    res.json(response);
+  } catch (error) {
+    console.error('AI Assistant Error:', error);
+    res.status(500).json({ message: 'Error processing AI assistant chat' });
   }
 });
 
