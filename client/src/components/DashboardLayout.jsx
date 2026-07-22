@@ -12,8 +12,6 @@ const ALL_ROLES = ['Doctor', 'Nurse', 'Lab', 'Pharmacy', 'Receptionist', 'Admin'
 const DashboardLayout = () => {
   const { t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [currentRole, setCurrentRole] = useState('Doctor');
-  const [showRoleSelector, setShowRoleSelector] = useState(false);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,69 +29,13 @@ const DashboardLayout = () => {
     };
   }, []);
 
-  useEffect(() => {
-    // If we land on a specific route, update the demo role picker automatically
-    if (location.pathname.includes('/doctor')) setCurrentRole('Doctor');
-    else if (location.pathname.includes('/nurse')) setCurrentRole('Nurse');
-    else if (location.pathname.includes('/lab')) setCurrentRole('Lab');
-    else if (location.pathname.includes('/pharmacy')) setCurrentRole('Pharmacy');
-    else if (location.pathname.includes('/reception')) setCurrentRole('Receptionist');
-    else if (location.pathname.includes('/admin')) setCurrentRole('Admin');
-    else if (location.pathname.includes('/intake')) setCurrentRole('Patient');
-  }, [location]);
 
-  const handleRoleSwitch = (role) => {
-    setCurrentRole(role);
-    setShowRoleSelector(false);
-    setIsMobileMenuOpen(false);
-    
-    switch(role) {
-      case 'Doctor': navigate('/app/doctor'); break;
-      case 'Nurse': navigate('/app/nurse'); break;
-      case 'Lab': navigate('/app/lab'); break;
-      case 'Pharmacy': navigate('/app/pharmacy'); break;
-      case 'Receptionist': navigate('/app/reception'); break;
-      case 'Admin': navigate('/app/admin'); break;
-      case 'Patient': navigate('/app/intake'); break;
-      default: navigate('/app/doctor');
-    }
-  };
 
   const NavLinks = ({ mobile }) => (
     <>
       <LanguageSelector />
       
-      {/* Demo Role Switcher */}
-      <div className="relative">
-        <button 
-          onClick={() => setShowRoleSelector(!showRoleSelector)}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/50 text-[#82d8a5] ${mobile ? 'w-full justify-between mt-4' : ''}`}
-        >
-          <span>Demo Role: {currentRole}</span>
-          <ChevronDown className="w-4 h-4" />
-        </button>
 
-        <AnimatePresence>
-          {showRoleSelector && (
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              className={`absolute top-full mt-2 w-48 bg-[#1b2532] border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden ${mobile ? 'relative top-0 w-full' : 'right-0'}`}
-            >
-              {ALL_ROLES.map(role => (
-                <button
-                  key={role}
-                  onClick={() => handleRoleSwitch(role)}
-                  className="w-full text-left px-4 py-3 text-sm text-slate-300 hover:bg-white/10 hover:text-[#3ae1b7] transition-colors border-b border-white/5 last:border-0"
-                >
-                  {role} Dashboard
-                </button>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
 
       <Link to="/app/telemedicine" className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all bg-[var(--color-secondary)]/10 border border-[var(--color-secondary)]/30 text-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/20 ${mobile ? 'w-full justify-center mt-2' : ''}`}>
         <Video className="w-4 h-4" /> Consult
