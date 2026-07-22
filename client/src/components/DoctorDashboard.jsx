@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { motion } from 'framer-motion';
+import { Send } from 'lucide-react';
+import PatientTimelineModal from './PatientTimelineModal';
+import ReferralModal from './ReferralModal';
 
 const DoctorDashboard = () => {
   const { t } = useTranslation();
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [isTimelineOpen, setIsTimelineOpen] = useState(false);
+  const [isReferralOpen, setIsReferralOpen] = useState(false);
+  const [patientToRefer, setPatientToRefer] = useState(null);
 
   const fetchPatients = async () => {
     try {
@@ -34,8 +42,21 @@ const DoctorDashboard = () => {
     switch (level) {
       case 'High Risk': return 'bg-red-500/20 text-red-400 border border-red-500/30 animate-pulse';
       case 'Elevated': return 'bg-amber-500/20 text-amber-400 border border-amber-500/30';
-      default: return 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30';
+      default: return 'bg-[var(--color-secondary)]/20 text-[var(--color-secondary)] border border-[var(--color-secondary)]/30';
     }
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
   };
 
   return (
@@ -45,9 +66,19 @@ const DoctorDashboard = () => {
       {patients.length === 0 ? (
         <p className="text-slate-400">{t('dashboard.no_patients')}</p>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {patients.map(p => (
-            <div key={p._id} className="glass-panel flex flex-col hover:-translate-y-1 transition-transform">
+            <motion.div 
+              key={p._id} 
+              variants={itemVariants}
+              whileHover={{ y: -5, scale: 1.02 }}
+              className="glass-panel flex flex-col transition-shadow hover:shadow-[0_10px_30px_rgba(79,70,229,0.15)]"
+            >
               <div className="flex justify-between items-start mb-4">
                 <h3 className="text-xl font-medium">{p.name}, {p.age} {p.gender[0]}</h3>
                 <span className={`px-3 py-1 rounded-full text-xs font-bold ${getBadgeClass(p.riskLevel)}`}>
@@ -83,13 +114,49 @@ const DoctorDashboard = () => {
                 </div>
               )}
               
-              <div className="mt-auto pt-4 border-t border-slate-700/50 text-xs text-slate-500">
-                {t('dashboard.arrived')} {new Date(p.createdAt).toLocaleTimeString()}
+              <div className="mt-auto pt-4 border-t border-slate-700/50 flex flex-col gap-3">
+                <span className="text-xs text-slate-500">{t('dashboard.arrived')} {new Date(p.createdAt).toLocaleTimeString()}</span>
+                
+                <div className="flex gap-2">
+                  <button 
+                    onClick={() => {
+                      setPatientToRefer(p);
+                      setIsReferralOpen(true);
+                    }}
+                    className="flex-1 bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 py-2.5 rounded-xl font-medium transition-colors border border-amber-500/20 flex items-center justify-center gap-2 text-sm"
+                  >
+                    <Send size={16} />
+                    Refer
+                  </button>
+                  <button 
+                    onClick={() => {
+                      setSelectedPatient(p);
+                      setIsTimelineOpen(true);
+                    }}
+                    className="flex-1 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-[var(--color-primary)]/20 text-sm"
+                  >
+                    {t('dashboard.consult')}
+                  </button>
+                </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       )}
+
+      {selectedPatient && (
+        <PatientTimelineModal 
+          isOpen={isTimelineOpen} 
+          onClose={() => setIsTimelineOpen(false)} 
+          patient={selectedPatient} 
+        />
+      )}
+
+      <ReferralModal
+        isOpen={isReferralOpen}
+        onClose={() => setIsReferralOpen(false)}
+        patient={patientToRefer}
+      />
     </div>
   );
 };

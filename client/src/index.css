@@ -1,22 +1,27 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #4F46E5;
-  --color-primary-hover: #4338CA;
+  --color-primary: #07a9b0;
+  --color-primary-hover: #06898f;
+  --color-secondary: #82d8a5;
+  --color-accent: #d0b875;
 }
 
 @layer base {
   body {
-    @apply bg-slate-900 text-slate-50 antialiased min-h-screen flex flex-col;
+    @apply text-slate-50 antialiased min-h-screen flex flex-col;
+    background-color: #1b2532;
     background-image: 
-      radial-gradient(circle at 15% 50%, rgba(79, 70, 229, 0.15), transparent 25%),
-      radial-gradient(circle at 85% 30%, rgba(239, 68, 68, 0.1), transparent 25%);
+      radial-gradient(circle at 15% 50%, rgba(7, 169, 176, 0.15), transparent 30%),
+      radial-gradient(circle at 85% 30%, rgba(130, 216, 165, 0.1), transparent 30%),
+      radial-gradient(circle at 50% 100%, rgba(208, 184, 117, 0.05), transparent 30%);
     background-attachment: fixed;
   }
 }
 
 @layer components {
   .glass-panel {
-    @apply bg-slate-800/70 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl;
+    @apply backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl;
+    background-color: rgba(30, 41, 59, 0.5); /* slightly transparent slate-800 */
   }
 }

@@ -3,8 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-const authRoutes = require('./routes/authRoutes');
-const triageRoutes = require('./routes/triageRoutes');
+
 
 const app = express();
 
@@ -12,12 +11,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use('/api/auth', authRoutes);
+// Add Routes
+const triageRoutes = require('./routes/triageRoutes');
 app.use('/api/triage', triageRoutes);
 
-// Basic health check route
-app.get('/api/health', (req, res) => {
+// Auth routes (real JWT)
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes);
+
+// Mock Google Auth (legacy for smooth hackathon testing if needed)
+app.post('/api/auth/google', (req, res) => {
+  res.json({ token: 'mock-jwt-token', user: { name: 'Dr. Admin', role: 'Doctor' } });
+});
+
+app.get('/api/status', (req, res) => {
   res.json({ status: 'API is running' });
 });
 

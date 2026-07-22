@@ -9,7 +9,7 @@ const LanguageSelector = () => {
       <select 
         value={i18n.language} 
         onChange={(e) => i18n.changeLanguage(e.target.value)}
-        className="bg-slate-800 text-slate-100 border border-slate-700 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+        className="bg-slate-800 text-slate-100 border border-slate-700 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] cursor-pointer"
       >
         <option value="en">English</option>
         <option value="hi">हिंदी</option>

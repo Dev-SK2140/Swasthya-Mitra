@@ -52,22 +52,22 @@ const ForgotPasswordPage = () => {
               <p className="text-slate-400 text-sm text-center">Enter your email to receive an OTP.</p>
               <div>
                 <label className="block text-sm font-medium text-slate-300">Email address</label>
-                <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-indigo-500" />
+                <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
               </div>
-              <button type="submit" className="w-full py-3 px-4 rounded-lg text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 transition-colors">
+              <button type="submit" className="w-full py-3 px-4 rounded-lg text-sm font-bold text-white bg-[var(--color-primary)] hover:bg-indigo-700 transition-colors">
                 Send OTP
               </button>
             </form>
           ) : (
             <form className="space-y-6" onSubmit={handleReset}>
-              <p className="text-emerald-400 text-sm text-center bg-emerald-400/10 py-2 rounded">OTP sent to your email! (Check server console if testing locally)</p>
+              <p className="text-[var(--color-secondary)] text-sm text-center bg-[var(--color-secondary)]/10 py-2 rounded">OTP sent to your email! (Check server console if testing locally)</p>
               <div>
                 <label className="block text-sm font-medium text-slate-300">Enter OTP</label>
-                <input required type="text" value={otp} onChange={e => setOtp(e.target.value)} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-indigo-500 text-center tracking-widest text-xl" placeholder="123456" />
+                <input required type="text" value={otp} onChange={e => setOtp(e.target.value)} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)] text-center tracking-widest text-xl" placeholder="123456" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-300">New Password</label>
-                <input required type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-indigo-500" />
+                <input required type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
               </div>
               <button type="submit" className="w-full py-3 px-4 rounded-lg text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors">
                 Reset Password
@@ -76,7 +76,7 @@ const ForgotPasswordPage = () => {
           )}
           
           <div className="mt-6 text-center text-sm text-slate-400">
-            Remember your password? <Link to="/login" className="font-medium text-indigo-400 hover:text-indigo-300">Sign in</Link>
+            Remember your password? <Link to="/login" className="font-medium text-[var(--color-primary)] hover:text-[var(--color-secondary)]">Sign in</Link>
           </div>
         </div>
       </motion.div>
