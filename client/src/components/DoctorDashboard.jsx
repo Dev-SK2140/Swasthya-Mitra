@@ -14,9 +14,11 @@ const DoctorDashboard = () => {
   const [isReferralOpen, setIsReferralOpen] = useState(false);
   const [patientToRefer, setPatientToRefer] = useState(null);
 
+const API_URL = import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-btuu.onrender.com/api';
+
   const fetchPatients = async () => {
     try {
-      const res = await fetch('https://swasthya-mitra-btuu.onrender.com/api/triage');
+      const res = await fetch(`${API_URL}/triage`);
       const data = await res.json();
       if(Array.isArray(data)) {
         setPatients(data);

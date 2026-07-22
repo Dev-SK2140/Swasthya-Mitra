@@ -35,6 +35,8 @@ const RegisterPage = () => {
     return () => clearInterval(interval);
   }, [step, timer]);
 
+  const API_URL = import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-btuu.onrender.com/api';
+
   const handleSendOTP = async (e) => {
     e.preventDefault();
     if (formData.password !== confirmPassword) {
@@ -45,7 +47,7 @@ const RegisterPage = () => {
     setError('');
     
     try {
-      const res = await fetch('https://swasthya-mitra-btuu.onrender.com/api/auth/send-otp', {
+      const res = await fetch(`${API_URL}/auth/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: formData.email })
@@ -70,7 +72,7 @@ const RegisterPage = () => {
     setError('');
     
     try {
-      const res = await fetch('https://swasthya-mitra-btuu.onrender.com/api/auth/register', {
+      const res = await fetch(`${API_URL}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, otp })
@@ -96,7 +98,7 @@ const RegisterPage = () => {
   const loginGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        const res = await fetch('https://swasthya-mitra-btuu.onrender.com/api/auth/google', {
+        const res = await fetch(`${API_URL}/auth/google`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token: tokenResponse.access_token }),

@@ -10,10 +10,12 @@ const ForgotPasswordPage = () => {
   const [newPassword, setNewPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  const API_URL = import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-btuu.onrender.com/api';
+
   const handleSendOtp = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('https://swasthya-mitra-btuu.onrender.com/api/auth/forgot-password', {
+      const res = await fetch(`${API_URL}/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
@@ -26,7 +28,7 @@ const ForgotPasswordPage = () => {
   const handleReset = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('https://swasthya-mitra-btuu.onrender.com/api/auth/reset-password', {
+      const res = await fetch(`${API_URL}/auth/reset-password`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, otp, newPassword })

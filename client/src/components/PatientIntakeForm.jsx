@@ -66,8 +66,10 @@ const PatientIntakeForm = ({ onPatientAdded }) => {
       symptoms: formData.symptoms.split(',').map(s => s.trim()).filter(s => s)
     };
 
+    const API_URL = import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-btuu.onrender.com/api';
+
     try {
-      const res = await fetch('https://swasthya-mitra-btuu.onrender.com/api/triage', {
+      const res = await fetch(`${API_URL}/triage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
