@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path');
 require('dotenv').config();
 
 
@@ -28,21 +27,6 @@ app.post('/api/auth/google', (req, res) => {
 app.get('/api/status', (req, res) => {
   res.json({ status: 'API is running' });
 });
-
-// Serve frontend in production
-if (process.env.NODE_ENV === 'production' || true) {
-  // Always serve static files (simplifies deployment for this project)
-  app.use(express.static(path.join(__dirname, '../client/dist')));
-
-  app.get('*', (req, res) => {
-    // Only redirect if it's not an API route
-    if (!req.path.startsWith('/api')) {
-      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-    } else {
-      res.status(404).json({ message: 'API Route Not Found' });
-    }
-  });
-}
 
 // Database Connection
 const PORT = process.env.PORT || 5000;
