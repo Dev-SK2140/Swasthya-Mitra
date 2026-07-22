@@ -186,13 +186,13 @@ const RegisterPage = () => {
           ) : (
             <form className="space-y-6" onSubmit={handleRegister}>
               <div className="text-center mb-4 text-slate-300">
-                We sent a 4-digit OTP to <span className="font-bold text-white">{formData.email}</span>. Please enter it below.
+                We sent a 6-digit OTP to <span className="font-bold text-white">{formData.email}</span>. Please enter it below.
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-300 text-center">Enter OTP</label>
-                <input required type="text" maxLength={4} value={otp} onChange={e => setOtp(e.target.value)} className="mt-1 block w-full text-center tracking-widest text-2xl px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
+                <input required type="text" maxLength={6} value={otp} onChange={e => setOtp(e.target.value)} className="mt-1 block w-full text-center tracking-widest text-2xl px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
               </div>
-              <button type="submit" disabled={loading || otp.length !== 4} className="w-full py-3 px-4 rounded-lg text-sm font-bold text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-50">
+              <button type="submit" disabled={loading || otp.length !== 6} className="w-full py-3 px-4 rounded-lg text-sm font-bold text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-50">
                 {loading ? 'Verifying...' : 'Verify & Create Account'}
               </button>
               
