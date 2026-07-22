@@ -123,43 +123,7 @@ const LoginPage = () => {
             </div>
           </form>
 
-          <div className="mt-8">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-700"></div></div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-slate-800 text-emerald-400 font-bold border border-emerald-500/30 rounded-full">Hackathon Quick Login</span>
-              </div>
-            </div>
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              {['Doctor', 'Nurse', 'Receptionist', 'Admin'].map((role) => (
-                <button
-                  key={role}
-                  type="button"
-                  onClick={async () => {
-                    setLoading(true);
-                    try {
-                      const res = await fetch(`${API_URL}/auth/demo`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ role })
-                      });
-                      const data = await res.json();
-                      localStorage.setItem('token', data.token);
-                      localStorage.setItem('user', JSON.stringify(data.user));
-                      window.location.href = `/app/${data.user.role.toLowerCase()}`;
-                    } catch(err) {
-                      setError("Demo login failed");
-                    } finally { setLoading(false); }
-                  }}
-                  className="w-full flex justify-center py-2 px-4 border border-emerald-500/50 rounded-lg text-sm font-medium text-emerald-400 hover:bg-emerald-500/10 transition-colors"
-                >
-                  {role}
-                </button>
-              ))}
-            </div>
-          </div>
-          
-          <div className="mt-8">
+          <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-700"></div></div>
               <div className="relative flex justify-center text-sm">

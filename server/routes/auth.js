@@ -135,18 +135,4 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Hackathon Demo Login (Instantly logs in without DB check)
-router.post('/demo', (req, res) => {
-  const { role } = req.body;
-  const demoUsers = {
-    Doctor: { id: 'demo_doc_123', name: 'Dr. Demo', email: 'doctor@demo.com', role: 'Doctor' },
-    Nurse: { id: 'demo_nurse_123', name: 'Nurse Demo', email: 'nurse@demo.com', role: 'Nurse' },
-    Receptionist: { id: 'demo_rec_123', name: 'Receptionist Demo', email: 'receptionist@demo.com', role: 'Receptionist' },
-    Admin: { id: 'demo_admin_123', name: 'Admin Demo', email: 'admin@demo.com', role: 'Admin' }
-  };
-  const user = demoUsers[role] || demoUsers['Doctor'];
-  const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET || 'secret123', { expiresIn: '1d' });
-  res.json({ token, user });
-});
-
 module.exports = router;

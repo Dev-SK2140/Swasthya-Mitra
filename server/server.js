@@ -36,9 +36,32 @@ if (!MONGODB_URI || MONGODB_URI === 'your_mongodb_connection_string_here') {
   console.warn('⚠️  MONGODB_URI is not set in .env file. Please add your connection string.');
 }
 
+const User = require('./models/User');
+const bcrypt = require('bcryptjs');
+
+const seedDemoUsers = async () => {
+  const demoUsers = [
+    { name: 'Dr. Demo', email: 'doctor@demo.com', password: 'password', role: 'Doctor' },
+    { name: 'Nurse Demo', email: 'nurse@demo.com', password: 'password', role: 'Nurse' },
+    { name: 'Receptionist Demo', email: 'receptionist@demo.com', password: 'password', role: 'Receptionist' },
+    { name: 'Admin Demo', email: 'admin@demo.com', password: 'password', role: 'Admin' }
+  ];
+
+  for (let user of demoUsers) {
+    const exists = await User.findOne({ email: user.email });
+    if (!exists) {
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(user.password, salt);
+      await User.create({ ...user, password: hashedPassword });
+      console.log(`✅ Seeded demo user: ${user.email} | password: password`);
+    }
+  }
+};
+
 mongoose.connect(MONGODB_URI || 'mongodb://127.0.0.1:27017/healthcare')
-  .then(() => {
+  .then(async () => {
     console.log('✅ Connected to MongoDB');
+    await seedDemoUsers();
     app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
   })
   .catch((err) => {
