@@ -8,7 +8,7 @@ const nodemailer = require('nodemailer');
 // In-memory store for OTPs: { email: { otp: string, expiresAt: Date } }
 const otpStore = new Map();
 
-// Configure Nodemailer Transporter (Strictly IPv4)
+// Configure Nodemailer Transporter (Supports both IPv4 and IPv6)
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 465,
@@ -17,8 +17,8 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
   },
-  // family: 4 forces Node.js to ONLY use IPv4 and completely ignore IPv6
-  family: 4,
+  // family: 0 enables Dual-Stack Support (Comfortable with both IPv4 and IPv6)
+  family: 0,
   tls: {
     rejectUnauthorized: false
   },
