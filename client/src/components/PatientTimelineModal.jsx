@@ -37,28 +37,51 @@ const PatientTimelineModal = ({ isOpen, onClose, patient }) => {
             </button>
           </div>
 
-          <div className="p-6 max-h-[60vh] overflow-y-auto">
-            <div className="relative border-l-2 border-slate-700 ml-3 space-y-8">
-              {mockHistory.map((item, i) => {
-                const Icon = item.icon;
-                return (
-                  <motion.div 
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    key={i} 
-                    className="relative pl-6"
-                  >
-                    <div className={`absolute -left-[17px] top-1 w-8 h-8 rounded-full ${item.bg} flex items-center justify-center border-4 border-slate-900`}>
-                      <Icon className={`w-4 h-4 ${item.color}`} />
-                    </div>
-                    <div>
-                      <span className="text-xs font-bold text-[var(--color-primary)]">{item.date}</span>
-                      <p className="text-slate-300 mt-1 text-sm">{item.desc}</p>
-                    </div>
-                  </motion.div>
-                );
-              })}
+          <div className="p-6 max-h-[70vh] overflow-y-auto space-y-6">
+            
+            {patient.aiAnalysis && (
+              <div className={`p-4 rounded-xl border ${
+                patient.riskLevel === 'Emergency' ? 'bg-rose-500/10 border-rose-500/50 text-rose-400' :
+                patient.riskLevel === 'High Risk' ? 'bg-orange-500/10 border-orange-500/50 text-orange-400' :
+                patient.riskLevel === 'Moderate Risk' ? 'bg-amber-500/10 border-amber-500/50 text-amber-400' :
+                'bg-emerald-500/10 border-emerald-500/50 text-emerald-400'
+              }`}>
+                <h4 className="font-bold text-lg mb-2 flex items-center gap-2">
+                  <Activity className="w-5 h-5" /> AI Triage Report ({patient.riskLevel})
+                </h4>
+                <div className="space-y-3 text-sm">
+                  <div><strong className="text-white">Doctor Summary:</strong> {patient.aiAnalysis.doctorSummary}</div>
+                  <div><strong className="text-white">AI Reason:</strong> {patient.aiAnalysis.explanation}</div>
+                  <div><strong className="text-white">Possible Risks:</strong> {(patient.aiAnalysis.possibleRisks || []).join(', ')}</div>
+                  <div><strong className="text-white">Recommendation:</strong> {patient.aiAnalysis.recommendation}</div>
+                </div>
+              </div>
+            )}
+
+            <div>
+              <h4 className="text-slate-400 text-sm font-medium mb-4">Patient History</h4>
+              <div className="relative border-l-2 border-slate-700 ml-3 space-y-8">
+                {mockHistory.map((item, i) => {
+                  const Icon = item.icon;
+                  return (
+                    <motion.div 
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                      key={i} 
+                      className="relative pl-6"
+                    >
+                      <div className={`absolute -left-[17px] top-1 w-8 h-8 rounded-full ${item.bg} flex items-center justify-center border-4 border-slate-900`}>
+                        <Icon className={`w-4 h-4 ${item.color}`} />
+                      </div>
+                      <div>
+                        <span className="text-xs font-bold text-[var(--color-primary)]">{item.date}</span>
+                        <p className="text-slate-300 mt-1 text-sm">{item.desc}</p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
           </div>
           

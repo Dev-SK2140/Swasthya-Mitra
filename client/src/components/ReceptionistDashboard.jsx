@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Users, UserPlus, Calendar, Phone } from 'lucide-react';
-import PatientIntakeForm from './PatientIntakeForm';
+import AITriageFlow from './AITriageFlow';
 
 const ReceptionistDashboard = () => {
   return (
@@ -24,7 +24,7 @@ const ReceptionistDashboard = () => {
               <h3 className="font-medium text-white">New Patient Registration</h3>
             </div>
             <div className="p-6">
-              <PatientIntakeForm />
+              <AITriageFlow onPatientAdded={() => {}} />
             </div>
           </div>
         </div>
