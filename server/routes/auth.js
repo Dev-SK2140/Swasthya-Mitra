@@ -8,13 +8,20 @@ const nodemailer = require('nodemailer');
 // In-memory store for OTPs: { email: { otp: string, expiresAt: Date } }
 const otpStore = new Map();
 
-// Configure Nodemailer Transporter
+// Configure Nodemailer Transporter (Forced IPv4 to fix network resolution errors)
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
-  }
+  },
+  // Force IPv4
+  tls: {
+    rejectUnauthorized: false
+  },
+  connectionTimeout: 10000 // 10 seconds
 });
 
 // Send OTP Route
