@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useGoogleLogin } from '@react-oauth/google';
 import { useNavigate, Link } from 'react-router-dom';
@@ -10,8 +10,56 @@ const RegisterPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ name: '', email: '', password: '', role: 'Doctor' });
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  // OTP States
+  const [step, setStep] = useState(1);
+  const [otp, setOtp] = useState('');
+  const [timer, setTimer] = useState(60);
+  const [canResend, setCanResend] = useState(false);
+
+  useEffect(() => {
+    let interval;
+    if (step === 2 && timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    } else if (timer === 0) {
+      setCanResend(true);
+    }
+    return () => clearInterval(interval);
+  }, [step, timer]);
+
+  const handleSendOTP = async (e) => {
+    e.preventDefault();
+    if (formData.password !== confirmPassword) {
+      return setError('Passwords do not match');
+    }
+    
+    setLoading(true);
+    setError('');
+    
+    try {
+      const res = await fetch('https://swasthya-mitra-btuu.onrender.com/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email })
+      });
+      
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to send OTP');
+      
+      setStep(2);
+      setTimer(60);
+      setCanResend(false);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -22,7 +70,7 @@ const RegisterPage = () => {
       const res = await fetch('https://swasthya-mitra-btuu.onrender.com/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...formData, otp })
       });
       
       const data = await res.json();
@@ -89,32 +137,61 @@ const RegisterPage = () => {
             </div>
           )}
 
-          <form className="space-y-6" onSubmit={handleRegister}>
-            <div>
-              <label className="block text-sm font-medium text-slate-300">Full Name</label>
-              <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-300">Email address</label>
-              <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-300">Role</label>
-              <select value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]">
-                <option value="Doctor">Doctor</option>
-                <option value="Nurse">Nurse</option>
-                <option value="Receptionist">Receptionist</option>
-                <option value="Admin">Admin</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-300">Password</label>
-              <input required type="password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
-            </div>
-            <button type="submit" disabled={loading} className="w-full py-3 px-4 rounded-lg text-sm font-bold text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-50">
-              {loading ? 'Creating...' : 'Create Account'}
-            </button>
-          </form>
+          {step === 1 ? (
+            <form className="space-y-6" onSubmit={handleSendOTP}>
+              <div>
+                <label className="block text-sm font-medium text-slate-300">Full Name</label>
+                <input required type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-300">Email address</label>
+                <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-300">Role</label>
+                <select value={formData.role} onChange={e => setFormData({...formData, role: e.target.value})} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]">
+                  <option value="Doctor">Doctor</option>
+                  <option value="Nurse">Nurse</option>
+                  <option value="Receptionist">Receptionist</option>
+                  <option value="Admin">Admin</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-300">Password</label>
+                <input required type="password" value={formData.password} onChange={e => setFormData({...formData, password: e.target.value})} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-300">Confirm Password</label>
+                <input required type="password" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
+              </div>
+              <button type="submit" disabled={loading} className="w-full py-3 px-4 rounded-lg text-sm font-bold text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-50">
+                {loading ? 'Sending OTP...' : 'Send OTP'}
+              </button>
+            </form>
+          ) : (
+            <form className="space-y-6" onSubmit={handleRegister}>
+              <div className="text-center mb-4 text-slate-300">
+                We sent a 6-digit OTP to <span className="font-bold text-white">{formData.email}</span>. Please enter it below.
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-300 text-center">Enter OTP</label>
+                <input required type="text" maxLength={6} value={otp} onChange={e => setOtp(e.target.value)} className="mt-1 block w-full text-center tracking-widest text-2xl px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
+              </div>
+              <button type="submit" disabled={loading || otp.length !== 6} className="w-full py-3 px-4 rounded-lg text-sm font-bold text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-50">
+                {loading ? 'Verifying...' : 'Verify & Create Account'}
+              </button>
+              
+              <div className="text-center mt-4">
+                {canResend ? (
+                  <button type="button" onClick={handleSendOTP} className="text-[var(--color-primary)] hover:text-white transition-colors text-sm font-medium">
+                    Resend OTP
+                  </button>
+                ) : (
+                  <span className="text-slate-500 text-sm">Resend OTP in {timer}s</span>
+                )}
+              </div>
+            </form>
+          )}
 
           <div className="mt-6 text-center text-sm text-slate-400">
             Already have an account? <Link to="/login" className="font-medium text-[var(--color-primary)] hover:text-[var(--color-secondary)]">Sign in</Link>
