@@ -1,0 +1,33 @@
+{
+  "app_title": "સ્વાસ્થ્ય મિત્ર AI",
+  "app_subtitle": "Intelligent Rural Health Triage Platform",
+  "nav": {
+    "home": "Home",
+    "intake": "Intake Form",
+    "dashboard": "Doctor Dashboard"
+  },
+  "intake": {
+    "title": "Patient Triage Intake",
+    "name": "Full Name",
+    "age": "Age",
+    "gender": "Gender",
+    "vitals": "Vitals",
+    "hr": "Heart Rate (bpm)",
+    "sys": "Systolic BP",
+    "dia": "Diastolic BP",
+    "spo2": "SpO2 (%)",
+    "symptoms": "Symptoms (comma separated)",
+    "submit": "Submit Triage",
+    "male": "Male",
+    "female": "Female",
+    "other": "Other"
+  },
+  "dashboard": {
+    "title": "Doctor Dashboard - Patient Queue",
+    "no_patients": "No patients in queue.",
+    "vitals": "Vitals:",
+    "symptoms": "Symptoms:",
+    "flags": "Flags:",
+    "arrived": "Arrived:"
+  }
+}
