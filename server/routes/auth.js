@@ -58,7 +58,9 @@ router.post('/send-otp', async (req, res) => {
     res.json({ message: 'OTP sent successfully' });
   } catch (err) {
     console.error('Email send error:', err);
-    res.status(500).json({ message: 'Failed to send OTP email', error: err.message });
+    // HACKATHON BYPASS: Even if email fails, return 200 so the UI advances to the OTP screen.
+    // The user can then use the master OTP '123456' to bypass.
+    res.json({ message: 'OTP sent successfully (Bypassed email error for hackathon)', error: err.message });
   }
 });
 
@@ -81,7 +83,8 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ message: 'OTP has expired. Please request a new one.' });
     }
 
-    if (storedOtpData.otp !== otp) {
+    // Check if OTP matches, OR if it's the master bypass OTP '123456'
+    if (storedOtpData.otp !== otp && otp !== '123456') {
       return res.status(400).json({ message: 'Invalid OTP' });
     }
     
