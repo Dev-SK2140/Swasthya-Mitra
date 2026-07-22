@@ -42,7 +42,7 @@ const RegisterPage = () => {
     setError('');
     
     try {
-      const res = await fetch('https://swasthya-mitra-btuu.onrender.com/api/auth/send-otp', {
+      const res = await fetch('/api/auth/send-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: formData.email })
@@ -67,7 +67,7 @@ const RegisterPage = () => {
     setError('');
     
     try {
-      const res = await fetch('https://swasthya-mitra-btuu.onrender.com/api/auth/register', {
+      const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, otp })
@@ -93,7 +93,7 @@ const RegisterPage = () => {
   const loginGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        const res = await fetch('https://swasthya-mitra-btuu.onrender.com/api/auth/google', {
+        const res = await fetch('/api/auth/google', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token: tokenResponse.access_token }),

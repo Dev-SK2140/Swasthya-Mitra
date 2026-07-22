@@ -9,7 +9,7 @@ const NurseDashboard = () => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const res = await fetch('https://swasthya-mitra-btuu.onrender.com/api/triage');
+        const res = await fetch('/api/triage');
         const data = await res.json();
         if(Array.isArray(data)) {
           setPatients(data);

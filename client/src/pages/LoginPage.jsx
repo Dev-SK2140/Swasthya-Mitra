@@ -22,7 +22,7 @@ const LoginPage = () => {
     setError('');
     
     try {
-      const res = await fetch('https://swasthya-mitra-btuu.onrender.com/api/auth/login', {
+      const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -48,7 +48,7 @@ const LoginPage = () => {
   const loginGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       try {
-        const res = await fetch('https://swasthya-mitra-btuu.onrender.com/api/auth/google', {
+        const res = await fetch('/api/auth/google', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ token: tokenResponse.access_token }),
