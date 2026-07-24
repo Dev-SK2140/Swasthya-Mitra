@@ -8,7 +8,13 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://swasthya-mitra-in.vercel.app"
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Add Routes
@@ -22,15 +28,6 @@ app.use('/api/auth', authRoutes);
 // AI Triage routes
 const aiRoutes = require('./routes/aiRoutes');
 app.use('/api/ai', aiRoutes);
-
-// Mock Google Auth (legacy for smooth hackathon testing if needed)
-app.post('/api/auth/google', (req, res) => {
-  res.json({ token: 'mock-jwt-token', user: { name: 'Dr. Admin', role: 'Doctor' } });
-});
-
-app.get('/api/status', (req, res) => {
-  res.json({ status: 'API is running' });
-});
 
 // Database Connection
 const PORT = process.env.PORT || 5000;
