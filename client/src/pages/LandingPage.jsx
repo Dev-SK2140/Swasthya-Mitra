@@ -2,8 +2,8 @@ import React, { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import Particles from "react-tsparticles";
-import { loadFull } from "tsparticles";
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
 import { Canvas } from '@react-three/fiber';
 import { Environment, Float, Sparkles } from '@react-three/drei';
 import LanguageSelector from '../components/LanguageSelector';
@@ -13,9 +13,9 @@ import logoImg from '../assets/logo.png';
 const LandingPage = () => {
   const { t } = useTranslation();
 
-  const particlesInit = useCallback(async engine => {
-    await loadFull(engine);
-  }, []);
+  const particlesInit = useCallback(async (engine) => {
+    await loadSlim(engine);
+}, []);
 
   return (
     <div className="min-h-screen bg-[#1b2532] overflow-hidden relative flex flex-col">
