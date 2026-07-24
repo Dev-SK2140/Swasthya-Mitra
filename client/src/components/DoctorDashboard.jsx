@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Send } from 'lucide-react';
@@ -14,7 +14,7 @@ const DoctorDashboard = () => {
   const [isReferralOpen, setIsReferralOpen] = useState(false);
   const [patientToRefer, setPatientToRefer] = useState(null);
 
-  const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitr-server.onrender.com/api');
+  const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
 
   const fetchPatients = async () => {
     try {
@@ -111,7 +111,7 @@ const DoctorDashboard = () => {
               {p.flaggedConditions && p.flaggedConditions.length > 0 && (
                 <div className="mb-4 mt-2">
                   <p className="text-sm font-semibold text-red-400 flex items-center gap-2">
-                    <span>⚠️</span> {t('dashboard.flags')} {p.flaggedConditions.join(', ')}
+                    <span>âš ï¸</span> {t('dashboard.flags')} {p.flaggedConditions.join(', ')}
                   </p>
                 </div>
               )}

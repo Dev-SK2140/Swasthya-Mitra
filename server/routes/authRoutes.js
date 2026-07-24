@@ -27,7 +27,7 @@ router.post('/send-otp', async (req, res) => {
 
     try {
         const existingUser = await User.findOne({ email });
-        
+
         // If type is not 'reset', we assume it's for registration
         if (type !== 'reset' && existingUser) {
             return res.status(400).json({ message: 'Email already registered. Please login.' });
@@ -148,46 +148,122 @@ router.post('/login', async (req, res) => {
     }
 });
 
-// 4. Google Login
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || 'dummy_client_id_for_dev';
+// ==================== GOOGLE LOGIN ====================
+
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+
+if (!GOOGLE_CLIENT_ID) {
+    console.error("GOOGLE_CLIENT_ID is missing");
+}
+
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
 
-router.post('/google', async (req, res) => {
-    const { credential } = req.body;
-    if (!credential) {
-        return res.status(400).json({ message: 'Google credential is required' });
-    }
-
+router.post("/google", async (req, res) => {
     try {
+        const { credential } = req.body;
+
+        if (!credential) {
+            return res.status(400).json({
+                success: false,
+                message: "Google credential is required"
+            });
+        }
+
+        // Verify Google ID Token
         const ticket = await googleClient.verifyIdToken({
             idToken: credential,
             audience: GOOGLE_CLIENT_ID,
         });
+
         const payload = ticket.getPayload();
-        const { email, name, picture } = payload;
+
+        if (!payload) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid Google token"
+            });
+        }
+
+        const {
+            email,
+            name,
+            picture,
+            email_verified
+        } = payload;
+
+        if (!email_verified) {
+            return res.status(401).json({
+                success: false,
+                message: "Google email is not verified"
+            });
+        }
 
         let user = await User.findOne({ email });
 
         if (!user) {
-            const randomPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
-            const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(randomPassword, salt);
 
-            user = new User({
-                email,
+            const randomPassword =
+                Math.random().toString(36).substring(2) +
+                Math.random().toString(36).substring(2);
+
+            const hashedPassword = await bcrypt.hash(randomPassword, 10);
+
+            user = await User.create({
                 name,
+                email,
                 password: hashedPassword,
-                profilePicture: picture || 'DP.jpeg',
-                role: 'Patient' // default role
+                role: "Patient",
+                profilePicture: picture || "",
+                provider: "google"
             });
-            await user.save();
+
+        } else {
+
+            // Update picture if changed
+            if (picture && user.profilePicture !== picture) {
+                user.profilePicture = picture;
+                await user.save();
+            }
+
         }
 
-        const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
-        res.status(200).json({ message: 'Google Login successful', token, user: { id: user._id, email: user.email, name: user.name, picture: user.profilePicture, role: user.role } });
+        const token = jwt.sign(
+            {
+                id: user._id,
+                role: user.role,
+                email: user.email
+            },
+            JWT_SECRET,
+            {
+                expiresIn: "7d"
+            }
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: "Google login successful",
+            token,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                picture: user.profilePicture
+            }
+        });
+
     } catch (error) {
-        console.error('Google Login error:', error);
-        res.status(500).json({ message: 'Server error during Google Login' });
+
+        console.error("Google Login Error:", error);
+
+        return res.status(500).json({
+            success: false,
+            message: "Google login failed",
+            error:
+                process.env.NODE_ENV === "development"
+                    ? error.message
+                    : undefined
+        });
     }
 });
 

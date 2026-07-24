@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, X, Send, Bot, User, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -7,13 +7,13 @@ const AIAssistant = () => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Hello Doctor. I am Swasthya Sahayak (સ્વાસ્થ્ય સહાયક). How can I assist you with triage or treatment protocols today?' }
+    { role: 'assistant', content: 'Hello Doctor. I am Swasthya Sahayak (àª¸à«àªµàª¾àª¸à«àª¥à«àª¯ àª¸àª¹àª¾àª¯àª•). How can I assist you with triage or treatment protocols today?' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
   
-  const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitr-server.onrender.com/api');
+  const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -85,7 +85,7 @@ const AIAssistant = () => {
                   <Bot className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">સ્વાસ્થ્ય સહાયક AI</h3>
+                  <h3 className="font-semibold text-white">àª¸à«àªµàª¾àª¸à«àª¥à«àª¯ àª¸àª¹àª¾àª¯àª• AI</h3>
                   <p className="text-[10px] text-indigo-100">Government Medical Assistant</p>
                 </div>
               </div>

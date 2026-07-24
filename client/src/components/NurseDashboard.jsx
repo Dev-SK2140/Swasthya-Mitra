@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Activity, Heart, Thermometer, Droplets, Users, CheckCircle, Clock } from 'lucide-react';
 
@@ -6,7 +6,7 @@ const NurseDashboard = () => {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitr-server.onrender.com/api');
+  const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -68,7 +68,7 @@ const NurseDashboard = () => {
             <div className="flex justify-between items-start mb-4">
               <div>
                 <h3 className="text-lg font-medium">{p.name}</h3>
-                <p className="text-sm text-slate-400">{p.age} years • {p.gender}</p>
+                <p className="text-sm text-slate-400">{p.age} years â€¢ {p.gender}</p>
               </div>
               <div className="flex items-center gap-1 text-xs text-slate-400 bg-slate-900/50 px-2 py-1 rounded">
                 <Clock className="w-3 h-3" /> {new Date(p.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
@@ -101,7 +101,7 @@ const NurseDashboard = () => {
                 <Thermometer className="text-orange-400 w-5 h-5" />
                 <div>
                   <div className="text-xs text-slate-400">Temp</div>
-                  <div className="font-semibold">98.6 <span className="text-[10px] font-normal text-slate-500">°F</span></div>
+                  <div className="font-semibold">98.6 <span className="text-[10px] font-normal text-slate-500">Â°F</span></div>
                 </div>
               </div>
             </div>
