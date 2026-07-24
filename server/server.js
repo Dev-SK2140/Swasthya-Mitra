@@ -16,7 +16,7 @@ const triageRoutes = require('./routes/triageRoutes');
 app.use('/api/triage', triageRoutes);
 
 // Auth routes (real JWT)
-const authRoutes = require('./routes/auth');
+const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
 
 // AI Triage routes
