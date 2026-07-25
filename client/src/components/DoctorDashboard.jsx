@@ -1,7 +1,7 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Send } from 'lucide-react';
+import { Send, AlertTriangle } from 'lucide-react';
 import PatientTimelineModal from './PatientTimelineModal';
 import ReferralModal from './ReferralModal';
 
@@ -111,7 +111,7 @@ const DoctorDashboard = () => {
               {p.flaggedConditions && p.flaggedConditions.length > 0 && (
                 <div className="mb-4 mt-2">
                   <p className="text-sm font-semibold text-red-400 flex items-center gap-2">
-                    <span>âš ï¸</span> {t('dashboard.flags')} {p.flaggedConditions.join(', ')}
+                    <AlertTriangle className="w-4 h-4" /> {t('dashboard.flags')} {p.flaggedConditions.join(', ')}
                   </p>
                 </div>
               )}

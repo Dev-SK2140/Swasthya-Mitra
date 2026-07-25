@@ -29,19 +29,51 @@ const DashboardLayout = () => {
     };
   }, []);
 
-
+  const roleNavItems = [
+    { name: 'Doctor', path: '/app/doctor' },
+    { name: 'Nurse', path: '/app/nurse' },
+    { name: 'Reception', path: '/app/reception' },
+    { name: 'Admin', path: '/app/admin' },
+    { name: 'Lab', path: '/app/lab' },
+    { name: 'Pharmacy', path: '/app/pharmacy' },
+    { name: 'Intake', path: '/app/intake' }
+  ];
 
   const NavLinks = ({ mobile }) => (
     <>
+      <div className={`flex flex-wrap items-center gap-1 ${mobile ? 'w-full mb-2' : ''}`}>
+        {roleNavItems.map((item) => {
+          const isActive = location.pathname === item.path;
+          return (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition-all ${
+                isActive
+                  ? 'bg-[var(--color-primary)] text-white shadow-md'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
+              }`}
+            >
+              {item.name}
+            </Link>
+          );
+        })}
+      </div>
+
       <LanguageSelector />
-      
 
-
-      <Link to="/app/telemedicine" className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all bg-[var(--color-secondary)]/10 border border-[var(--color-secondary)]/30 text-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/20 ${mobile ? 'w-full justify-center mt-2' : ''}`}>
+      <Link to="/app/telemedicine" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition-all bg-[var(--color-secondary)]/10 border border-[var(--color-secondary)]/30 text-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/20 ${mobile ? 'w-full justify-center mt-2' : ''}`}>
         <Video className="w-4 h-4" /> Consult
       </Link>
 
-      <Link to="/" className={`px-4 py-2 rounded-lg font-medium transition-all bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 text-center ${mobile ? 'w-full mt-2 block' : ''}`}>
+      <Link 
+        to="/" 
+        onClick={() => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+        }}
+        className={`px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition-all bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 text-center ${mobile ? 'w-full mt-2 block' : ''}`}
+      >
         Logout
       </Link>
     </>

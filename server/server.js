@@ -9,13 +9,12 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://swasthya-mitra-in.vercel.app"
-  ],
+  origin: true,
   credentials: true
 }));
 app.use(express.json());
+
+const path = require('path');
 
 // Add Routes
 const triageRoutes = require('./routes/triageRoutes');
@@ -28,6 +27,16 @@ app.use('/api/auth', authRoutes);
 // AI Triage routes
 const aiRoutes = require('./routes/aiRoutes');
 app.use('/api/ai', aiRoutes);
+
+// Serve static frontend in production / single-service deployment
+const clientDistPath = path.join(__dirname, '../client/dist');
+app.use(express.static(clientDistPath));
+
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(clientDistPath, 'index.html'));
+  }
+});
 
 // Database Connection
 const PORT = process.env.PORT || 5000;

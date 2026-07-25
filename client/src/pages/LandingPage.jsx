@@ -15,7 +15,7 @@ const LandingPage = () => {
 
   const particlesInit = useCallback(async (engine) => {
     await loadSlim(engine);
-}, []);
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#1b2532] overflow-hidden relative flex flex-col">
@@ -79,7 +79,7 @@ const LandingPage = () => {
       </nav>
 
       <main className="flex-1 flex items-center justify-center px-4 mt-20 z-10 relative pointer-events-none">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -91,10 +91,10 @@ const LandingPage = () => {
           <p className="text-xl md:text-3xl text-indigo-200/80 font-light mb-12 max-w-3xl mx-auto">
             {t('app_subtitle')}
           </p>
-          
+
           <div className="flex flex-wrap justify-center gap-6">
             <Link to="/register">
-              <motion.button 
+              <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-white text-indigo-900 px-8 py-4 rounded-xl font-bold text-lg shadow-[0_0_30px_rgba(255,255,255,0.4)] hover:shadow-[0_0_50px_rgba(255,255,255,0.6)] transition-shadow"
@@ -103,7 +103,7 @@ const LandingPage = () => {
               </motion.button>
             </Link>
             <Link to="/app/intake">
-              <motion.button 
+              <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="bg-indigo-900/40 text-white border border-[var(--color-primary)]/50 px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-800/60 transition-colors backdrop-blur-md"
