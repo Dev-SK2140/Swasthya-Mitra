@@ -165,7 +165,7 @@ const LoginPage = () => {
         </div>
         <p className="text-center text-xs text-slate-400 mt-6 font-medium z-10">
           Designed By <strong className="text-white">Shahid Khan</strong> from <strong className="text-[#07a9b0]">SyncHex Infosys</strong><br />
-          <a href="mailto:official.synchex@gmail.com" className="text-[#82d8a5] hover:underline text-[11px]">official.synchex@gmail.com</a>
+          <a href="mailto:contect.synchex@gmail.com" className="text-[#82d8a5] hover:underline text-[11px]">contect.synchex@gmail.com</a>
         </p>
       </motion.div>
     </div>
