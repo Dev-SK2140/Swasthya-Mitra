@@ -168,9 +168,9 @@ const AdminDashboard = () => {
             <MapPin className="w-24 h-24" />
           </div>
           <div className="relative z-10 pointer-events-none">
-            <div className="text-slate-400 text-sm mb-1">Active PHCs</div>
-            <div className="text-3xl font-bold text-blue-400 mb-2">24 / 24</div>
-            <div className="text-xs text-[var(--color-secondary)] flex items-center gap-1">All systems operational</div>
+            <div className="text-slate-400 text-sm mb-1">PM-JAY Claims Processed</div>
+            <div className="text-3xl font-bold text-emerald-400 mb-2">₹14.8 Lakh</div>
+            <div className="text-xs text-[var(--color-secondary)] flex items-center gap-1">142 Cashless Claims Settled</div>
           </div>
         </div>
 

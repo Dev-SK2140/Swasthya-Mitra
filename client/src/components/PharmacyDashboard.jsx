@@ -72,26 +72,57 @@ const PharmacyDashboard = () => {
           </div>
         </div>
 
-        {/* Right Column: Inventory Alerts */}
+        {/* Right Column: Inventory & Jan Aushadhi Generic Substitutes */}
         <div className="space-y-4">
+          {/* PMBJP Jan Aushadhi Generic Substitutes */}
+          <div className="glass-panel p-5 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/30 rounded-xl space-y-3">
+            <div className="flex justify-between items-center">
+              <h3 className="text-sm font-bold text-indigo-300 flex items-center gap-1.5">
+                🇮🇳 PMBJP Jan Aushadhi Finder
+              </h3>
+              <span className="text-[9px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">
+                80% Savings
+              </span>
+            </div>
+            <p className="text-xs text-slate-300">
+              Suggest high-quality Govt-certified Jan Aushadhi generic alternatives for rural patients.
+            </p>
+            <div className="space-y-2 text-xs">
+              <div className="p-2 bg-slate-900/80 rounded-lg border border-slate-800 flex justify-between items-center">
+                <div>
+                  <span className="text-white font-bold block">Brand: Dolo 650</span>
+                  <span className="text-emerald-400 font-semibold">Jan Aushadhi Paracetamol 650mg</span>
+                </div>
+                <span className="text-xs font-mono text-emerald-400 font-bold">₹10 (vs ₹34)</span>
+              </div>
+              <div className="p-2 bg-slate-900/80 rounded-lg border border-slate-800 flex justify-between items-center">
+                <div>
+                  <span className="text-white font-bold block">Brand: Pantocid 40</span>
+                  <span className="text-emerald-400 font-semibold">Jan Aushadhi Pantoprazole 40mg</span>
+                </div>
+                <span className="text-xs font-mono text-emerald-400 font-bold">₹14 (vs ₹110)</span>
+              </div>
+            </div>
+          </div>
+
           <div className="glass-panel p-5 bg-slate-800/60 border border-slate-700/50 rounded-xl">
             <h3 className="text-lg font-medium text-white mb-4 flex items-center gap-2">
-              <AlertCircle className="text-amber-400 w-5 h-5" /> Low Inventory Alerts
+              <AlertCircle className="text-amber-400 w-5 h-5" /> Low Inventory & Expiry Watch
             </h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center p-3 bg-slate-900/50 rounded-lg border border-red-500/20">
                 <div>
                   <div className="text-sm font-medium text-white">Amoxicillin 250mg</div>
-                  <div className="text-xs text-red-400">Critical: 15 strips left</div>
+                  <div className="text-xs text-red-400">Critical: 15 strips • Exp: 09/2026</div>
                 </div>
-                <button className="text-xs bg-slate-700 hover:bg-slate-600 text-white px-2 py-1 rounded transition-colors">Reorder</button>
+                <button className="text-xs bg-slate-700 hover:bg-slate-600 text-white px-2.5 py-1 rounded transition-colors font-bold">Reorder</button>
               </div>
               <div className="flex justify-between items-center p-3 bg-slate-900/50 rounded-lg border border-amber-500/20">
                 <div>
-                  <div className="text-sm font-medium text-white">Paracetamol 500mg</div>
-                  <div className="text-xs text-amber-400">Low: 40 strips left</div>
+                  <div className="text-sm font-medium text-white">Electral ORS Sachets</div>
+                  <div className="text-xs text-amber-400">Low Stock: 40 packs</div>
                 </div>
-                <button className="text-xs bg-slate-700 hover:bg-slate-600 text-white px-2 py-1 rounded transition-colors">Reorder</button>
+                <button className="text-xs bg-slate-700 hover:bg-slate-600 text-white px-2.5 py-1 rounded transition-colors font-bold">Reorder</button>
               </div>
             </div>
           </div>

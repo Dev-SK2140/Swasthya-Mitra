@@ -83,9 +83,14 @@ const LabDashboard = () => {
                     </span>
                   </td>
                   <td className="p-4">
-                    <button className="flex items-center gap-2 bg-[var(--color-primary-hover)] hover:bg-purple-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors">
-                      <Upload className="w-4 h-4" /> Upload
-                    </button>
+                    <div className="flex gap-2">
+                      <button className="flex items-center gap-1 bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors shadow">
+                        <Upload className="w-3.5 h-3.5" /> Upload & AI Analyze
+                      </button>
+                      <button className="flex items-center gap-1 bg-slate-700 hover:bg-slate-600 text-slate-200 px-2.5 py-1.5 rounded-lg text-xs transition-colors" title="Print Sample Barcode">
+                        🏷️ Label
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
