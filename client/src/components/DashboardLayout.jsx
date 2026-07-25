@@ -139,7 +139,14 @@ const DashboardLayout = () => {
           <Outlet />
         </div>
       </main>
-      
+
+      <footer className="mt-8 pt-4 border-t border-slate-800/60 text-center text-xs text-slate-400 font-medium flex flex-col sm:flex-row justify-between items-center gap-2">
+        <span>© 2026 Swasthya Mitra AI Healthcare Platform</span>
+        <span>
+          Designed & Developed by <strong className="text-white">Shahid Khan</strong> from <strong className="text-[var(--color-primary)]">SyncHex Infosys</strong> (<a href="mailto:official.synchex@gmail.com" className="text-[var(--color-secondary)] hover:underline">official.synchex@gmail.com</a>)
+        </span>
+      </footer>
+
       <AIAssistant />
     </div>
   );
