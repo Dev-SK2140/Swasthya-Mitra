@@ -87,12 +87,12 @@ const AdminDashboard = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-2">
         <div>
           <h2 className="text-2xl font-semibold bg-gradient-to-r from-slate-200 to-slate-400 bg-clip-text text-transparent flex items-center gap-2">
-            <Building className="text-slate-300" /> Admin & Health Officer Portal
+            <Building className="text-slate-600 dark:text-slate-300" /> Admin & Health Officer Portal
           </h2>
-          <p className="text-slate-400 text-sm mt-1">Drag and drop cards to organize your dashboard</p>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Drag and drop cards to organize your dashboard</p>
         </div>
         <div className="flex gap-4 items-center">
-          <select className="bg-slate-800 border border-slate-700 text-white rounded-lg px-4 py-2 outline-none focus:border-[var(--color-primary)]">
+          <select className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg px-4 py-2 outline-none focus:border-[var(--color-primary)]">
             <option>Ahmedabad District</option>
             <option>Surat District</option>
             <option>Vadodara District</option>
@@ -100,13 +100,13 @@ const AdminDashboard = () => {
           </select>
           <button 
             onClick={() => setLayouts({ lg: defaultLayout })}
-            className="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg transition-colors font-medium shadow-lg"
+            className="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-slate-900 dark:text-white px-4 py-2 rounded-lg transition-colors font-medium shadow-lg"
           >
             Reset Layout
           </button>
           <button 
             onClick={handleExportPDF}
-            className="flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary)] text-white px-4 py-2 rounded-lg transition-colors font-medium shadow-lg"
+            className="flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary)] text-slate-900 dark:text-white px-4 py-2 rounded-lg transition-colors font-medium shadow-lg"
           >
             <Download className="w-4 h-4" /> Export PDF
           </button>
@@ -124,59 +124,59 @@ const AdminDashboard = () => {
         isResizable={true}
         draggableHandle=".drag-handle"
       >
-        <div key="card-users" className="glass-panel p-5 bg-slate-800/40 border border-slate-700/50 rounded-xl relative overflow-hidden group flex flex-col justify-center">
+        <div key="card-users" className="glass-panel p-5 bg-slate-800/40 border border-slate-300/50 dark:border-slate-700/50 rounded-xl relative overflow-hidden group flex flex-col justify-center">
           <div className="drag-handle absolute inset-0 cursor-grab active:cursor-grabbing z-0" title="Drag to move"></div>
           <div className="absolute right-0 top-0 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500 pointer-events-none">
             <Users className="w-24 h-24" />
           </div>
           <div className="relative z-10 pointer-events-none">
-            <div className="text-slate-400 text-sm mb-1">Total Patients (Live)</div>
-            <div className="text-3xl font-bold text-white mb-2">{totalPatients}</div>
+            <div className="text-slate-500 dark:text-slate-400 text-sm mb-1">Total Patients (Live)</div>
+            <div className="text-3xl font-bold text-slate-900 dark:text-white mb-2">{totalPatients}</div>
             <div className="text-xs text-[var(--color-secondary)] flex items-center gap-1"><TrendingUp className="w-3 h-3" /> Updated in real-time</div>
           </div>
         </div>
         
-        <div key="card-critical" className="glass-panel p-5 bg-slate-800/40 border border-slate-700/50 rounded-xl relative overflow-hidden group flex flex-col justify-center">
+        <div key="card-critical" className="glass-panel p-5 bg-slate-800/40 border border-slate-300/50 dark:border-slate-700/50 rounded-xl relative overflow-hidden group flex flex-col justify-center">
           <div className="drag-handle absolute inset-0 cursor-grab active:cursor-grabbing z-0" title="Drag to move"></div>
           <div className="absolute right-0 top-0 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500 pointer-events-none">
             <Activity className="w-24 h-24" />
           </div>
           <div className="relative z-10 pointer-events-none">
-            <div className="text-slate-400 text-sm mb-1">Critical Cases (Live)</div>
+            <div className="text-slate-500 dark:text-slate-400 text-sm mb-1">Critical Cases (Live)</div>
             <div className="text-3xl font-bold text-rose-400 mb-2">{criticalCases}</div>
             <div className="text-xs text-rose-400 flex items-center gap-1"><TrendingUp className="w-3 h-3" /> Needs attention</div>
           </div>
         </div>
 
-        <div key="card-beds" className="glass-panel p-5 bg-slate-800/40 border border-slate-700/50 rounded-xl relative overflow-hidden group flex flex-col justify-center">
+        <div key="card-beds" className="glass-panel p-5 bg-slate-800/40 border border-slate-300/50 dark:border-slate-700/50 rounded-xl relative overflow-hidden group flex flex-col justify-center">
           <div className="drag-handle absolute inset-0 cursor-grab active:cursor-grabbing z-0" title="Drag to move"></div>
           <div className="absolute right-0 top-0 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500 pointer-events-none">
             <Building className="w-24 h-24" />
           </div>
           <div className="relative z-10 pointer-events-none">
-            <div className="text-slate-400 text-sm mb-1">Bed Occupancy</div>
-            <div className="text-3xl font-bold text-white mb-2">86%</div>
+            <div className="text-slate-500 dark:text-slate-400 text-sm mb-1">Bed Occupancy</div>
+            <div className="text-3xl font-bold text-slate-900 dark:text-white mb-2">86%</div>
             <div className="w-full bg-slate-700 rounded-full h-1.5 mt-2">
               <div className="bg-amber-400 h-1.5 rounded-full" style={{ width: '86%' }}></div>
             </div>
           </div>
         </div>
 
-        <div key="card-phcs" className="glass-panel p-5 bg-slate-800/40 border border-slate-700/50 rounded-xl relative overflow-hidden group flex flex-col justify-center">
+        <div key="card-phcs" className="glass-panel p-5 bg-slate-800/40 border border-slate-300/50 dark:border-slate-700/50 rounded-xl relative overflow-hidden group flex flex-col justify-center">
           <div className="drag-handle absolute inset-0 cursor-grab active:cursor-grabbing z-0" title="Drag to move"></div>
           <div className="absolute right-0 top-0 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500 pointer-events-none">
             <MapPin className="w-24 h-24" />
           </div>
           <div className="relative z-10 pointer-events-none">
-            <div className="text-slate-400 text-sm mb-1">PM-JAY Claims Processed</div>
+            <div className="text-slate-500 dark:text-slate-400 text-sm mb-1">PM-JAY Claims Processed</div>
             <div className="text-3xl font-bold text-emerald-400 mb-2">₹14.8 Lakh</div>
             <div className="text-xs text-[var(--color-secondary)] flex items-center gap-1">142 Cashless Claims Settled</div>
           </div>
         </div>
 
-        <div key="chart-disease" className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6 flex flex-col">
+        <div key="chart-disease" className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-300/50 dark:border-slate-700/50 rounded-2xl p-6 flex flex-col">
           <div className="drag-handle flex-1 absolute inset-0 cursor-grab active:cursor-grabbing z-0" title="Drag to move"></div>
-          <h3 className="text-lg font-bold text-white mb-4 relative z-10 pointer-events-none">Disease Trends (Gujarat)</h3>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 relative z-10 pointer-events-none">Disease Trends (Gujarat)</h3>
           <div className="flex-1 w-full relative z-10 pointer-events-none">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={diseaseData}>
@@ -192,9 +192,9 @@ const AdminDashboard = () => {
           </div>
         </div>
         
-        <div key="chart-district" className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6 flex flex-col">
+        <div key="chart-district" className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-300/50 dark:border-slate-700/50 rounded-2xl p-6 flex flex-col">
           <div className="drag-handle flex-1 absolute inset-0 cursor-grab active:cursor-grabbing z-0" title="Drag to move"></div>
-          <h3 className="text-lg font-bold text-white mb-4 relative z-10 pointer-events-none">High-Risk Cases by District</h3>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 relative z-10 pointer-events-none">High-Risk Cases by District</h3>
           <div className="flex-1 w-full relative z-10 pointer-events-none">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={districtData}>
@@ -208,8 +208,8 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        <div key="bed-management" className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-6 overflow-auto">
-          <div className="drag-handle h-8 w-full cursor-grab active:cursor-grabbing absolute top-0 left-0 bg-slate-700/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 text-xs text-white">Drag to move</div>
+        <div key="bed-management" className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-300/50 dark:border-slate-700/50 rounded-2xl p-6 overflow-auto">
+          <div className="drag-handle h-8 w-full cursor-grab active:cursor-grabbing absolute top-0 left-0 bg-slate-700/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 text-xs text-slate-900 dark:text-white">Drag to move</div>
           <div className="mt-4 relative z-0">
             <BedManagement />
           </div>

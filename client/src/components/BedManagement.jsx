@@ -21,20 +21,20 @@ const BedManagement = () => {
       case 'occupied': return 'bg-blue-500/20 border-blue-500/50 text-blue-400';
       case 'critical': return 'bg-rose-500/20 border-rose-500/50 text-rose-400 animate-pulse';
       case 'maintenance': return 'bg-amber-500/20 border-amber-500/50 text-amber-400';
-      default: return 'bg-slate-800 border-slate-700';
+      default: return 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-700';
     }
   };
 
   const filteredBeds = filter === 'all' ? beds : beds.filter(b => b.status === filter);
 
   return (
-    <div className="glass-panel p-6 bg-slate-800/40 border border-slate-700/50 rounded-xl mt-6">
-      <div className="flex justify-between items-center mb-6 border-b border-slate-700/50 pb-4">
+    <div className="glass-panel p-6 bg-slate-800/40 border border-slate-300/50 dark:border-slate-700/50 rounded-xl mt-6">
+      <div className="flex justify-between items-center mb-6 border-b border-slate-300/50 dark:border-slate-700/50 pb-4">
         <div>
-          <h3 className="text-xl font-medium text-white flex items-center gap-2">
+          <h3 className="text-xl font-medium text-slate-900 dark:text-white flex items-center gap-2">
             <BedDouble className="text-[var(--color-primary)]" /> Real-Time Bed Allocation
           </h3>
-          <p className="text-sm text-slate-400 mt-1">Drag and drop patients or update bed status directly.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Drag and drop patients or update bed status directly.</p>
         </div>
         
         <div className="flex gap-2">
@@ -42,7 +42,7 @@ const BedManagement = () => {
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${filter === f ? 'bg-[var(--color-primary)] text-white shadow-lg' : 'bg-slate-800 text-slate-400 hover:text-white'}`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${filter === f ? 'bg-[var(--color-primary)] text-slate-900 dark:text-white shadow-lg' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white'}`}
             >
               {f}
             </button>
@@ -76,7 +76,7 @@ const BedManagement = () => {
         </AnimatePresence>
       </motion.div>
       
-      <div className="mt-6 flex justify-center gap-6 text-xs text-slate-400">
+      <div className="mt-6 flex justify-center gap-6 text-xs text-slate-500 dark:text-slate-400">
         <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-[var(--color-secondary)]/50"></span> Available ({beds.filter(b=>b.status==='available').length})</div>
         <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-blue-500/50"></span> Occupied ({beds.filter(b=>b.status==='occupied').length})</div>
         <div className="flex items-center gap-2"><span className="w-3 h-3 rounded-full bg-rose-500/50"></span> Critical ({beds.filter(b=>b.status==='critical').length})</div>

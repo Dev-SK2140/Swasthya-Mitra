@@ -93,8 +93,8 @@ router.post('/send-otp', async (req, res) => {
             return res.status(200).json({ message: 'OTP sent to your email inbox' });
         } catch (mailErr) {
             console.error('[EMAIL ERROR] Nodemailer send failed:', mailErr.message);
-            // Fallback response with OTP if email server fails
-            return res.status(200).json({ message: 'OTP sent', otp });
+            await Otp.deleteOne({ email, otp }); // Cleanup failed OTP
+            return res.status(500).json({ message: 'Failed to send OTP email. Please check your email configuration or try again.' });
         }
     } catch (error) {
         console.error('Send OTP error:', error);
@@ -119,9 +119,12 @@ router.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt);
 
         // Strict Admin Protection: Only shahidsandhi1786@gmail.com can be Admin
-        const assignedRole = (role === 'Admin' && email.toLowerCase() !== 'shahidsandhi1786@gmail.com') 
-            ? 'Doctor' 
-            : (role || 'Doctor');
+        let assignedRole = role || 'Doctor';
+        if (assignedRole === 'Admin' && email.toLowerCase() !== 'shahidsandhi1786@gmail.com') {
+            assignedRole = 'Doctor';
+        } else if (assignedRole === 'Admin' && email.toLowerCase() === 'shahidsandhi1786@gmail.com') {
+            assignedRole = 'Admin';
+        }
 
         const newUser = new User({
             email,
@@ -159,6 +162,40 @@ router.post('/login', async (req, res) => {
         }
 
         const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
+
+        // Send Login Alert Email asynchronously (do not block response)
+        const loginAlertHtml = `
+        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #090d16; padding: 30px 15px; color: #f8fafc;">
+            <div style="max-width: 580px; margin: 0 auto; background-color: #0f172a; border-radius: 16px; overflow: hidden; border: 1px solid #1e293b; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <div style="background: linear-gradient(135deg, #4f46e5 0%, #0ea5e9 100%); padding: 35px 25px; text-align: center;">
+                    <h1 style="margin: 0; color: #ffffff; font-size: 26px; font-weight: 800; letter-spacing: -0.5px;">Swasthya Mitra AI</h1>
+                    <p style="margin: 8px 0 0 0; color: #e0e7ff; font-size: 13px; font-weight: 500;">Security Alert</p>
+                </div>
+                <div style="padding: 35px 30px; background-color: #0f172a;">
+                    <h2 style="font-size: 18px; margin-top: 0; font-weight: 700; color: #f8fafc;">New Login Detected</h2>
+                    <p style="color: #94a3b8; font-size: 14px; line-height: 1.6; margin-bottom: 25px;">
+                        Hello ${user.name},<br><br>
+                        We detected a new login to your Swasthya Mitra AI account (${user.email}). 
+                    </p>
+                    <p style="color: #64748b; font-size: 12px; line-height: 1.5; margin-bottom: 25px;">
+                        If this was you, you can safely ignore this email. If you did not log in, please reset your password immediately or contact the system administrator.
+                    </p>
+                    <hr style="border: none; border-top: 1px solid #1e293b; margin-bottom: 20px;">
+                    <div style="text-align: center;">
+                        <p style="margin: 0; font-size: 13px; font-weight: 700; color: #cbd5e1;">Government of Gujarat • Health & Family Welfare Department</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+
+        transporter.sendMail({
+            from: `"Swasthya Mitra Security" <${EMAIL_USER}>`,
+            to: user.email,
+            subject: "[Swasthya Mitra] New Login Alert",
+            html: loginAlertHtml
+        }).catch(err => console.error("Login alert email failed:", err.message));
+
         res.status(200).json({ message: 'Login successful', token, user: { id: user._id, email: user.email, name: user.name, role: user.role } });
     } catch (error) {
         console.error('Login error:', error);

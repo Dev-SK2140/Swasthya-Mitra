@@ -9,7 +9,7 @@ const PatientTimelineModal = ({ isOpen, onClose, patient }) => {
     { date: 'Today', type: 'triage', desc: `Triage complete. Risk: ${patient.riskLevel}`, icon: Activity, color: 'text-rose-400', bg: 'bg-rose-500/20' },
     { date: '1 Month Ago', type: 'visit', desc: 'Follow-up for Hypertension. Prescribed Amlodipine 5mg.', icon: Stethoscope, color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/20' },
     { date: '6 Months Ago', type: 'pharmacy', desc: 'Refilled prescription: Metformin 500mg.', icon: Pill, color: 'text-[var(--color-secondary)]', bg: 'bg-[var(--color-secondary)]/20' },
-    { date: '1 Year Ago', type: 'visit', desc: 'Initial registration. Baseline vitals recorded.', icon: Clock, color: 'text-slate-400', bg: 'bg-slate-500/20' }
+    { date: '1 Year Ago', type: 'visit', desc: 'Initial registration. Baseline vitals recorded.', icon: Clock, color: 'text-slate-500 dark:text-slate-400', bg: 'bg-slate-500/20' }
   ];
 
   return (
@@ -17,7 +17,7 @@ const PatientTimelineModal = ({ isOpen, onClose, patient }) => {
       <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
         <motion.div 
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-          className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+          className="absolute inset-0 bg-slate-50/60 dark:bg-slate-900/60 backdrop-blur-sm"
           onClick={onClose}
         ></motion.div>
         
@@ -25,14 +25,14 @@ const PatientTimelineModal = ({ isOpen, onClose, patient }) => {
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative w-full max-w-lg bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden"
+          className="relative w-full max-w-lg bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl shadow-2xl overflow-hidden"
         >
-          <div className="bg-slate-800 p-4 flex justify-between items-center border-b border-slate-700">
+          <div className="bg-white dark:bg-slate-800 p-4 flex justify-between items-center border-b border-slate-300 dark:border-slate-700">
             <div>
-              <h3 className="font-semibold text-white text-lg">{patient.name}'s History</h3>
-              <p className="text-xs text-slate-400">UUID: {patient._id}</p>
+              <h3 className="font-semibold text-slate-900 dark:text-white text-lg">{patient.name}'s History</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">UUID: {patient._id}</p>
             </div>
-            <button onClick={onClose} className="p-2 hover:bg-slate-700 rounded-full transition-colors text-slate-400 hover:text-white">
+            <button onClick={onClose} className="p-2 hover:bg-slate-700 rounded-full transition-colors text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -50,17 +50,17 @@ const PatientTimelineModal = ({ isOpen, onClose, patient }) => {
                   <Activity className="w-5 h-5" /> AI Triage Report ({patient.riskLevel})
                 </h4>
                 <div className="space-y-3 text-sm">
-                  <div><strong className="text-white">Doctor Summary:</strong> {patient.aiAnalysis.doctorSummary}</div>
-                  <div><strong className="text-white">AI Reason:</strong> {patient.aiAnalysis.explanation}</div>
-                  <div><strong className="text-white">Possible Risks:</strong> {(patient.aiAnalysis.possibleRisks || []).join(', ')}</div>
-                  <div><strong className="text-white">Recommendation:</strong> {patient.aiAnalysis.recommendation}</div>
+                  <div><strong className="text-slate-900 dark:text-white">Doctor Summary:</strong> {patient.aiAnalysis.doctorSummary}</div>
+                  <div><strong className="text-slate-900 dark:text-white">AI Reason:</strong> {patient.aiAnalysis.explanation}</div>
+                  <div><strong className="text-slate-900 dark:text-white">Possible Risks:</strong> {(patient.aiAnalysis.possibleRisks || []).join(', ')}</div>
+                  <div><strong className="text-slate-900 dark:text-white">Recommendation:</strong> {patient.aiAnalysis.recommendation}</div>
                 </div>
               </div>
             )}
 
             <div>
-              <h4 className="text-slate-400 text-sm font-medium mb-4">Patient History</h4>
-              <div className="relative border-l-2 border-slate-700 ml-3 space-y-8">
+              <h4 className="text-slate-500 dark:text-slate-400 text-sm font-medium mb-4">Patient History</h4>
+              <div className="relative border-l-2 border-slate-300 dark:border-slate-700 ml-3 space-y-8">
                 {mockHistory.map((item, i) => {
                   const Icon = item.icon;
                   return (
@@ -76,7 +76,7 @@ const PatientTimelineModal = ({ isOpen, onClose, patient }) => {
                       </div>
                       <div>
                         <span className="text-xs font-bold text-[var(--color-primary)]">{item.date}</span>
-                        <p className="text-slate-300 mt-1 text-sm">{item.desc}</p>
+                        <p className="text-slate-600 dark:text-slate-300 mt-1 text-sm">{item.desc}</p>
                       </div>
                     </motion.div>
                   );
@@ -85,8 +85,8 @@ const PatientTimelineModal = ({ isOpen, onClose, patient }) => {
             </div>
           </div>
           
-          <div className="p-4 bg-slate-800 border-t border-slate-700 flex justify-end">
-            <button onClick={onClose} className="bg-[var(--color-primary)] hover:bg-[var(--color-primary)] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+          <div className="p-4 bg-white dark:bg-slate-800 border-t border-slate-300 dark:border-slate-700 flex justify-end">
+            <button onClick={onClose} className="bg-[var(--color-primary)] hover:bg-[var(--color-primary)] text-slate-900 dark:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
               Close Record
             </button>
           </div>

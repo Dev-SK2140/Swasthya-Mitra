@@ -63,7 +63,7 @@ const DoctorDashboard = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center p-8 text-slate-400 italic">Loading dashboard...</div>;
+    return <div className="text-center p-8 text-slate-500 dark:text-slate-400 italic">Loading dashboard...</div>;
   }
 
   const getBadgeClass = (level) => {
@@ -92,7 +92,7 @@ const DoctorDashboard = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
           <h2 className="text-2xl font-semibold">{t('dashboard.title')}</h2>
-          <p className="text-xs text-slate-400 mt-1">Real-time triage queue for Primary Health Centers</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Real-time triage queue for Primary Health Centers</p>
         </div>
         
         <div className="flex flex-wrap items-center gap-2">
@@ -132,14 +132,14 @@ const DoctorDashboard = () => {
           >
             <FileText className="w-4 h-4" /> Scan Lab Report
           </button>
-          <span className="text-xs text-slate-400 bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-700">
+          <span className="text-xs text-slate-500 dark:text-slate-400 bg-white/80 dark:bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700">
             🟢 Live Queue • {patients.length} Patients
           </span>
         </div>
       </div>
 
       {patients.length === 0 ? (
-        <p className="text-slate-400">{t('dashboard.no_patients')}</p>
+        <p className="text-slate-500 dark:text-slate-400">{t('dashboard.no_patients')}</p>
       ) : (
         <motion.div 
           variants={containerVariants}
@@ -162,8 +162,8 @@ const DoctorDashboard = () => {
               </div>
               
               <div className="mb-4">
-                <p className="text-sm text-slate-400 mb-2">{t('dashboard.vitals')}</p>
-                <div className="flex gap-4 font-medium bg-slate-900/50 p-3 rounded-lg">
+                <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">{t('dashboard.vitals')}</p>
+                <div className="flex gap-4 font-medium bg-slate-50/50 dark:bg-slate-900/50 p-3 rounded-lg">
                   <div><span className="text-slate-500 text-xs block">HR</span>{p.vitals?.heartRate}</div>
                   <div><span className="text-slate-500 text-xs block">BP</span>{p.vitals?.bloodPressureSys}/{p.vitals?.bloodPressureDia}</div>
                   <div><span className="text-slate-500 text-xs block">SpO2</span>{p.vitals?.spO2}%</div>
@@ -172,7 +172,7 @@ const DoctorDashboard = () => {
 
               {p.symptoms && p.symptoms.length > 0 && (
                 <div className="mb-4">
-                  <p className="text-sm text-slate-400 mb-2">{t('dashboard.symptoms')}</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">{t('dashboard.symptoms')}</p>
                   <div className="flex flex-wrap gap-2">
                     {p.symptoms.map((sym, idx) => (
                       <span key={idx} className="bg-white/10 px-3 py-1 rounded-full text-xs">{sym}</span>
@@ -189,7 +189,7 @@ const DoctorDashboard = () => {
                 </div>
               )}
               
-              <div className="mt-auto pt-4 border-t border-slate-700/50 flex flex-col gap-3">
+              <div className="mt-auto pt-4 border-t border-slate-300/50 dark:border-slate-700/50 flex flex-col gap-3">
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-slate-500">{t('dashboard.arrived')} {new Date(p.createdAt).toLocaleTimeString()}</span>
                   
@@ -257,7 +257,7 @@ const DoctorDashboard = () => {
                       setSelectedPatient(p);
                       setIsTimelineOpen(true);
                     }}
-                    className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white py-2 rounded-xl font-medium transition-colors shadow-lg shadow-[var(--color-primary)]/20 text-xs"
+                    className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-slate-900 dark:text-white py-2 rounded-xl font-medium transition-colors shadow-lg shadow-[var(--color-primary)]/20 text-xs"
                   >
                     {t('dashboard.consult')}
                   </button>

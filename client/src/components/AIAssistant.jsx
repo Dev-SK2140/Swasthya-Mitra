@@ -60,7 +60,7 @@ const AIAssistant = () => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-full shadow-2xl flex items-center justify-center text-white hover:shadow-[0_0_20px_rgba(99,102,241,0.6)] transition-all z-50 group"
+            className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] rounded-full shadow-2xl flex items-center justify-center text-slate-900 dark:text-white hover:shadow-[0_0_20px_rgba(99,102,241,0.6)] transition-all z-50 group"
           >
             <Bot className="w-7 h-7 group-hover:scale-110 transition-transform" />
             {/* Notification dot */}
@@ -76,20 +76,20 @@ const AIAssistant = () => {
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
-            className="fixed bottom-6 right-6 w-[350px] sm:w-[400px] h-[500px] max-h-[80vh] bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden z-50"
+            className="fixed bottom-6 right-6 w-[350px] sm:w-[400px] h-[500px] max-h-[80vh] bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl flex flex-col overflow-hidden z-50"
           >
             {/* Header */}
             <div className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] p-4 flex justify-between items-center">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                  <Bot className="w-5 h-5 text-white" />
+                  <Bot className="w-5 h-5 text-slate-900 dark:text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white">àª¸à«àªµàª¾àª¸à«àª¥à«àª¯ àª¸àª¹àª¾àª¯àª• AI</h3>
+                  <h3 className="font-semibold text-slate-900 dark:text-white">àª¸à«àªµàª¾àª¸à«àª¥à«àª¯ àª¸àª¹àª¾àª¯àª• AI</h3>
                   <p className="text-[10px] text-indigo-100">Government Medical Assistant</p>
                 </div>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-white/70 hover:text-white transition-colors">
+              <button onClick={() => setIsOpen(false)} className="text-white/70 hover:text-slate-900 dark:text-white transition-colors">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -100,8 +100,8 @@ const AIAssistant = () => {
                 <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[85%] rounded-2xl p-3 text-sm ${
                     msg.role === 'user' 
-                      ? 'bg-[var(--color-primary)] text-white rounded-br-sm' 
-                      : 'bg-slate-800 border border-slate-700 text-slate-200 rounded-bl-sm'
+                      ? 'bg-[var(--color-primary)] text-slate-900 dark:text-white rounded-br-sm' 
+                      : 'bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-bl-sm'
                   }`}>
                     {msg.content}
                   </div>
@@ -109,7 +109,7 @@ const AIAssistant = () => {
               ))}
               {loading && (
                 <div className="flex justify-start">
-                  <div className="max-w-[85%] bg-slate-800 border border-slate-700 rounded-2xl rounded-bl-sm p-4 flex items-center gap-2 text-[var(--color-primary)]">
+                  <div className="max-w-[85%] bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-2xl rounded-bl-sm p-4 flex items-center gap-2 text-[var(--color-primary)]">
                     <Loader2 className="w-4 h-4 animate-spin" />
                     <span className="text-xs">Analyzing protocols...</span>
                   </div>
@@ -119,22 +119,22 @@ const AIAssistant = () => {
             </div>
 
             {/* Input Area */}
-            <div className="p-3 bg-slate-900 border-t border-slate-700/50">
+            <div className="p-3 bg-slate-50 dark:bg-slate-900 border-t border-slate-300/50 dark:border-slate-700/50">
               <form 
                 onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-                className="flex items-center gap-2 bg-slate-800 border border-slate-700 rounded-xl p-1 pr-2 focus-within:border-[var(--color-primary)] transition-colors"
+                className="flex items-center gap-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl p-1 pr-2 focus-within:border-[var(--color-primary)] transition-colors"
               >
                 <input
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask a medical query..."
-                  className="flex-1 bg-transparent border-none text-white text-sm px-3 py-2 focus:outline-none"
+                  className="flex-1 bg-transparent border-none text-slate-900 dark:text-white text-sm px-3 py-2 focus:outline-none"
                 />
                 <button 
                   type="submit"
                   disabled={!input.trim() || loading}
-                  className="bg-[var(--color-primary)] hover:bg-[var(--color-primary)] disabled:opacity-50 text-white p-2 rounded-lg transition-colors"
+                  className="bg-[var(--color-primary)] hover:bg-[var(--color-primary)] disabled:opacity-50 text-slate-900 dark:text-white p-2 rounded-lg transition-colors"
                 >
                   <Send className="w-4 h-4" />
                 </button>

@@ -5,6 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
 import LanguageSelector from '../components/LanguageSelector';
+import ThemeToggle from '../components/ThemeToggle';
 import logoImg from '../assets/logo.png';
 
 const LoginPage = () => {
@@ -53,8 +54,11 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      <div className="absolute top-4 right-4"><LanguageSelector /></div>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden transition-colors">
+      <div className="absolute top-4 right-4 flex gap-2">
+        <ThemeToggle />
+        <LanguageSelector />
+      </div>
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#07a9b0]/20 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#82d8a5]/20 rounded-full blur-[120px] pointer-events-none"></div>
 
@@ -80,7 +84,7 @@ const LoginPage = () => {
         transition={{ delay: 0.1 }}
         className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10"
       >
-        <div className="bg-slate-800/60 backdrop-blur-xl py-8 px-4 shadow-[0_8px_30px_rgb(0,0,0,0.5)] sm:rounded-2xl sm:px-10 border border-white/10">
+        <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl py-8 px-4 shadow-[0_8px_30px_rgb(0,0,0,0.5)] sm:rounded-2xl sm:px-10 border border-slate-200 dark:border-white/10">
           {error && (
             <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-3 rounded-lg mb-6 text-sm text-center">
               {error}
@@ -88,17 +92,17 @@ const LoginPage = () => {
           )}
           <form className="space-y-6" onSubmit={handleLogin}>
             <div>
-              <label className="block text-sm font-medium text-slate-300">Email address</label>
+              <label className="block text-sm font-medium text-slate-600 dark:text-slate-300">Email address</label>
               <div className="mt-1">
-                <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="appearance-none block w-full px-4 py-3 border border-slate-700 rounded-lg shadow-sm bg-slate-900/50 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)]" />
+                <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="appearance-none block w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg shadow-sm bg-slate-50/50 dark:bg-slate-900/50 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)]" />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-300">Password</label>
+              <label className="block text-sm font-medium text-slate-600 dark:text-slate-300">Password</label>
               <div className="relative mt-1">
-                <input required type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} className="appearance-none block w-full px-4 py-3 border border-slate-700 rounded-lg shadow-sm bg-slate-900/50 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] pr-12" />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-white">
+                <input required type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} className="appearance-none block w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg shadow-sm bg-slate-50/50 dark:bg-slate-900/50 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] pr-12" />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white">
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
@@ -111,7 +115,7 @@ const LoginPage = () => {
             </div>
 
             <div>
-              <button type="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-[var(--color-primary)] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)] focus:ring-offset-slate-900 transition-colors">
+              <button type="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-slate-900 dark:text-white bg-[var(--color-primary)] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)] focus:ring-offset-slate-900 transition-colors">
                 Sign in
               </button>
             </div>
@@ -119,12 +123,12 @@ const LoginPage = () => {
 
           <div className="mt-6">
             <div className="relative">
-              <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-700"></div></div>
+              <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-300 dark:border-slate-700"></div></div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-slate-800 text-slate-400">Or</span>
+                <span className="px-2 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400">Or</span>
               </div>
             </div>
-            <div className="mt-6 text-center text-sm text-slate-400">
+            <div className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
               Don't have an account? <Link to="/register" className="font-medium text-[var(--color-primary)] hover:text-[var(--color-secondary)]">Register now</Link>
             </div>
           </div>
@@ -163,8 +167,8 @@ const LoginPage = () => {
             />
           </div>
         </div>
-        <p className="text-center text-xs text-slate-400 mt-6 font-medium z-10">
-          Designed By <strong className="text-white">Shahid Khan</strong> from <strong className="text-[#07a9b0]">SyncHex Infosys</strong><br />
+        <p className="text-center text-xs text-slate-500 dark:text-slate-400 mt-6 font-medium z-10">
+          Designed By <strong className="text-slate-900 dark:text-white">Shahid Khan</strong> from <strong className="text-[#07a9b0]">SyncHex Infosys</strong><br />
           <a href="mailto:contect.synchex@gmail.com" className="text-[#82d8a5] hover:underline text-[11px]">contect.synchex@gmail.com</a>
         </p>
       </motion.div>

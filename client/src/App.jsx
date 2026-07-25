@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ThemeProvider } from './context/ThemeContext';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -93,12 +94,14 @@ const AnimatedRoutes = () => {
   );
 };
 
-function App() {
+const App = () => {
   return (
-    <Router>
-      <AnimatedRoutes />
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <AnimatedRoutes />
+      </Router>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;

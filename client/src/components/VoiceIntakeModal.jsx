@@ -67,20 +67,20 @@ const VoiceIntakeModal = ({ isOpen, onClose, onSymptomsExtracted }) => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col"
+          className="bg-slate-50 dark:bg-slate-900 border border-slate-300/80 dark:border-slate-700/80 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col"
         >
           {/* Header */}
-          <div className="flex justify-between items-center p-5 border-b border-slate-800 bg-slate-900/60">
+          <div className="flex justify-between items-center p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/60">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-teal-500/10 text-teal-400 rounded-xl border border-teal-500/20">
                 <Mic className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">AI Voice Symptom Dictation</h3>
-                <p className="text-xs text-slate-400">Speak symptoms in Gujarati or Hindi for instant AI extraction</p>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white">AI Voice Symptom Dictation</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Speak symptoms in Gujarati or Hindi for instant AI extraction</p>
               </div>
             </div>
-            <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors">
+            <button onClick={onClose} className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white rounded-lg hover:bg-white dark:bg-slate-800 transition-colors">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -91,7 +91,7 @@ const VoiceIntakeModal = ({ isOpen, onClose, onSymptomsExtracted }) => {
               <button
                 onClick={() => setLanguage('gu-IN')}
                 className={`px-3 py-1 rounded-full text-xs font-bold transition-all border ${
-                  language === 'gu-IN' ? 'bg-teal-500 text-slate-950 border-teal-400' : 'bg-slate-950 text-slate-400 border-slate-800'
+                  language === 'gu-IN' ? 'bg-teal-500 text-slate-950 border-teal-400' : 'bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'
                 }`}
               >
                 ગુજરાતી (Gujarati)
@@ -99,7 +99,7 @@ const VoiceIntakeModal = ({ isOpen, onClose, onSymptomsExtracted }) => {
               <button
                 onClick={() => setLanguage('hi-IN')}
                 className={`px-3 py-1 rounded-full text-xs font-bold transition-all border ${
-                  language === 'hi-IN' ? 'bg-teal-500 text-slate-950 border-teal-400' : 'bg-slate-950 text-slate-400 border-slate-800'
+                  language === 'hi-IN' ? 'bg-teal-500 text-slate-950 border-teal-400' : 'bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'
                 }`}
               >
                 हिन्दी (Hindi)
@@ -115,8 +115,8 @@ const VoiceIntakeModal = ({ isOpen, onClose, onSymptomsExtracted }) => {
                 onClick={handleToggleListen}
                 className={`w-24 h-24 rounded-full flex flex-col items-center justify-center gap-1 transition-all shadow-xl mx-auto border-2 ${
                   isListening 
-                    ? 'bg-red-500 text-white border-red-400 scale-105' 
-                    : 'bg-gradient-to-br from-teal-500 to-indigo-600 text-white border-teal-300 hover:scale-105'
+                    ? 'bg-red-500 text-slate-900 dark:text-white border-red-400 scale-105' 
+                    : 'bg-gradient-to-br from-teal-500 to-indigo-600 text-slate-900 dark:text-white border-teal-300 hover:scale-105'
                 }`}
               >
                 {isListening ? <MicOff className="w-8 h-8" /> : <Mic className="w-8 h-8" />}
@@ -126,13 +126,13 @@ const VoiceIntakeModal = ({ isOpen, onClose, onSymptomsExtracted }) => {
               </button>
             </div>
 
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               {isListening ? ' Listening in real-time... Speak your symptoms clearly.' : 'Tap mic to start voice recording'}
             </p>
 
             {/* Realtime Live Transcript */}
             {transcript && (
-              <div className="p-4 bg-slate-950 border border-slate-800 rounded-xl text-left">
+              <div className="p-4 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-left">
                 <span className="text-[10px] text-slate-500 uppercase font-mono block mb-1">Live Voice Speech:</span>
                 <p className="text-xs text-teal-300 italic font-medium">"{transcript}"</p>
               </div>
@@ -151,7 +151,7 @@ const VoiceIntakeModal = ({ isOpen, onClose, onSymptomsExtracted }) => {
                 </div>
                 <div className="flex flex-wrap gap-1.5">
                   {analyzedData.extractedSymptoms.map((sym, i) => (
-                    <span key={i} className="text-xs bg-slate-900 text-slate-200 px-2.5 py-1 rounded-lg border border-slate-700">
+                    <span key={i} className="text-xs bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-200 px-2.5 py-1 rounded-lg border border-slate-300 dark:border-slate-700">
                       {sym}
                     </span>
                   ))}
@@ -160,8 +160,8 @@ const VoiceIntakeModal = ({ isOpen, onClose, onSymptomsExtracted }) => {
             )}
           </div>
 
-          <div className="p-4 border-t border-slate-800 bg-slate-900/80 flex justify-end gap-2">
-            <button onClick={onClose} className="px-4 py-2 rounded-xl text-xs text-slate-400 hover:bg-slate-800">
+          <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80 flex justify-end gap-2">
+            <button onClick={onClose} className="px-4 py-2 rounded-xl text-xs text-slate-500 dark:text-slate-400 hover:bg-white dark:bg-slate-800">
               Close
             </button>
           </div>

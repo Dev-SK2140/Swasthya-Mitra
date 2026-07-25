@@ -9,7 +9,13 @@
 
 @layer base {
   body {
-    @apply text-slate-50 antialiased min-h-screen flex flex-col;
+    @apply text-slate-900 antialiased min-h-screen flex flex-col transition-colors;
+    background-color: #f8fafc;
+    background-image: none;
+  }
+  
+  .dark body {
+    @apply text-slate-50;
     background-color: #1b2532;
     background-image: 
       radial-gradient(circle at 15% 50%, rgba(7, 169, 176, 0.15), transparent 30%),
@@ -21,7 +27,11 @@
 
 @layer components {
   .glass-panel {
-    @apply backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-xl;
+    @apply backdrop-blur-md border border-slate-200 rounded-2xl p-6 shadow-xl bg-white/70;
+  }
+  
+  .dark .glass-panel {
+    @apply border-white/10;
     background-color: rgba(30, 41, 59, 0.5); /* slightly transparent slate-800 */
   }
 }

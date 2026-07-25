@@ -8,13 +8,29 @@ const AshaSurveyModal = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => {
-      setSubmitted(false);
-      onClose();
-    }, 1500);
+    
+    // Gather data from form (simplified for this demo)
+    const households = e.target.elements[1].value;
+    const pregnantWomen = e.target.elements[2].value;
+
+    try {
+      await fetch(`${API_URL}/features/asha-survey`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ district, households, pregnantWomen })
+      });
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        onClose();
+      }, 1500);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
@@ -24,20 +40,20 @@ const AshaSurveyModal = ({ isOpen, onClose }) => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col"
+          className="bg-slate-50 dark:bg-slate-900 border border-slate-300/80 dark:border-slate-700/80 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col"
         >
           {/* Header */}
-          <div className="flex justify-between items-center p-5 border-b border-slate-800 bg-slate-900/60">
+          <div className="flex justify-between items-center p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/60">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-amber-500/10 text-amber-400 rounded-xl border border-amber-500/20">
                 <MapPin className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">ASHA Worker Rural Health Survey</h3>
-                <p className="text-xs text-slate-400">Field Visits & Disease Outbreak Monitoring (Gujarat PHC Hub)</p>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white">ASHA Worker Rural Health Survey</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Field Visits & Disease Outbreak Monitoring (Gujarat PHC Hub)</p>
               </div>
             </div>
-            <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors">
+            <button onClick={onClose} className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white rounded-lg hover:bg-white dark:bg-slate-800 transition-colors">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -45,11 +61,11 @@ const AshaSurveyModal = ({ isOpen, onClose }) => {
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
             {/* District Selection */}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Select Health Sub-Center / District</label>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Select Health Sub-Center / District</label>
               <select
                 value={district}
                 onChange={(e) => setDistrict(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-[var(--color-primary)]"
+                className="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-[var(--color-primary)]"
               >
                 <option value="Rajkot Rural">Rajkot PHC Unit #4</option>
                 <option value="Ahmedabad Rural">Ahmedabad Sanand Health Sub-Center</option>
@@ -68,18 +84,18 @@ const AshaSurveyModal = ({ isOpen, onClose }) => {
                   Dengue & Malaria Season
                 </span>
               </div>
-              <p className="text-xs text-slate-300">
+              <p className="text-xs text-slate-600 dark:text-slate-300">
                 12 household fever cases reported in Sub-Center this week. Vector control fogging initiated.
               </p>
             </div>
 
             {/* Survey Form Inputs */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl">
+              <div className="p-3 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
                 <span className="text-[10px] text-slate-500 uppercase font-mono block">Households Surveyed</span>
-                <input type="number" defaultValue={28} className="w-full bg-transparent text-lg font-bold text-white focus:outline-none mt-1" />
+                <input type="number" defaultValue={28} className="w-full bg-transparent text-lg font-bold text-slate-900 dark:text-white focus:outline-none mt-1" />
               </div>
-              <div className="p-3 bg-slate-950 border border-slate-800 rounded-xl">
+              <div className="p-3 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
                 <span className="text-[10px] text-slate-500 uppercase font-mono block">Pregnant Women Logged</span>
                 <input type="number" defaultValue={6} className="w-full bg-transparent text-lg font-bold text-emerald-400 focus:outline-none mt-1" />
               </div>
@@ -92,7 +108,7 @@ const AshaSurveyModal = ({ isOpen, onClose }) => {
             )}
 
             <div className="pt-2 flex justify-end gap-2">
-              <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-xs text-slate-400 hover:bg-slate-800">
+              <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-xs text-slate-500 dark:text-slate-400 hover:bg-white dark:bg-slate-800">
                 Cancel
               </button>
               <button

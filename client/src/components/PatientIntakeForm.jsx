@@ -93,18 +93,18 @@ const PatientIntakeForm = ({ onPatientAdded }) => {
       <h2 className="text-2xl font-semibold mb-6">{t('intake.title')}</h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-slate-300 text-sm mb-2">{t('intake.name')}</label>
-          <input required type="text" name="name" value={formData.name} onChange={handleChange} className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-white" />
+          <label className="block text-slate-600 dark:text-slate-300 text-sm mb-2">{t('intake.name')}</label>
+          <input required type="text" name="name" value={formData.name} onChange={handleChange} className="w-full bg-white/60 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-slate-900 dark:text-white" />
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-slate-300 text-sm mb-2">{t('intake.age')}</label>
-            <input required type="number" name="age" value={formData.age} onChange={handleChange} className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-white" />
+            <label className="block text-slate-600 dark:text-slate-300 text-sm mb-2">{t('intake.age')}</label>
+            <input required type="number" name="age" value={formData.age} onChange={handleChange} className="w-full bg-white/60 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-slate-900 dark:text-white" />
           </div>
           <div>
-            <label className="block text-slate-300 text-sm mb-2">{t('intake.gender')}</label>
-            <select name="gender" value={formData.gender} onChange={handleChange} className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-white">
+            <label className="block text-slate-600 dark:text-slate-300 text-sm mb-2">{t('intake.gender')}</label>
+            <select name="gender" value={formData.gender} onChange={handleChange} className="w-full bg-white/60 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-slate-900 dark:text-white">
               <option value="Male">{t('intake.male')}</option>
               <option value="Female">{t('intake.female')}</option>
               <option value="Other">{t('intake.other')}</option>
@@ -112,46 +112,46 @@ const PatientIntakeForm = ({ onPatientAdded }) => {
           </div>
         </div>
 
-        <h3 className="text-xl font-medium text-slate-200 pt-4 border-t border-slate-700">{t('intake.vitals')}</h3>
+        <h3 className="text-xl font-medium text-slate-700 dark:text-slate-200 pt-4 border-t border-slate-300 dark:border-slate-700">{t('intake.vitals')}</h3>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-slate-300 text-sm mb-2">{t('intake.hr')}</label>
-            <input required type="number" name="heartRate" value={formData.heartRate} onChange={handleChange} className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-white" />
+            <label className="block text-slate-600 dark:text-slate-300 text-sm mb-2">{t('intake.hr')}</label>
+            <input required type="number" name="heartRate" value={formData.heartRate} onChange={handleChange} className="w-full bg-white/60 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-slate-900 dark:text-white" />
           </div>
           <div>
-            <label className="block text-slate-300 text-sm mb-2">{t('intake.spo2')}</label>
-            <input required type="number" name="spO2" value={formData.spO2} onChange={handleChange} className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-white" />
+            <label className="block text-slate-600 dark:text-slate-300 text-sm mb-2">{t('intake.spo2')}</label>
+            <input required type="number" name="spO2" value={formData.spO2} onChange={handleChange} className="w-full bg-white/60 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-slate-900 dark:text-white" />
           </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-slate-300 text-sm mb-2">{t('intake.sys')}</label>
-            <input required type="number" name="bloodPressureSys" value={formData.bloodPressureSys} onChange={handleChange} className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-white" />
+            <label className="block text-slate-600 dark:text-slate-300 text-sm mb-2">{t('intake.sys')}</label>
+            <input required type="number" name="bloodPressureSys" value={formData.bloodPressureSys} onChange={handleChange} className="w-full bg-white/60 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-slate-900 dark:text-white" />
           </div>
           <div>
-            <label className="block text-slate-300 text-sm mb-2">{t('intake.dia')}</label>
-            <input required type="number" name="bloodPressureDia" value={formData.bloodPressureDia} onChange={handleChange} className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-white" />
+            <label className="block text-slate-600 dark:text-slate-300 text-sm mb-2">{t('intake.dia')}</label>
+            <input required type="number" name="bloodPressureDia" value={formData.bloodPressureDia} onChange={handleChange} className="w-full bg-white/60 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-slate-900 dark:text-white" />
           </div>
         </div>
 
         <div>
           <div className="flex justify-between items-center mb-2">
-            <label className="block text-slate-300 text-sm">{t('intake.symptoms')}</label>
+            <label className="block text-slate-600 dark:text-slate-300 text-sm">{t('intake.symptoms')}</label>
             <button 
               type="button" 
               onClick={startListening}
-              className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${isListening ? 'bg-rose-500/20 text-rose-400' : 'bg-slate-800 border border-slate-700 text-slate-400 hover:text-white'}`}
+              className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${isListening ? 'bg-rose-500/20 text-rose-400' : 'bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white'}`}
             >
               <Mic className={`w-3 h-3 ${isListening ? 'animate-pulse' : ''}`} />
               {isListening ? 'Listening...' : 'Dictate'}
             </button>
           </div>
-          <textarea rows="3" name="symptoms" value={formData.symptoms} onChange={handleChange} className="w-full bg-slate-800/60 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-white"></textarea>
+          <textarea rows="3" name="symptoms" value={formData.symptoms} onChange={handleChange} className="w-full bg-white/60 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-slate-900 dark:text-white"></textarea>
         </div>
 
-        <button type="submit" disabled={loading} className="w-full bg-[var(--color-primary)] hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+        <button type="submit" disabled={loading} className="w-full bg-[var(--color-primary)] hover:bg-indigo-700 text-slate-900 dark:text-white font-medium py-3 px-4 rounded-lg transition-colors">
           {loading ? 'Processing...' : t('intake.submit')}
         </button>
       </form>

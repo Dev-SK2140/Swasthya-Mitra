@@ -28,6 +28,10 @@ app.use('/api/auth', authRoutes);
 const aiRoutes = require('./routes/aiRoutes');
 app.use('/api/ai', aiRoutes);
 
+// Feature routes
+const featureRoutes = require('./routes/featureRoutes');
+app.use('/api/features', featureRoutes);
+
 // Serve static frontend in production / single-service deployment
 const clientDistPath = path.join(__dirname, '../client/dist');
 app.use(express.static(clientDistPath));

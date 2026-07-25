@@ -154,15 +154,15 @@ const AITriageFlow = ({ onPatientAdded }) => {
   return (
     <div className="glass-panel overflow-hidden flex flex-col h-[650px]">
       {/* Progress Header */}
-      <div className="flex items-center justify-between p-4 border-b border-slate-700 bg-slate-800/50">
+      <div className="flex items-center justify-between p-4 border-b border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-800/50">
         <h2 className="text-xl font-bold flex items-center gap-2">
           <Bot className="text-[var(--color-primary)]" />
           AI Triage Assistant
         </h2>
         <div className="flex gap-2">
-          <span className={`px-3 py-1 rounded-full text-xs font-medium ${stage === 'chat' ? 'bg-[var(--color-primary)] text-white' : 'bg-slate-700 text-slate-300'}`}>1. Symptoms</span>
-          <span className={`px-3 py-1 rounded-full text-xs font-medium ${stage === 'vitals' ? 'bg-amber-500 text-white' : 'bg-slate-700 text-slate-300'}`}>2. Vitals</span>
-          <span className={`px-3 py-1 rounded-full text-xs font-medium ${stage === 'complete' ? 'bg-emerald-500 text-white' : 'bg-slate-700 text-slate-300'}`}>3. AI Report</span>
+          <span className={`px-3 py-1 rounded-full text-xs font-medium ${stage === 'chat' ? 'bg-[var(--color-primary)] text-slate-900 dark:text-white' : 'bg-slate-700 text-slate-600 dark:text-slate-300'}`}>1. Symptoms</span>
+          <span className={`px-3 py-1 rounded-full text-xs font-medium ${stage === 'vitals' ? 'bg-amber-500 text-slate-900 dark:text-white' : 'bg-slate-700 text-slate-600 dark:text-slate-300'}`}>2. Vitals</span>
+          <span className={`px-3 py-1 rounded-full text-xs font-medium ${stage === 'complete' ? 'bg-emerald-500 text-slate-900 dark:text-white' : 'bg-slate-700 text-slate-600 dark:text-slate-300'}`}>3. AI Report</span>
         </div>
       </div>
 
@@ -170,24 +170,24 @@ const AITriageFlow = ({ onPatientAdded }) => {
       {stage === 'chat' && (
         <div className="flex-1 flex flex-col p-4 overflow-hidden">
           <div className="flex justify-between items-center mb-4">
-            <p className="text-sm text-slate-400">Ask the patient about their symptoms. The AI will prompt for necessary details.</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">Ask the patient about their symptoms. The AI will prompt for necessary details.</p>
             <div className="flex gap-2">
-              <input type="text" placeholder="Patient Name" value={patientData.name} onChange={e => setPatientData({...patientData, name: e.target.value})} className="bg-slate-800 border border-slate-700 rounded px-2 py-1 text-sm text-white" />
-              <input type="number" placeholder="Age" value={patientData.age} onChange={e => setPatientData({...patientData, age: e.target.value})} className="bg-slate-800 border border-slate-700 rounded px-2 py-1 text-sm text-white w-20" />
+              <input type="text" placeholder="Patient Name" value={patientData.name} onChange={e => setPatientData({...patientData, name: e.target.value})} className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded px-2 py-1 text-sm text-slate-900 dark:text-white" />
+              <input type="number" placeholder="Age" value={patientData.age} onChange={e => setPatientData({...patientData, age: e.target.value})} className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded px-2 py-1 text-sm text-slate-900 dark:text-white w-20" />
             </div>
           </div>
           
-          <div className="flex-1 overflow-y-auto bg-slate-900/50 rounded-xl p-4 mb-4 border border-slate-700/50 space-y-4">
+          <div className="flex-1 overflow-y-auto bg-slate-50/50 dark:bg-slate-900/50 rounded-xl p-4 mb-4 border border-slate-300/50 dark:border-slate-700/50 space-y-4">
             {messages.map((msg, idx) => (
               <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[80%] rounded-2xl p-3 text-sm ${msg.role === 'user' ? 'bg-[var(--color-primary)] text-white rounded-br-sm' : 'bg-slate-800 border border-slate-700 text-slate-200 rounded-bl-sm'}`}>
+                <div className={`max-w-[80%] rounded-2xl p-3 text-sm ${msg.role === 'user' ? 'bg-[var(--color-primary)] text-slate-900 dark:text-white rounded-br-sm' : 'bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-bl-sm'}`}>
                   {msg.content}
                 </div>
               </div>
             ))}
             {chatLoading && (
               <div className="flex justify-start">
-                <div className="bg-slate-800 border border-slate-700 rounded-2xl rounded-bl-sm p-3 text-slate-400 text-sm animate-pulse">
+                <div className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-2xl rounded-bl-sm p-3 text-slate-500 dark:text-slate-400 text-sm animate-pulse">
                   AI is thinking...
                 </div>
               </div>
@@ -196,11 +196,11 @@ const AITriageFlow = ({ onPatientAdded }) => {
           </div>
 
           <form onSubmit={handleSendMessage} className="flex gap-2">
-            <button type="button" onClick={startListening} className={`p-3 rounded-xl transition-colors ${isListening ? 'bg-rose-500 text-white animate-pulse' : 'bg-slate-800 text-slate-400 hover:text-white'}`}>
+            <button type="button" onClick={startListening} className={`p-3 rounded-xl transition-colors ${isListening ? 'bg-rose-500 text-slate-900 dark:text-white animate-pulse' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white'}`}>
               <Mic className="w-5 h-5" />
             </button>
-            <input type="text" value={input} onChange={e => setInput(e.target.value)} placeholder="Type patient response..." className="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-4 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
-            <button type="submit" disabled={!input.trim() || chatLoading} className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-50 text-white p-3 rounded-xl">
+            <input type="text" value={input} onChange={e => setInput(e.target.value)} placeholder="Type patient response..." className="flex-1 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-4 text-slate-900 dark:text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
+            <button type="submit" disabled={!input.trim() || chatLoading} className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-50 text-slate-900 dark:text-white p-3 rounded-xl">
               <Send className="w-5 h-5" />
             </button>
           </form>
@@ -222,23 +222,23 @@ const AITriageFlow = ({ onPatientAdded }) => {
           <form onSubmit={handleVitalsSubmit} className="space-y-6">
             <div className="grid grid-cols-2 gap-6">
               <div>
-                <label className="block text-slate-300 text-sm mb-2">Heart Rate (BPM)</label>
-                <input required type="number" value={vitals.heartRate} onChange={e => setVitals({...vitals, heartRate: e.target.value})} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-white" />
+                <label className="block text-slate-600 dark:text-slate-300 text-sm mb-2">Heart Rate (BPM)</label>
+                <input required type="number" value={vitals.heartRate} onChange={e => setVitals({...vitals, heartRate: e.target.value})} className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-slate-900 dark:text-white" />
               </div>
               <div>
-                <label className="block text-slate-300 text-sm mb-2">SpO2 (%)</label>
-                <input required type="number" value={vitals.spO2} onChange={e => setVitals({...vitals, spO2: e.target.value})} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-white" />
+                <label className="block text-slate-600 dark:text-slate-300 text-sm mb-2">SpO2 (%)</label>
+                <input required type="number" value={vitals.spO2} onChange={e => setVitals({...vitals, spO2: e.target.value})} className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-slate-900 dark:text-white" />
               </div>
               <div>
-                <label className="block text-slate-300 text-sm mb-2">Systolic BP (mmHg)</label>
-                <input required type="number" value={vitals.bloodPressureSys} onChange={e => setVitals({...vitals, bloodPressureSys: e.target.value})} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-white" />
+                <label className="block text-slate-600 dark:text-slate-300 text-sm mb-2">Systolic BP (mmHg)</label>
+                <input required type="number" value={vitals.bloodPressureSys} onChange={e => setVitals({...vitals, bloodPressureSys: e.target.value})} className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-slate-900 dark:text-white" />
               </div>
               <div>
-                <label className="block text-slate-300 text-sm mb-2">Diastolic BP (mmHg)</label>
-                <input required type="number" value={vitals.bloodPressureDia} onChange={e => setVitals({...vitals, bloodPressureDia: e.target.value})} className="w-full bg-slate-800 border border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-white" />
+                <label className="block text-slate-600 dark:text-slate-300 text-sm mb-2">Diastolic BP (mmHg)</label>
+                <input required type="number" value={vitals.bloodPressureDia} onChange={e => setVitals({...vitals, bloodPressureDia: e.target.value})} className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-slate-900 dark:text-white" />
               </div>
             </div>
-            <button type="submit" className="w-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] text-white font-medium py-3 px-4 rounded-lg shadow-lg hover:shadow-indigo-500/25 transition-all">
+            <button type="submit" className="w-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-hover)] text-slate-900 dark:text-white font-medium py-3 px-4 rounded-lg shadow-lg hover:shadow-indigo-500/25 transition-all">
               Run AI Risk Analysis
             </button>
           </form>
@@ -249,8 +249,8 @@ const AITriageFlow = ({ onPatientAdded }) => {
       {stage === 'analyzing' && (
         <div className="flex-1 flex flex-col items-center justify-center p-6 space-y-4">
           <div className="w-16 h-16 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
-          <h3 className="text-xl font-semibold text-white">AI is analyzing clinical data...</h3>
-          <p className="text-slate-400 text-center max-w-md">Combining reported symptoms with non-invasive vitals to predict risk levels and generate clinical summaries.</p>
+          <h3 className="text-xl font-semibold text-slate-900 dark:text-white">AI is analyzing clinical data...</h3>
+          <p className="text-slate-500 dark:text-slate-400 text-center max-w-md">Combining reported symptoms with non-invasive vitals to predict risk levels and generate clinical summaries.</p>
         </div>
       )}
 
@@ -272,30 +272,30 @@ const AITriageFlow = ({ onPatientAdded }) => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-slate-800 rounded-xl p-4">
-              <h4 className="text-slate-400 text-sm mb-2">Extracted Symptoms</h4>
-              <ul className="list-disc list-inside text-white text-sm">
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-4">
+              <h4 className="text-slate-500 dark:text-slate-400 text-sm mb-2">Extracted Symptoms</h4>
+              <ul className="list-disc list-inside text-slate-900 dark:text-white text-sm">
                 {(aiResult.symptoms || []).map((s, i) => <li key={i}>{s}</li>)}
               </ul>
             </div>
-            <div className="bg-slate-800 rounded-xl p-4">
-              <h4 className="text-slate-400 text-sm mb-2">Possible Risks</h4>
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-4">
+              <h4 className="text-slate-500 dark:text-slate-400 text-sm mb-2">Possible Risks</h4>
               <ul className="list-disc list-inside text-rose-400 text-sm">
                 {(aiResult.possible_risks || []).map((s, i) => <li key={i}>{s}</li>)}
               </ul>
             </div>
           </div>
 
-          <div className="bg-slate-800 rounded-xl p-4 border-l-4 border-indigo-500">
-            <h4 className="text-slate-400 text-sm mb-1">Doctor Summary</h4>
-            <p className="text-white text-sm">{aiResult.doctor_summary}</p>
+          <div className="bg-white dark:bg-slate-800 rounded-xl p-4 border-l-4 border-indigo-500">
+            <h4 className="text-slate-500 dark:text-slate-400 text-sm mb-1">Doctor Summary</h4>
+            <p className="text-slate-900 dark:text-white text-sm">{aiResult.doctor_summary}</p>
           </div>
 
           <div className="flex gap-4">
-            <button onClick={resetFlow} className="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+            <button onClick={resetFlow} className="flex-1 bg-slate-700 hover:bg-slate-600 text-slate-900 dark:text-white font-medium py-3 px-4 rounded-lg transition-colors">
               Start New Triage
             </button>
-            <button onClick={() => window.location.href='/app/doctor'} className="flex-1 bg-[var(--color-primary)] hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+            <button onClick={() => window.location.href='/app/doctor'} className="flex-1 bg-[var(--color-primary)] hover:bg-indigo-700 text-slate-900 dark:text-white font-medium py-3 px-4 rounded-lg transition-colors">
               Go to Dashboard
             </button>
           </div>

@@ -99,7 +99,7 @@ const RegisterPage = () => {
 
 
   return (
-    <div className="min-h-screen bg-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
       <div className="absolute top-4 right-4"><LanguageSelector /></div>
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#07a9b0]/20 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#82d8a5]/20 rounded-full blur-[120px] pointer-events-none"></div>
@@ -119,7 +119,7 @@ const RegisterPage = () => {
         transition={{ delay: 0.1 }}
         className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10"
       >
-        <div className="bg-slate-800/60 backdrop-blur-xl py-8 px-4 shadow-[0_8px_30px_rgb(0,0,0,0.5)] sm:rounded-2xl sm:px-10 border border-white/10">
+        <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl py-8 px-4 shadow-[0_8px_30px_rgb(0,0,0,0.5)] sm:rounded-2xl sm:px-10 border border-slate-200 dark:border-white/10">
 
           {error && (
             <div className="bg-red-500/10 border border-red-500/50 text-red-400 p-3 rounded-lg mb-6 text-sm text-center">
@@ -130,61 +130,61 @@ const RegisterPage = () => {
           {step === 1 ? (
             <form className="space-y-6" onSubmit={handleSendOTP}>
               <div>
-                <label className="block text-sm font-medium text-slate-300">Full Name</label>
-                <input required type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
+                <label className="block text-sm font-medium text-slate-600 dark:text-slate-300">Full Name</label>
+                <input required type="text" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} className="mt-1 block w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50/50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-300">Email address</label>
-                <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
+                <label className="block text-sm font-medium text-slate-600 dark:text-slate-300">Email address</label>
+                <input required type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} className="mt-1 block w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50/50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-300">Role</label>
-                <select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className="mt-1 block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]">
+                <label className="block text-sm font-medium text-slate-600 dark:text-slate-300">Role</label>
+                <select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })} className="mt-1 block w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50/50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-[var(--color-primary)]">
                   <option value="Doctor">Doctor</option>
                   <option value="Nurse">Nurse</option>
                   <option value="Receptionist">Receptionist</option>
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-300">Password</label>
+                <label className="block text-sm font-medium text-slate-600 dark:text-slate-300">Password</label>
                 <div className="relative mt-1">
-                  <input required type={showPassword ? "text" : "password"} value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} className="block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)] pr-12" />
-                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-white">
+                  <input required type={showPassword ? "text" : "password"} value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })} className="block w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50/50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-[var(--color-primary)] pr-12" />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white">
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-300">Confirm Password</label>
+                <label className="block text-sm font-medium text-slate-600 dark:text-slate-300">Confirm Password</label>
                 <div className="relative mt-1">
-                  <input required type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="block w-full px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)] pr-12" />
-                  <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-white">
+                  <input required type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} className="block w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50/50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-[var(--color-primary)] pr-12" />
+                  <button type="button" onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white">
                     {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
               </div>
-              <button type="submit" disabled={loading} className="w-full py-3 px-4 rounded-lg text-sm font-bold text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-50">
+              <button type="submit" disabled={loading} className="w-full py-3 px-4 rounded-lg text-sm font-bold text-slate-900 dark:text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-50">
                 {loading ? 'Sending OTP...' : 'Send OTP'}
               </button>
             </form>
           ) : (
             <form className="space-y-6" onSubmit={handleRegister}>
-              <div className="text-center mb-4 text-slate-300 text-xs leading-relaxed">
-                📬 We sent a 6-digit OTP code to <span className="font-bold text-white">{formData.email}</span>.<br />
-                <span className="text-slate-400 text-[11px]">(Please check your Email Inbox & Spam folder)</span>
+              <div className="text-center mb-4 text-slate-600 dark:text-slate-300 text-xs leading-relaxed">
+                📬 We sent a 6-digit OTP code to <span className="font-bold text-slate-900 dark:text-white">{formData.email}</span>.<br />
+                <span className="text-slate-500 dark:text-slate-400 text-[11px]">(Please check your Email Inbox & Spam folder)</span>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 text-center mb-1">Enter 6-Digit OTP</label>
-                <input required type="text" maxLength={6} value={otp} onChange={e => setOtp(e.target.value)} className="block w-full text-center tracking-widest text-2xl font-bold px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
+                <label className="block text-sm font-medium text-slate-600 dark:text-slate-300 text-center mb-1">Enter 6-Digit OTP</label>
+                <input required type="text" maxLength={6} value={otp} onChange={e => setOtp(e.target.value)} className="block w-full text-center tracking-widest text-2xl font-bold px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50/50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
               </div>
-              <button type="submit" disabled={loading || otp.length !== 6} className="w-full py-3 px-4 rounded-lg text-sm font-bold text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-50">
+              <button type="submit" disabled={loading || otp.length !== 6} className="w-full py-3 px-4 rounded-lg text-sm font-bold text-slate-900 dark:text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-50">
                 {loading ? 'Verifying...' : 'Verify & Create Account'}
               </button>
 
               <div className="text-center mt-4">
                 {canResend ? (
-                  <button type="button" onClick={handleSendOTP} className="text-[var(--color-primary)] hover:text-white transition-colors text-sm font-medium">
+                  <button type="button" onClick={handleSendOTP} className="text-[var(--color-primary)] hover:text-slate-900 dark:text-white transition-colors text-sm font-medium">
                     Resend OTP
                   </button>
                 ) : (
@@ -194,7 +194,7 @@ const RegisterPage = () => {
             </form>
           )}
 
-          <div className="mt-6 text-center text-sm text-slate-400">
+          <div className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
             Already have an account? <Link to="/login" className="font-medium text-[var(--color-primary)] hover:text-[var(--color-secondary)]">Sign in</Link>
           </div>
 

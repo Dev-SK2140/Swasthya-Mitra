@@ -41,19 +41,19 @@ const SMSAlertModal = ({ isOpen, onClose, patient }) => {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl"
+          className="bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl"
         >
-          <div className="flex justify-between items-center p-5 border-b border-slate-800 bg-slate-900/60">
+          <div className="flex justify-between items-center p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/60">
             <div className="flex items-center gap-3">
               <div className="p-2 bg-emerald-500/10 text-emerald-400 rounded-xl border border-emerald-500/20">
                 <MessageSquare className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">WhatsApp & SMS Alert</h3>
-                <p className="text-xs text-slate-400">Patient: <span className="text-white font-medium">{patient.name}</span></p>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white">WhatsApp & SMS Alert</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Patient: <span className="text-slate-900 dark:text-white font-medium">{patient.name}</span></p>
               </div>
             </div>
-            <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors">
+            <button onClick={onClose} className="p-1.5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white rounded-lg hover:bg-white dark:bg-slate-800 transition-colors">
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -61,23 +61,23 @@ const SMSAlertModal = ({ isOpen, onClose, patient }) => {
           <div className="p-5 space-y-4">
             {/* Language Selection */}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Select Language</label>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Select Language</label>
               <div className="grid grid-cols-3 gap-2">
                 <button 
                   onClick={() => setLanguage('gu')} 
-                  className={`py-1.5 rounded-lg text-xs font-bold transition-all border ${language === 'gu' ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]' : 'bg-slate-950 text-slate-400 border-slate-800'}`}
+                  className={`py-1.5 rounded-lg text-xs font-bold transition-all border ${language === 'gu' ? 'bg-[var(--color-primary)] text-slate-900 dark:text-white border-[var(--color-primary)]' : 'bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'}`}
                 >
                   ગુજરાતી (Gujarati)
                 </button>
                 <button 
                   onClick={() => setLanguage('hi')} 
-                  className={`py-1.5 rounded-lg text-xs font-bold transition-all border ${language === 'hi' ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]' : 'bg-slate-950 text-slate-400 border-slate-800'}`}
+                  className={`py-1.5 rounded-lg text-xs font-bold transition-all border ${language === 'hi' ? 'bg-[var(--color-primary)] text-slate-900 dark:text-white border-[var(--color-primary)]' : 'bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'}`}
                 >
                   हिन्दी (Hindi)
                 </button>
                 <button 
                   onClick={() => setLanguage('en')} 
-                  className={`py-1.5 rounded-lg text-xs font-bold transition-all border ${language === 'en' ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]' : 'bg-slate-950 text-slate-400 border-slate-800'}`}
+                  className={`py-1.5 rounded-lg text-xs font-bold transition-all border ${language === 'en' ? 'bg-[var(--color-primary)] text-slate-900 dark:text-white border-[var(--color-primary)]' : 'bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'}`}
                 >
                   English
                 </button>
@@ -86,17 +86,17 @@ const SMSAlertModal = ({ isOpen, onClose, patient }) => {
 
             {/* Template Selection */}
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Message Template</label>
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">Message Template</label>
               <div className="flex gap-2">
                 <button 
                   onClick={() => setMsgType('followup')}
-                  className={`flex-1 py-1.5 rounded-lg text-xs font-medium border ${msgType === 'followup' ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40' : 'bg-slate-950 text-slate-400 border-slate-800'}`}
+                  className={`flex-1 py-1.5 rounded-lg text-xs font-medium border ${msgType === 'followup' ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40' : 'bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'}`}
                 >
                   Follow-up Reminder
                 </button>
                 <button 
                   onClick={() => setMsgType('prescription')}
-                  className={`flex-1 py-1.5 rounded-lg text-xs font-medium border ${msgType === 'prescription' ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40' : 'bg-slate-950 text-slate-400 border-slate-800'}`}
+                  className={`flex-1 py-1.5 rounded-lg text-xs font-medium border ${msgType === 'prescription' ? 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40' : 'bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'}`}
                 >
                   Rx Pickup Ready
                 </button>
@@ -104,7 +104,7 @@ const SMSAlertModal = ({ isOpen, onClose, patient }) => {
             </div>
 
             {/* Message Preview */}
-            <div className="p-3.5 bg-slate-950 border border-slate-800 rounded-xl">
+            <div className="p-3.5 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl">
               <span className="text-[10px] text-slate-500 block mb-1 font-mono uppercase">Message Preview</span>
               <p className="text-xs text-emerald-300 leading-relaxed font-sans">{currentMsg}</p>
             </div>
@@ -116,14 +116,14 @@ const SMSAlertModal = ({ isOpen, onClose, patient }) => {
             )}
           </div>
 
-          <div className="p-4 border-t border-slate-800 bg-slate-900/80 flex justify-end gap-2">
-            <button onClick={onClose} className="px-4 py-2 rounded-xl text-xs text-slate-400 hover:bg-slate-800">
+          <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80 flex justify-end gap-2">
+            <button onClick={onClose} className="px-4 py-2 rounded-xl text-xs text-slate-500 dark:text-slate-400 hover:bg-white dark:bg-slate-800">
               Cancel
             </button>
             <button 
               disabled={sent}
               onClick={handleSend}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2 rounded-xl text-xs transition-all shadow-lg flex items-center gap-1.5"
+              className="bg-emerald-600 hover:bg-emerald-500 text-slate-900 dark:text-white font-bold px-5 py-2 rounded-xl text-xs transition-all shadow-lg flex items-center gap-1.5"
             >
               <Send className="w-3.5 h-3.5" /> Send Notice
             </button>

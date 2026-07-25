@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Menu, X, Activity, User, TestTube, Pill, Users, Building, ChevronDown, Video, WifiOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AIAssistant from './AIAssistant';
+import ThemeToggle from './ThemeToggle';
 import logoImg from '../assets/logo.png';
 
 const ALL_ROLES = ['Doctor', 'Nurse', 'Lab', 'Pharmacy', 'Receptionist', 'Admin', 'Patient'];
@@ -44,28 +45,29 @@ const DashboardLayout = () => {
   const NavLinks = ({ mobile }) => (
     <>
       {storedUser.email && (
-        <div className={`flex items-center gap-2 bg-slate-800/90 px-3 py-1.5 rounded-full border border-white/10 text-xs ${mobile ? 'w-full mb-2 justify-center' : ''}`}>
+        <div className={`flex items-center gap-2 bg-white/90 dark:bg-slate-800/90 px-3 py-1.5 rounded-full border border-slate-200 dark:border-white/10 text-xs ${mobile ? 'w-full mb-2 justify-center' : ''}`}>
           {storedUser.picture ? (
             <img src={storedUser.picture} alt="Profile" className="w-6 h-6 rounded-full object-cover" />
           ) : (
-            <div className="w-6 h-6 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center font-bold text-xs">
+            <div className="w-6 h-6 rounded-full bg-[var(--color-primary)] text-slate-900 dark:text-white flex items-center justify-center font-bold text-xs">
               {(storedUser.name || storedUser.email)[0].toUpperCase()}
             </div>
           )}
           <div className="text-left">
-            <span className="font-semibold text-white block leading-tight text-xs">{storedUser.name || 'User'}</span>
+            <span className="font-semibold text-slate-900 dark:text-white block leading-tight text-xs">{storedUser.name || 'User'}</span>
             <span className="text-[10px] text-[var(--color-secondary)] block leading-tight">{storedUser.email}</span>
           </div>
         </div>
       )}
 
       {/* Assigned Role Badge for Strict Privacy */}
-      <div className={`flex items-center gap-1.5 bg-slate-800/90 border border-slate-700 px-3 py-1.5 rounded-full text-xs text-white ${mobile ? 'w-full mb-2 justify-center' : ''}`}>
+      <div className={`flex items-center gap-1.5 bg-white/90 dark:bg-slate-800/90 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 px-3 py-1.5 rounded-full text-xs text-slate-900 dark:text-white ${mobile ? 'w-full mb-2 justify-center' : ''}`}>
         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span className="text-slate-400 font-medium">Portal:</span>
+        <span className="text-slate-500 dark:text-slate-400 font-medium">Portal:</span>
         <span className="font-bold text-[var(--color-primary)]">{storedUser.role || 'Doctor'}</span>
       </div>
 
+      <ThemeToggle />
       <LanguageSelector />
 
       <Link to="/app/telemedicine" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition-all bg-[var(--color-secondary)]/10 border border-[var(--color-secondary)]/30 text-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/20 ${mobile ? 'w-full justify-center mt-2' : ''}`}>
@@ -110,7 +112,7 @@ const DashboardLayout = () => {
 
         {/* Mobile Hamburger Button */}
         <button 
-          className="md:hidden text-white p-2"
+          className="md:hidden text-slate-900 dark:text-white p-2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -124,7 +126,7 @@ const DashboardLayout = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden overflow-hidden bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-white/10 mb-6"
+            className="md:hidden overflow-hidden bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-white/10 mb-6"
           >
             <div className="p-4 flex flex-col gap-2">
               <NavLinks mobile={true} />
@@ -140,10 +142,10 @@ const DashboardLayout = () => {
         </div>
       </main>
 
-      <footer className="mt-8 pt-4 border-t border-slate-800/60 text-center text-xs text-slate-400 font-medium flex flex-col sm:flex-row justify-between items-center gap-2">
+      <footer className="mt-8 pt-4 border-t border-slate-800/60 text-center text-xs text-slate-500 dark:text-slate-400 font-medium flex flex-col sm:flex-row justify-between items-center gap-2">
         <span>© 2026 Swasthya Mitra AI Healthcare Platform</span>
         <span>
-          Designed & Developed by <strong className="text-white">Shahid Khan</strong> from <strong className="text-[var(--color-primary)]">SyncHex Infosys</strong> (<a href="mailto:contect.synchex@gmail.com" className="text-[var(--color-secondary)] hover:underline">contect.synchex@gmail.com</a>)
+          Designed & Developed by <strong className="text-slate-900 dark:text-white">Shahid Khan</strong> from <strong className="text-[var(--color-primary)]">SyncHex Infosys</strong> (<a href="mailto:contect.synchex@gmail.com" className="text-[var(--color-secondary)] hover:underline">contect.synchex@gmail.com</a>)
         </span>
       </footer>
 

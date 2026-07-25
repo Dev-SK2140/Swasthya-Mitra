@@ -24,10 +24,10 @@ const EmergencyAlertModal = ({ isOpen, onClose, patient }) => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          className="bg-slate-900 border-2 border-red-500 rounded-3xl w-full max-w-xl overflow-hidden shadow-[0_0_50px_rgba(239,68,68,0.4)] relative"
+          className="bg-slate-50 dark:bg-slate-900 border-2 border-red-500 rounded-3xl w-full max-w-xl overflow-hidden shadow-[0_0_50px_rgba(239,68,68,0.4)] relative"
         >
           {/* Top Red Bar */}
-          <div className="bg-red-600 text-white p-4 flex items-center justify-between animate-pulse">
+          <div className="bg-red-600 text-slate-900 dark:text-white p-4 flex items-center justify-between animate-pulse">
             <div className="flex items-center gap-2 font-bold text-lg tracking-wider uppercase">
               <Siren className="w-6 h-6 animate-spin" /> Critical Red-Alert Broadcast
             </div>
@@ -42,11 +42,11 @@ const EmergencyAlertModal = ({ isOpen, onClose, patient }) => {
             </div>
 
             <div>
-              <h3 className="text-2xl font-black text-white">{patient.name}</h3>
+              <h3 className="text-2xl font-black text-slate-900 dark:text-white">{patient.name}</h3>
               <p className="text-sm text-red-400 font-semibold mt-1">
                 Risk Classification: {patient.riskLevel || 'Emergency Case'}
               </p>
-              <div className="mt-3 inline-flex gap-4 text-xs font-bold text-slate-300 bg-slate-950 p-3 rounded-xl border border-slate-800">
+              <div className="mt-3 inline-flex gap-4 text-xs font-bold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-950 p-3 rounded-xl border border-slate-200 dark:border-slate-800">
                 <span>HR: {patient.vitals?.heartRate || 120} bpm</span>
                 <span>BP: {patient.vitals?.bloodPressureSys || 160}/{patient.vitals?.bloodPressureDia || 100}</span>
                 <span>SpO2: {patient.vitals?.spO2 || 91}%</span>
@@ -59,7 +59,7 @@ const EmergencyAlertModal = ({ isOpen, onClose, patient }) => {
                 <CheckCircle2 className="w-6 h-6" /> Alert Broadcasted to CHC Emergency ICU & Ambulance Units!
               </div>
             ) : (
-              <p className="text-xs text-slate-400 max-w-md mx-auto">
+              <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
                 Triggering this will broadcast an immediate high-priority audio & visual alarm to all doctors, nurses, and nearby 108 ambulance units.
               </p>
             )}
@@ -69,8 +69,8 @@ const EmergencyAlertModal = ({ isOpen, onClose, patient }) => {
                 onClick={() => setSoundEnabled(!soundEnabled)}
                 className={`p-3 rounded-xl border transition-colors flex items-center gap-2 text-xs font-semibold ${
                   soundEnabled 
-                    ? 'bg-slate-800 text-white border-slate-700' 
-                    : 'bg-slate-950 text-slate-500 border-slate-900'
+                    ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white border-slate-300 dark:border-slate-700' 
+                    : 'bg-slate-100 dark:bg-slate-950 text-slate-500 border-slate-900'
                 }`}
               >
                 {soundEnabled ? <Volume2 className="w-4 h-4 text-red-400" /> : <VolumeX className="w-4 h-4" />}
@@ -80,14 +80,14 @@ const EmergencyAlertModal = ({ isOpen, onClose, patient }) => {
           </div>
 
           {/* Action buttons */}
-          <div className="p-6 border-t border-slate-800 bg-slate-950/60 flex gap-3">
-            <button onClick={onClose} className="flex-1 py-3 text-slate-400 hover:text-white text-sm font-semibold">
+          <div className="p-6 border-t border-slate-200 dark:border-slate-800 bg-slate-950/60 flex gap-3">
+            <button onClick={onClose} className="flex-1 py-3 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white text-sm font-semibold">
               Cancel
             </button>
             <button
               disabled={broadcasting || broadcasted}
               onClick={handleTriggerAlert}
-              className="flex-1 bg-red-600 hover:bg-red-500 text-white font-black py-3 rounded-xl text-sm transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)] flex items-center justify-center gap-2 disabled:opacity-50"
+              className="flex-1 bg-red-600 hover:bg-red-500 text-slate-900 dark:text-white font-black py-3 rounded-xl text-sm transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)] flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {broadcasting ? 'Broadcasting Siren...' : broadcasted ? 'Broadcast Sent' : 'BROADCAST EMERGENCY ALARM'}
               <Send className="w-4 h-4" />
