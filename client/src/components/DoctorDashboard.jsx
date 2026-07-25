@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Send, AlertTriangle, Pill, Siren } from 'lucide-react';
+import { Send, AlertTriangle, Pill, Siren, FileText, MessageSquare } from 'lucide-react';
 import PatientTimelineModal from './PatientTimelineModal';
 import ReferralModal from './ReferralModal';
 import PrescriptionModal from './PrescriptionModal';
 import EmergencyAlertModal from './EmergencyAlertModal';
+import ReportScannerModal from './ReportScannerModal';
+import SMSAlertModal from './SMSAlertModal';
 
 const DoctorDashboard = () => {
   const { t } = useTranslation();
@@ -21,6 +23,9 @@ const DoctorDashboard = () => {
   const [patientToPrescribe, setPatientToPrescribe] = useState(null);
   const [isEmergencyOpen, setIsEmergencyOpen] = useState(false);
   const [patientForEmergency, setPatientForEmergency] = useState(null);
+  const [isReportScannerOpen, setIsReportScannerOpen] = useState(false);
+  const [isSMSOpen, setIsSMSOpen] = useState(false);
+  const [patientForSMS, setPatientForSMS] = useState(null);
 
   const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
 
@@ -71,13 +76,25 @@ const DoctorDashboard = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-semibold">{t('dashboard.title')}</h2>
-        <span className="text-xs text-slate-400 bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-700">
-          🟢 Live PHC Queue • {patients.length} Patients
-        </span>
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+        <div>
+          <h2 className="text-2xl font-semibold">{t('dashboard.title')}</h2>
+          <p className="text-xs text-slate-400 mt-1">Real-time triage queue for Primary Health Centers</p>
+        </div>
+        
+        <div className="flex flex-wrap items-center gap-2">
+          <button 
+            onClick={() => setIsReportScannerOpen(true)}
+            className="flex items-center gap-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
+          >
+            <FileText className="w-4 h-4" /> Scan Lab Report
+          </button>
+          <span className="text-xs text-slate-400 bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-700">
+            🟢 Live Queue • {patients.length} Patients
+          </span>
+        </div>
       </div>
-      
+
       {patients.length === 0 ? (
         <p className="text-slate-400">{t('dashboard.no_patients')}</p>
       ) : (
@@ -133,16 +150,30 @@ const DoctorDashboard = () => {
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-slate-500">{t('dashboard.arrived')} {new Date(p.createdAt).toLocaleTimeString()}</span>
                   
-                  {/* Red Alert Broadcast Trigger Button */}
-                  <button
-                    onClick={() => {
-                      setPatientForEmergency(p);
-                      setIsEmergencyOpen(true);
-                    }}
-                    className="text-xs font-bold text-red-400 hover:text-red-300 flex items-center gap-1 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 px-2.5 py-1 rounded-lg transition-colors"
-                  >
-                    <Siren className="w-3.5 h-3.5" /> Red Alert
-                  </button>
+                  <div className="flex gap-1.5">
+                    {/* SMS / WhatsApp Reminder */}
+                    <button
+                      onClick={() => {
+                        setPatientForSMS(p);
+                        setIsSMSOpen(true);
+                      }}
+                      className="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 px-2 py-1 rounded-lg transition-colors"
+                      title="Send WhatsApp / SMS Reminder"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5" /> SMS
+                    </button>
+
+                    {/* Red Alert Broadcast Trigger Button */}
+                    <button
+                      onClick={() => {
+                        setPatientForEmergency(p);
+                        setIsEmergencyOpen(true);
+                      }}
+                      className="text-xs font-bold text-red-400 hover:text-red-300 flex items-center gap-1 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 px-2 py-1 rounded-lg transition-colors"
+                    >
+                      <Siren className="w-3.5 h-3.5" /> Alert
+                    </button>
+                  </div>
                 </div>
                 
                 <div className="grid grid-cols-3 gap-2">
@@ -206,6 +237,17 @@ const DoctorDashboard = () => {
         isOpen={isEmergencyOpen}
         onClose={() => setIsEmergencyOpen(false)}
         patient={patientForEmergency}
+      />
+
+      <ReportScannerModal
+        isOpen={isReportScannerOpen}
+        onClose={() => setIsReportScannerOpen(false)}
+      />
+
+      <SMSAlertModal
+        isOpen={isSMSOpen}
+        onClose={() => setIsSMSOpen(false)}
+        patient={patientForSMS}
       />
     </div>
   );
