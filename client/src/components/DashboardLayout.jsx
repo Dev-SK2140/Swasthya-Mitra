@@ -59,23 +59,11 @@ const DashboardLayout = () => {
         </div>
       )}
 
-      <div className={`flex flex-wrap items-center gap-1 ${mobile ? 'w-full mb-2' : ''}`}>
-        {roleNavItems.map((item) => {
-          const isActive = location.pathname === item.path;
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition-all ${
-                isActive
-                  ? 'bg-[var(--color-primary)] text-white shadow-md'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-800/60'
-              }`}
-            >
-              {item.name}
-            </Link>
-          );
-        })}
+      {/* Assigned Role Badge for Strict Privacy */}
+      <div className={`flex items-center gap-1.5 bg-slate-800/90 border border-slate-700 px-3 py-1.5 rounded-full text-xs text-white ${mobile ? 'w-full mb-2 justify-center' : ''}`}>
+        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span className="text-slate-400 font-medium">Portal:</span>
+        <span className="font-bold text-[var(--color-primary)]">{storedUser.role || 'Doctor'}</span>
       </div>
 
       <LanguageSelector />
