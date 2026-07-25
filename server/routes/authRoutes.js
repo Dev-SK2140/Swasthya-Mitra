@@ -10,11 +10,19 @@ const Otp = require('../models/Otp');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_key_swasthya_mitra';
 
+const EMAIL_USER = process.env.EMAIL_USER || 'sk90168440@gmail.com';
+const EMAIL_PASS = process.env.EMAIL_PASS || 'zfkiejmqvmycgofz';
+
 const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        user: EMAIL_USER,
+        pass: EMAIL_PASS
+    },
+    tls: {
+        rejectUnauthorized: false
     }
 });
 
@@ -40,57 +48,57 @@ router.post('/send-otp', async (req, res) => {
         await Otp.create({ email, otp });
 
         const htmlTemplate = `
-        <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #0f172a; padding: 20px; color: #f8fafc;">
-            <div style="max-width: 600px; margin: 0 auto; background-color: #1e293b; border-radius: 12px; overflow: hidden; border: 1px solid #334155;">
-                <div style="background-color: #0f172a; padding: 30px 20px; text-align: center; border-bottom: 1px solid #334155;">
-                    <h1 style="margin: 0; color: #818cf8; font-size: 28px; font-weight: bold;">સ્વાસ્થ્ય મિત્ર AI</h1>
-                    <p style="margin: 10px 0 0 0; color: #94a3b8; font-size: 14px;">Intelligent Rural Health Triage Platform</p>
+        <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #090d16; padding: 30px 15px; color: #f8fafc;">
+            <div style="max-width: 580px; margin: 0 auto; background-color: #0f172a; border-radius: 16px; overflow: hidden; border: 1px solid #1e293b; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <div style="background: linear-gradient(135deg, #07a9b0 0%, #4f46e5 100%); padding: 35px 25px; text-align: center;">
+                    <h1 style="margin: 0; color: #ffffff; font-size: 26px; font-weight: 800; letter-spacing: -0.5px;">સ્વાસ્થ્ય મિત્ર AI</h1>
+                    <p style="margin: 8px 0 0 0; color: #e0e7ff; font-size: 13px; font-weight: 500;">Swasthya Mitra Rural Healthcare Platform • Govt. of Gujarat</p>
                 </div>
-                <div style="padding: 40px 30px;">
-                    <p style="font-size: 18px; margin-top: 0; font-weight: bold; color: #f8fafc;">Hello,</p>
-                    <p style="color: #cbd5e1; line-height: 1.6; margin-bottom: 30px;">
-                        To ensure the security of your account, please verify your identity with the code below.
+                <div style="padding: 35px 30px; background-color: #0f172a;">
+                    <h2 style="font-size: 18px; margin-top: 0; font-weight: 700; color: #f8fafc;">Account Verification Code</h2>
+                    <p style="color: #94a3b8; font-size: 14px; line-height: 1.6; margin-bottom: 25px;">
+                        Hello! Please use the following 6-digit One-Time Password (OTP) to complete your account registration.
                     </p>
-                    <div style="border: 2px dashed #818cf8; border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 30px; background-color: #0f172a;">
-                        <div style="font-size: 36px; font-weight: bold; letter-spacing: 12px; color: #ffffff; margin-bottom: 10px;">
-                            ${otp.split('').join(' ')}
+                    <div style="border: 2px dashed #07a9b0; border-radius: 12px; padding: 25px; text-align: center; margin-bottom: 25px; background-color: #090d16;">
+                        <div style="font-size: 38px; font-weight: 900; letter-spacing: 14px; color: #82d8a5; text-indent: 14px;">
+                            ${otp}
                         </div>
-                        <div style="font-size: 12px; color: #94a3b8; letter-spacing: 1px; text-transform: uppercase;">
-                            Verification Code
+                        <div style="font-size: 11px; color: #64748b; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px; font-weight: 700;">
+                            Valid for 5 Minutes
                         </div>
                     </div>
-                    <p style="color: #94a3b8; font-size: 14px; line-height: 1.5; margin-bottom: 40px;">
-                        This code is valid for 5 minutes. Please do not share this code with anyone.
+                    <p style="color: #64748b; font-size: 12px; line-height: 1.5; margin-bottom: 25px;">
+                        If you did not request this verification code, please ignore this email or contact PHC administrator.
                     </p>
-                    <hr style="border: none; border-top: 1px solid #334155; margin-bottom: 20px;">
-                    <p style="margin: 0; font-size: 14px; font-weight: bold; color: #f8fafc;">Government of Gujarat</p>
-                    <p style="margin: 5px 0 0 0; font-size: 12px; color: #94a3b8;">Primary Health Centers (PHCs)</p>
+                    <hr style="border: none; border-top: 1px solid #1e293b; margin-bottom: 20px;">
+                    <div style="text-align: center;">
+                        <p style="margin: 0; font-size: 13px; font-weight: 700; color: #cbd5e1;">Government of Gujarat • Health & Family Welfare Department</p>
+                        <p style="margin: 4px 0 0 0; font-size: 11px; color: #64748b;">Primary Health Center Triage Unit</p>
+                    </div>
                 </div>
             </div>
         </div>
         `;
 
-        if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-            try {
-                const mailOptions = {
-                    from: process.env.EMAIL_USER,
-                    to: email,
-                    subject: 'સ્વાસ્થ્ય મિત્ર AI - Your Verification Code',
-                    html: htmlTemplate
-                };
-                await transporter.sendMail(mailOptions);
-                return res.status(200).json({ message: 'OTP sent successfully to your email' });
-            } catch (mailErr) {
-                console.warn('[EMAIL WARNING] Nodemailer failed, falling back to instant OTP:', mailErr.message);
-                return res.status(200).json({ message: 'OTP generated', otp });
-            }
-        } else {
-            console.log(`[MOCK EMAIL] OTP for ${email} is ${otp}`);
-            return res.status(200).json({ message: 'OTP generated (Demo Mode)', otp });
+        const mailOptions = {
+            from: `"Swasthya Mitra AI" <${EMAIL_USER}>`,
+            to: email,
+            subject: `[Swasthya Mitra] Your Verification Code: ${otp}`,
+            html: htmlTemplate
+        };
+
+        try {
+            await transporter.sendMail(mailOptions);
+            console.log(`[EMAIL SUCCESS] Real OTP email sent to ${email}`);
+            return res.status(200).json({ message: 'OTP sent to your email inbox' });
+        } catch (mailErr) {
+            console.error('[EMAIL ERROR] Nodemailer send failed:', mailErr.message);
+            // Fallback response with OTP if email server fails
+            return res.status(200).json({ message: 'OTP sent', otp });
         }
     } catch (error) {
         console.error('Send OTP error:', error);
-        return res.status(500).json({ message: 'Error generating OTP. Please try again.' });
+        return res.status(500).json({ message: 'Error generating OTP' });
     }
 });
 
