@@ -31,11 +31,30 @@ const PageTransition = ({ children }) => {
   );
 };
 
-const ProtectedRoute = ({ children }) => {
+const RoleProtectedRoute = ({ children, allowedRoles }) => {
   const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+
   if (!token) {
     return <Navigate to="/login" replace />;
   }
+
+  if (allowedRoles && allowedRoles.length > 0) {
+    const userRole = (user.role || '').toLowerCase();
+    const normalizedAllowed = allowedRoles.map(r => r.toLowerCase());
+
+    if (!normalizedAllowed.includes(userRole)) {
+      let userPath = '/app/doctor';
+      if (userRole === 'nurse') userPath = '/app/nurse';
+      else if (userRole === 'receptionist' || userRole === 'reception') userPath = '/app/reception';
+      else if (userRole === 'lab') userPath = '/app/lab';
+      else if (userRole === 'pharmacy') userPath = '/app/pharmacy';
+      else if (userRole === 'admin') userPath = '/app/admin';
+
+      return <Navigate to={userPath} replace />;
+    }
+  }
+
   return children;
 };
 
@@ -50,13 +69,13 @@ const AnimatedRoutes = () => {
         <Route path="/forgot-password" element={<PageTransition><ForgotPasswordPage /></PageTransition>} />
         
         <Route path="/app" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
-          <Route path="intake" element={<PageTransition><PatientIntakeForm /></PageTransition>} />
-          <Route path="doctor" element={<PageTransition><DoctorDashboard /></PageTransition>} />
-          <Route path="nurse" element={<PageTransition><NurseDashboard /></PageTransition>} />
-          <Route path="lab" element={<PageTransition><LabDashboard /></PageTransition>} />
-          <Route path="pharmacy" element={<PageTransition><PharmacyDashboard /></PageTransition>} />
-          <Route path="reception" element={<PageTransition><ReceptionistDashboard /></PageTransition>} />
-          <Route path="admin" element={<PageTransition><AdminDashboard /></PageTransition>} />
+          <Route path="doctor" element={<RoleProtectedRoute allowedRoles={['Doctor']}><PageTransition><DoctorDashboard /></PageTransition></RoleProtectedRoute>} />
+          <Route path="nurse" element={<RoleProtectedRoute allowedRoles={['Nurse']}><PageTransition><NurseDashboard /></PageTransition></RoleProtectedRoute>} />
+          <Route path="reception" element={<RoleProtectedRoute allowedRoles={['Receptionist', 'Reception']}><PageTransition><ReceptionistDashboard /></PageTransition></RoleProtectedRoute>} />
+          <Route path="lab" element={<RoleProtectedRoute allowedRoles={['Lab']}><PageTransition><LabDashboard /></PageTransition></RoleProtectedRoute>} />
+          <Route path="pharmacy" element={<RoleProtectedRoute allowedRoles={['Pharmacy']}><PageTransition><PharmacyDashboard /></PageTransition></RoleProtectedRoute>} />
+          <Route path="admin" element={<RoleProtectedRoute allowedRoles={['Admin']}><PageTransition><AdminDashboard /></PageTransition></RoleProtectedRoute>} />
+          <Route path="intake" element={<RoleProtectedRoute allowedRoles={['Nurse', 'Receptionist', 'Doctor']}><PageTransition><PatientIntakeForm /></PageTransition></RoleProtectedRoute>} />
           <Route path="telemedicine" element={<PageTransition><TelemedicineChat /></PageTransition>} />
         </Route>
         
