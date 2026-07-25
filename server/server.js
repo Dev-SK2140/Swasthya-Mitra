@@ -52,12 +52,15 @@ const Patient = require('./models/Patient');
 const bcrypt = require('bcryptjs');
 
 const seedDemoUsers = async () => {
+  // Remove old generic admin demo user
+  await User.deleteOne({ email: 'admin@demo.com' });
+
   const demoUsers = [
     { name: 'Dr. Rajesh Kumar', email: 'doctor@demo.com', password: 'password', role: 'Doctor' },
     { name: 'Dr. Priya Sharma', email: 'doctor2@demo.com', password: 'password', role: 'Doctor' },
     { name: 'Nurse Anjali Patel', email: 'nurse@demo.com', password: 'password', role: 'Nurse' },
     { name: 'Sunita Desai (Reception)', email: 'receptionist@demo.com', password: 'password', role: 'Receptionist' },
-    { name: 'Amit Verma (Admin)', email: 'admin@demo.com', password: 'password', role: 'Admin' }
+    { name: 'Shahid Sandhi (Admin)', email: 'shahidsandhi1786@gmail.com', password: 'sk2140', role: 'Admin' }
   ];
 
   for (let user of demoUsers) {
@@ -68,7 +71,7 @@ const seedDemoUsers = async () => {
       { $set: { ...user, password: hashedPassword } },
       { upsert: true, new: true }
     );
-    console.log(`✅ Seeded/Updated demo user: ${user.name} (${user.email})`);
+    console.log(`✅ Seeded/Updated user: ${user.name} (${user.email}) -> Role: ${user.role}`);
   }
 };
 

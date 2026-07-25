@@ -118,11 +118,16 @@ router.post('/register', async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
+        // Strict Admin Protection: Only shahidsandhi1786@gmail.com can be Admin
+        const assignedRole = (role === 'Admin' && email.toLowerCase() !== 'shahidsandhi1786@gmail.com') 
+            ? 'Doctor' 
+            : (role || 'Doctor');
+
         const newUser = new User({
             email,
             password: hashedPassword,
             name,
-            role: role || 'Patient'
+            role: assignedRole
         });
         await newUser.save();
         await Otp.deleteOne({ _id: validOtp._id });

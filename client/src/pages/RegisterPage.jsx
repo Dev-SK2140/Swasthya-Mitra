@@ -143,7 +143,6 @@ const RegisterPage = () => {
                   <option value="Doctor">Doctor</option>
                   <option value="Nurse">Nurse</option>
                   <option value="Receptionist">Receptionist</option>
-                  <option value="Admin">Admin</option>
                 </select>
               </div>
               <div>
