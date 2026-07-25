@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Send, AlertTriangle, Pill, Siren, FileText, MessageSquare, Mic, ShieldCheck } from 'lucide-react';
+import { Send, AlertTriangle, Pill, Siren, FileText, MessageSquare, Mic, ShieldCheck, CreditCard, MapPin } from 'lucide-react';
 import PatientTimelineModal from './PatientTimelineModal';
 import ReferralModal from './ReferralModal';
 import PrescriptionModal from './PrescriptionModal';
@@ -10,6 +10,8 @@ import ReportScannerModal from './ReportScannerModal';
 import SMSAlertModal from './SMSAlertModal';
 import VoiceIntakeModal from './VoiceIntakeModal';
 import VaccinationTrackerModal from './VaccinationTrackerModal';
+import AbhaCardModal from './AbhaCardModal';
+import AshaSurveyModal from './AshaSurveyModal';
 
 const DoctorDashboard = () => {
   const { t } = useTranslation();
@@ -30,6 +32,9 @@ const DoctorDashboard = () => {
   const [patientForSMS, setPatientForSMS] = useState(null);
   const [isVoiceOpen, setIsVoiceOpen] = useState(false);
   const [isVaccineOpen, setIsVaccineOpen] = useState(false);
+  const [isAbhaOpen, setIsAbhaOpen] = useState(false);
+  const [patientForAbha, setPatientForAbha] = useState(null);
+  const [isAshaOpen, setIsAshaOpen] = useState(false);
 
   const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
 
@@ -87,6 +92,12 @@ const DoctorDashboard = () => {
         </div>
         
         <div className="flex flex-wrap items-center gap-2">
+          <button 
+            onClick={() => setIsAshaOpen(true)}
+            className="flex items-center gap-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
+          >
+            <MapPin className="w-4 h-4" /> ASHA Survey
+          </button>
           <button 
             onClick={() => setIsVoiceOpen(true)}
             className="flex items-center gap-1.5 bg-teal-500/10 hover:bg-teal-500/20 text-teal-400 border border-teal-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
@@ -167,6 +178,18 @@ const DoctorDashboard = () => {
                   <span className="text-xs text-slate-500">{t('dashboard.arrived')} {new Date(p.createdAt).toLocaleTimeString()}</span>
                   
                   <div className="flex gap-1.5">
+                    {/* Digital ABHA Card */}
+                    <button
+                      onClick={() => {
+                        setPatientForAbha(p);
+                        setIsAbhaOpen(true);
+                      }}
+                      className="text-xs font-bold text-teal-400 hover:text-teal-300 flex items-center gap-1 bg-teal-500/10 hover:bg-teal-500/20 border border-teal-500/30 px-2 py-1 rounded-lg transition-colors"
+                      title="Digital ABHA Health Card"
+                    >
+                      <CreditCard className="w-3.5 h-3.5" /> ABHA
+                    </button>
+
                     {/* SMS / WhatsApp Reminder */}
                     <button
                       onClick={() => {
@@ -274,6 +297,17 @@ const DoctorDashboard = () => {
       <VaccinationTrackerModal
         isOpen={isVaccineOpen}
         onClose={() => setIsVaccineOpen(false)}
+      />
+
+      <AbhaCardModal
+        isOpen={isAbhaOpen}
+        onClose={() => setIsAbhaOpen(false)}
+        patient={patientForAbha}
+      />
+
+      <AshaSurveyModal
+        isOpen={isAshaOpen}
+        onClose={() => setIsAshaOpen(false)}
       />
     </div>
   );
