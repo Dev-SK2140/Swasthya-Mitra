@@ -55,7 +55,7 @@ const analyzeTriageData = async (patientContext) => {
       }
     });
 
-    return JSON.parse(response.text());
+    return JSON.parse(response.text);
   } catch (error) {
     console.error("AI Analysis Error:", error);
     throw new Error("Failed to process AI analysis");
@@ -92,7 +92,7 @@ Output JSON with:
       }
     });
 
-    return JSON.parse(response.text());
+    return JSON.parse(response.text);
   } catch (error) {
     console.error("AI Chat Error:", error);
     throw new Error("Failed to process AI chat");
@@ -116,7 +116,7 @@ Do not output JSON, just plain text.`,
       }
     });
 
-    return { reply: response.text() };
+    return { reply: response.text };
   } catch (error) {
     console.error("General AI Chat Error:", error);
     throw new Error("Failed to process AI assistant chat");

@@ -212,7 +212,7 @@ router.post("/google", async (req, res) => {
                 name,
                 email,
                 password: hashedPassword,
-                role: "Patient",
+                role: "Doctor",
                 profilePicture: picture || "",
                 provider: "google"
             });
