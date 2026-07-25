@@ -71,7 +71,6 @@ const LoginPage = () => {
           <button type="button" onClick={() => handleQuickDemoLogin('doctor@demo.com')} className="text-[11px] bg-teal-500/10 text-teal-400 border border-teal-500/30 px-2.5 py-1 rounded-full hover:bg-teal-500/20 transition-all font-semibold">⚡ Doctor</button>
           <button type="button" onClick={() => handleQuickDemoLogin('nurse@demo.com')} className="text-[11px] bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 px-2.5 py-1 rounded-full hover:bg-indigo-500/20 transition-all font-semibold">⚡ Nurse</button>
           <button type="button" onClick={() => handleQuickDemoLogin('receptionist@demo.com')} className="text-[11px] bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2.5 py-1 rounded-full hover:bg-amber-500/20 transition-all font-semibold">⚡ Receptionist</button>
-          <button type="button" onClick={() => handleQuickDemoLogin('admin@demo.com')} className="text-[11px] bg-purple-500/10 text-purple-400 border border-purple-500/30 px-2.5 py-1 rounded-full hover:bg-purple-500/20 transition-all font-semibold">⚡ Admin</button>
         </div>
       </motion.div>
 
