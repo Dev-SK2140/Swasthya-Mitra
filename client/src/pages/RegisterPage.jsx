@@ -173,12 +173,19 @@ const RegisterPage = () => {
             </form>
           ) : (
             <form className="space-y-6" onSubmit={handleRegister}>
-              <div className="text-center mb-4 text-slate-300">
-                We sent a 6-digit OTP to <span className="font-bold text-white">{formData.email}</span>. Please enter it below.
+              <div className="text-center mb-2 text-slate-300 text-xs">
+                We sent a 6-digit verification code to <span className="font-bold text-white">{formData.email}</span>.
               </div>
+
+              {otp && (
+                <div className="bg-emerald-500/10 border border-emerald-500/40 text-emerald-400 p-3 rounded-xl text-xs font-semibold text-center shadow-lg">
+                  ⚡ Auto-filled Demo Code: <span className="font-mono text-base font-black tracking-widest text-white bg-slate-900 px-2.5 py-1 rounded-lg border border-emerald-500/30 ml-1">{otp}</span>
+                </div>
+              )}
+
               <div>
-                <label className="block text-sm font-medium text-slate-300 text-center">Enter OTP</label>
-                <input required type="text" maxLength={6} value={otp} onChange={e => setOtp(e.target.value)} className="mt-1 block w-full text-center tracking-widest text-2xl px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
+                <label className="block text-sm font-medium text-slate-300 text-center mb-1">Enter 6-Digit OTP</label>
+                <input required type="text" maxLength={6} value={otp} onChange={e => setOtp(e.target.value)} className="block w-full text-center tracking-widest text-2xl font-bold px-4 py-3 border border-slate-700 rounded-lg bg-slate-900/50 text-emerald-400 focus:ring-2 focus:ring-[var(--color-primary)]" />
               </div>
               <button type="submit" disabled={loading || otp.length !== 6} className="w-full py-3 px-4 rounded-lg text-sm font-bold text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-50">
                 {loading ? 'Verifying...' : 'Verify & Create Account'}
