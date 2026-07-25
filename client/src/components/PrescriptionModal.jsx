@@ -3,12 +3,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Pill, ShieldAlert, FileText, Download, Check, Sparkles } from 'lucide-react';
 
 const COMMON_MEDICATIONS = [
-  { name: 'Paracetamol 500mg', dose: '1 tab TDS after meals', type: 'Antipyretic', interaction: 'Caution: Max 4g/day' },
-  { name: 'Amoxicillin 500mg', dose: '1 cap BD for 5 days', type: 'Antibiotic', interaction: 'Check penicillin allergy' },
-  { name: 'Cetirizine 10mg', dose: '1 tab HS', type: 'Antihistamine', interaction: 'May cause mild drowsiness' },
-  { name: 'ORS Powder Packet', dose: '1 sachet in 1L water', type: 'Rehydration', interaction: 'Safe for all ages' },
-  { name: 'Pantoprazole 40mg', dose: '1 tab OD before breakfast', type: 'Antacid', interaction: 'Take empty stomach' },
-  { name: 'Amlodipine 5mg', dose: '1 tab OD morning', type: 'Antihypertensive', interaction: 'Monitor BP regularly' }
+  { name: 'Dolo 650mg (Paracetamol)', dose: '1 tab TDS after meals', type: 'Antipyretic', interaction: 'Max 4g/day. Safe in pregnancy.' },
+  { name: 'Combiflam (Ibuprofen + Paracetamol)', dose: '1 tab BD after food', type: 'Analgesic', interaction: 'Take with food to avoid gastric irritation' },
+  { name: 'Azithral 500mg (Azithromycin)', dose: '1 tab OD for 3 days', type: 'Antibiotic', interaction: 'Complete 3-day course strictly' },
+  { name: 'Electral ORS Sachet', dose: '1 sachet in 1L clean water', type: 'Rehydration', interaction: 'Essential for diarrhea & fever' },
+  { name: 'Pantocid 40mg (Pantoprazole)', dose: '1 tab OD before breakfast', type: 'Antacid', interaction: 'Take empty stomach in morning' },
+  { name: 'Cetcip 10mg (Cetirizine)', dose: '1 tab HS (Bedtime)', type: 'Antihistamine', interaction: 'May cause mild drowsiness' }
 ];
 
 const PrescriptionModal = ({ isOpen, onClose, patient }) => {
