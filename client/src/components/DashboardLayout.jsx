@@ -39,8 +39,26 @@ const DashboardLayout = () => {
     { name: 'Intake', path: '/app/intake' }
   ];
 
+  const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+
   const NavLinks = ({ mobile }) => (
     <>
+      {storedUser.email && (
+        <div className={`flex items-center gap-2 bg-slate-800/90 px-3 py-1.5 rounded-full border border-white/10 text-xs ${mobile ? 'w-full mb-2 justify-center' : ''}`}>
+          {storedUser.picture ? (
+            <img src={storedUser.picture} alt="Profile" className="w-6 h-6 rounded-full object-cover" />
+          ) : (
+            <div className="w-6 h-6 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center font-bold text-xs">
+              {(storedUser.name || storedUser.email)[0].toUpperCase()}
+            </div>
+          )}
+          <div className="text-left">
+            <span className="font-semibold text-white block leading-tight text-xs">{storedUser.name || 'User'}</span>
+            <span className="text-[10px] text-[var(--color-secondary)] block leading-tight">{storedUser.email}</span>
+          </div>
+        </div>
+      )}
+
       <div className={`flex flex-wrap items-center gap-1 ${mobile ? 'w-full mb-2' : ''}`}>
         {roleNavItems.map((item) => {
           const isActive = location.pathname === item.path;
