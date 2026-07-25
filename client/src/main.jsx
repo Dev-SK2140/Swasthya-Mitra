@@ -5,15 +5,16 @@ import './index.css'
 import './i18n'
 import App from './App.jsx'
 
-const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "180303779224-3akuhqa10o0mqh7me5mqeev8jj2ekmmg.apps.googleusercontent.com";
 
-if (!clientId) {
-  throw new Error("VITE_GOOGLE_CLIENT_ID is missing");
-}
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <GoogleOAuthProvider clientId={clientId}>
+    {clientId ? (
+      <GoogleOAuthProvider clientId={clientId}>
+        <App />
+      </GoogleOAuthProvider>
+    ) : (
       <App />
-    </GoogleOAuthProvider>
+    )}
   </StrictMode>,
 )
