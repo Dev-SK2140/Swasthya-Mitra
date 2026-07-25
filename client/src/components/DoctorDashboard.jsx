@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Send, AlertTriangle, Pill, Siren, FileText, MessageSquare } from 'lucide-react';
+import { Send, AlertTriangle, Pill, Siren, FileText, MessageSquare, Mic, ShieldCheck } from 'lucide-react';
 import PatientTimelineModal from './PatientTimelineModal';
 import ReferralModal from './ReferralModal';
 import PrescriptionModal from './PrescriptionModal';
 import EmergencyAlertModal from './EmergencyAlertModal';
 import ReportScannerModal from './ReportScannerModal';
 import SMSAlertModal from './SMSAlertModal';
+import VoiceIntakeModal from './VoiceIntakeModal';
+import VaccinationTrackerModal from './VaccinationTrackerModal';
 
 const DoctorDashboard = () => {
   const { t } = useTranslation();
@@ -26,6 +28,8 @@ const DoctorDashboard = () => {
   const [isReportScannerOpen, setIsReportScannerOpen] = useState(false);
   const [isSMSOpen, setIsSMSOpen] = useState(false);
   const [patientForSMS, setPatientForSMS] = useState(null);
+  const [isVoiceOpen, setIsVoiceOpen] = useState(false);
+  const [isVaccineOpen, setIsVaccineOpen] = useState(false);
 
   const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
 
@@ -83,6 +87,18 @@ const DoctorDashboard = () => {
         </div>
         
         <div className="flex flex-wrap items-center gap-2">
+          <button 
+            onClick={() => setIsVoiceOpen(true)}
+            className="flex items-center gap-1.5 bg-teal-500/10 hover:bg-teal-500/20 text-teal-400 border border-teal-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
+          >
+            <Mic className="w-4 h-4" /> Voice Triage
+          </button>
+          <button 
+            onClick={() => setIsVaccineOpen(true)}
+            className="flex items-center gap-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
+          >
+            <ShieldCheck className="w-4 h-4" /> Vaccines
+          </button>
           <button 
             onClick={() => setIsReportScannerOpen(true)}
             className="flex items-center gap-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
@@ -248,6 +264,16 @@ const DoctorDashboard = () => {
         isOpen={isSMSOpen}
         onClose={() => setIsSMSOpen(false)}
         patient={patientForSMS}
+      />
+
+      <VoiceIntakeModal
+        isOpen={isVoiceOpen}
+        onClose={() => setIsVoiceOpen(false)}
+      />
+
+      <VaccinationTrackerModal
+        isOpen={isVaccineOpen}
+        onClose={() => setIsVaccineOpen(false)}
       />
     </div>
   );
