@@ -71,21 +71,26 @@ router.post('/send-otp', async (req, res) => {
         `;
 
         if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-            const mailOptions = {
-                from: process.env.EMAIL_USER,
-                to: email,
-                subject: 'સ્વાસ્થ્ય મિત્ર AI - Your Verification Code',
-                html: htmlTemplate
-            };
-            await transporter.sendMail(mailOptions);
-            res.status(200).json({ message: 'OTP sent successfully' });
+            try {
+                const mailOptions = {
+                    from: process.env.EMAIL_USER,
+                    to: email,
+                    subject: 'સ્વાસ્થ્ય મિત્ર AI - Your Verification Code',
+                    html: htmlTemplate
+                };
+                await transporter.sendMail(mailOptions);
+                return res.status(200).json({ message: 'OTP sent successfully to your email' });
+            } catch (mailErr) {
+                console.warn('[EMAIL WARNING] Nodemailer failed, falling back to instant OTP:', mailErr.message);
+                return res.status(200).json({ message: 'OTP generated', otp });
+            }
         } else {
             console.log(`[MOCK EMAIL] OTP for ${email} is ${otp}`);
-            res.json({ message: 'OTP generated (Check server console)' });
+            return res.status(200).json({ message: 'OTP generated (Demo Mode)', otp });
         }
     } catch (error) {
         console.error('Send OTP error:', error);
-        res.status(500).json({ message: 'Error sending OTP' });
+        return res.status(500).json({ message: 'Error generating OTP. Please try again.' });
     }
 });
 

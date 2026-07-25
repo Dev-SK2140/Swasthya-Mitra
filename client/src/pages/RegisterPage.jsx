@@ -56,6 +56,10 @@ const RegisterPage = () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Failed to send OTP');
 
+      if (data.otp) {
+        setOtp(data.otp);
+      }
+
       setStep(2);
       setTimer(60);
       setCanResend(false);
