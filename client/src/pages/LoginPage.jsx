@@ -1,4 +1,4 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate, Link } from 'react-router-dom';
@@ -47,6 +47,11 @@ const LoginPage = () => {
     }
   };
 
+  const handleQuickDemoLogin = (roleEmail) => {
+    setEmail(roleEmail);
+    setPassword('password');
+  };
+
   return (
     <div className="min-h-screen bg-slate-900 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
       <div className="absolute top-4 right-4"><LanguageSelector /></div>
@@ -58,8 +63,16 @@ const LoginPage = () => {
         animate={{ opacity: 1, y: 0 }}
         className="sm:mx-auto sm:w-full sm:max-w-md z-10 text-center flex flex-col items-center"
       >
-        <img src={logoImg} alt="Logo" className="w-28 h-28 md:w-36 md:h-36 object-cover rounded-full mb-6 shadow-[0_0_25px_rgba(130,216,165,0.4)] border-2 border-[#07a9b0]/50" />
-        <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white to-[#82d8a5] bg-clip-text text-transparent mb-2">{t('login.title', 'Sign in to your account')}</h2>
+        <img src={logoImg} alt="Logo" className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-full mb-4 shadow-[0_0_25px_rgba(130,216,165,0.4)] border-2 border-[#07a9b0]/50" />
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-white to-[#82d8a5] bg-clip-text text-transparent mb-1">{t('login.title', 'Sign in to your account')}</h2>
+        
+        {/* Quick Demo Login Chips */}
+        <div className="flex flex-wrap justify-center gap-1.5 mt-2">
+          <button type="button" onClick={() => handleQuickDemoLogin('doctor@demo.com')} className="text-[11px] bg-teal-500/10 text-teal-400 border border-teal-500/30 px-2.5 py-1 rounded-full hover:bg-teal-500/20 transition-all font-semibold">⚡ Doctor</button>
+          <button type="button" onClick={() => handleQuickDemoLogin('nurse@demo.com')} className="text-[11px] bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 px-2.5 py-1 rounded-full hover:bg-indigo-500/20 transition-all font-semibold">⚡ Nurse</button>
+          <button type="button" onClick={() => handleQuickDemoLogin('receptionist@demo.com')} className="text-[11px] bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2.5 py-1 rounded-full hover:bg-amber-500/20 transition-all font-semibold">⚡ Receptionist</button>
+          <button type="button" onClick={() => handleQuickDemoLogin('admin@demo.com')} className="text-[11px] bg-purple-500/10 text-purple-400 border border-purple-500/30 px-2.5 py-1 rounded-full hover:bg-purple-500/20 transition-all font-semibold">⚡ Admin</button>
+        </div>
       </motion.div>
 
       <motion.div

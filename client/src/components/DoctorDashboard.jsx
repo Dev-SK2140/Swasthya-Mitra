@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Send, AlertTriangle } from 'lucide-react';
+import { Send, AlertTriangle, Pill, Siren } from 'lucide-react';
 import PatientTimelineModal from './PatientTimelineModal';
 import ReferralModal from './ReferralModal';
+import PrescriptionModal from './PrescriptionModal';
+import EmergencyAlertModal from './EmergencyAlertModal';
 
 const DoctorDashboard = () => {
   const { t } = useTranslation();
@@ -13,6 +15,12 @@ const DoctorDashboard = () => {
   const [isTimelineOpen, setIsTimelineOpen] = useState(false);
   const [isReferralOpen, setIsReferralOpen] = useState(false);
   const [patientToRefer, setPatientToRefer] = useState(null);
+
+  // New Modals State
+  const [isRxOpen, setIsRxOpen] = useState(false);
+  const [patientToPrescribe, setPatientToPrescribe] = useState(null);
+  const [isEmergencyOpen, setIsEmergencyOpen] = useState(false);
+  const [patientForEmergency, setPatientForEmergency] = useState(null);
 
   const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
 
@@ -63,7 +71,12 @@ const DoctorDashboard = () => {
 
   return (
     <div>
-      <h2 className="text-2xl font-semibold mb-6">{t('dashboard.title')}</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-semibold">{t('dashboard.title')}</h2>
+        <span className="text-xs text-slate-400 bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-700">
+          🟢 Live PHC Queue • {patients.length} Patients
+        </span>
+      </div>
       
       {patients.length === 0 ? (
         <p className="text-slate-400">{t('dashboard.no_patients')}</p>
@@ -117,17 +130,40 @@ const DoctorDashboard = () => {
               )}
               
               <div className="mt-auto pt-4 border-t border-slate-700/50 flex flex-col gap-3">
-                <span className="text-xs text-slate-500">{t('dashboard.arrived')} {new Date(p.createdAt).toLocaleTimeString()}</span>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-slate-500">{t('dashboard.arrived')} {new Date(p.createdAt).toLocaleTimeString()}</span>
+                  
+                  {/* Red Alert Broadcast Trigger Button */}
+                  <button
+                    onClick={() => {
+                      setPatientForEmergency(p);
+                      setIsEmergencyOpen(true);
+                    }}
+                    className="text-xs font-bold text-red-400 hover:text-red-300 flex items-center gap-1 bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 px-2.5 py-1 rounded-lg transition-colors"
+                  >
+                    <Siren className="w-3.5 h-3.5" /> Red Alert
+                  </button>
+                </div>
                 
-                <div className="flex gap-2">
+                <div className="grid grid-cols-3 gap-2">
+                  <button 
+                    onClick={() => {
+                      setPatientToPrescribe(p);
+                      setIsRxOpen(true);
+                    }}
+                    className="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 py-2 rounded-xl font-medium transition-colors border border-emerald-500/20 flex items-center justify-center gap-1 text-xs"
+                  >
+                    <Pill size={14} />
+                    AI Rx
+                  </button>
                   <button 
                     onClick={() => {
                       setPatientToRefer(p);
                       setIsReferralOpen(true);
                     }}
-                    className="flex-1 bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 py-2.5 rounded-xl font-medium transition-colors border border-amber-500/20 flex items-center justify-center gap-2 text-sm"
+                    className="bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 py-2 rounded-xl font-medium transition-colors border border-amber-500/20 flex items-center justify-center gap-1 text-xs"
                   >
-                    <Send size={16} />
+                    <Send size={14} />
                     Refer
                   </button>
                   <button 
@@ -135,7 +171,7 @@ const DoctorDashboard = () => {
                       setSelectedPatient(p);
                       setIsTimelineOpen(true);
                     }}
-                    className="flex-1 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white py-2.5 rounded-xl font-medium transition-colors shadow-lg shadow-[var(--color-primary)]/20 text-sm"
+                    className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white py-2 rounded-xl font-medium transition-colors shadow-lg shadow-[var(--color-primary)]/20 text-xs"
                   >
                     {t('dashboard.consult')}
                   </button>
@@ -158,6 +194,18 @@ const DoctorDashboard = () => {
         isOpen={isReferralOpen}
         onClose={() => setIsReferralOpen(false)}
         patient={patientToRefer}
+      />
+
+      <PrescriptionModal
+        isOpen={isRxOpen}
+        onClose={() => setIsRxOpen(false)}
+        patient={patientToPrescribe}
+      />
+
+      <EmergencyAlertModal
+        isOpen={isEmergencyOpen}
+        onClose={() => setIsEmergencyOpen(false)}
+        patient={patientForEmergency}
       />
     </div>
   );
