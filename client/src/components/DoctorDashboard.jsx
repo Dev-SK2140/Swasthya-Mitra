@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Send, AlertTriangle, Pill, Siren, FileText, MessageSquare, Mic, ShieldCheck, CreditCard, MapPin } from 'lucide-react';
+import { Send, AlertTriangle, Pill, Siren, FileText, MessageSquare, Mic, ShieldCheck, CreditCard, MapPin, ShieldAlert, Navigation } from 'lucide-react';
 import PatientTimelineModal from './PatientTimelineModal';
 import ReferralModal from './ReferralModal';
 import PrescriptionModal from './PrescriptionModal';
@@ -12,6 +12,8 @@ import VoiceIntakeModal from './VoiceIntakeModal';
 import VaccinationTrackerModal from './VaccinationTrackerModal';
 import AbhaCardModal from './AbhaCardModal';
 import AshaSurveyModal from './AshaSurveyModal';
+import DrugSafetyModal from './DrugSafetyModal';
+import AmbulanceTrackerModal from './AmbulanceTrackerModal';
 
 const DoctorDashboard = () => {
   const { t } = useTranslation();
@@ -35,6 +37,8 @@ const DoctorDashboard = () => {
   const [isAbhaOpen, setIsAbhaOpen] = useState(false);
   const [patientForAbha, setPatientForAbha] = useState(null);
   const [isAshaOpen, setIsAshaOpen] = useState(false);
+  const [isDrugSafetyOpen, setIsDrugSafetyOpen] = useState(false);
+  const [isAmbulanceOpen, setIsAmbulanceOpen] = useState(false);
 
   const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
 
@@ -93,6 +97,18 @@ const DoctorDashboard = () => {
         
         <div className="flex flex-wrap items-center gap-2">
           <button 
+            onClick={() => setIsDrugSafetyOpen(true)}
+            className="flex items-center gap-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
+          >
+            <ShieldAlert className="w-4 h-4" /> Drug Safety
+          </button>
+          <button 
+            onClick={() => setIsAmbulanceOpen(true)}
+            className="flex items-center gap-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
+          >
+            <Navigation className="w-4 h-4" /> 108 Ambulance
+          </button>
+          <button 
             onClick={() => setIsAshaOpen(true)}
             className="flex items-center gap-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
           >
@@ -112,7 +128,7 @@ const DoctorDashboard = () => {
           </button>
           <button 
             onClick={() => setIsReportScannerOpen(true)}
-            className="flex items-center gap-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
+            className="flex items-center gap-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
           >
             <FileText className="w-4 h-4" /> Scan Lab Report
           </button>
@@ -308,6 +324,16 @@ const DoctorDashboard = () => {
       <AshaSurveyModal
         isOpen={isAshaOpen}
         onClose={() => setIsAshaOpen(false)}
+      />
+
+      <DrugSafetyModal
+        isOpen={isDrugSafetyOpen}
+        onClose={() => setIsDrugSafetyOpen(false)}
+      />
+
+      <AmbulanceTrackerModal
+        isOpen={isAmbulanceOpen}
+        onClose={() => setIsAmbulanceOpen(false)}
       />
     </div>
   );
