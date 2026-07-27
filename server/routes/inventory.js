@@ -32,7 +32,7 @@ router.get('/', async (req, res) => {
 router.patch('/:id', async (req, res) => {
   try {
     const { quantity } = req.body;
-    const item = await Inventory.findByIdAndUpdate(req.params.id, { quantity }, { new: true });
+    const item = await Inventory.findByIdAndUpdate(req.params.id, { quantity }, { returnDocument: 'after' });
     res.json(item);
   } catch (err) {
     res.status(500).json({ error: err.message });

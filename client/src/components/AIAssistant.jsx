@@ -1,16 +1,19 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, X, Send, Bot, User, Loader2 } from 'lucide-react';
+import { MessageSquare, X, Send, Bot, User, Loader2, Mic, MicOff, Volume2, VolumeX } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const AIAssistant = () => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: 'Hello Doctor. I am Swasthya Sahayak (àª¸à«àªµàª¾àª¸à«àª¥à«àª¯ àª¸àª¹àª¾àª¯àª•). How can I assist you with triage or treatment protocols today?' }
+    { role: 'assistant', content: 'Hello Doctor. I am Swasthya Sahayak (સ્વાસ્થ્ય સહાયક). How can I assist you with triage or treatment protocols today?' }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [ttsEnabled, setTtsEnabled] = useState(false);
+  const recognitionRef = useRef(null);
   const messagesEndRef = useRef(null);
   
   const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
@@ -42,12 +45,54 @@ const AIAssistant = () => {
       });
       const data = await res.json();
       setMessages([...newMessages, { role: 'assistant', content: data.reply }]);
+      
+      if (ttsEnabled) {
+        speakText(data.reply);
+      }
     } catch (err) {
       console.error(err);
       setMessages([...newMessages, { role: 'assistant', content: 'Sorry, I encountered a network error connecting to the AI.' }]);
     } finally {
       setLoading(false);
     }
+  };
+
+  const speakText = (text) => {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    const currentLang = localStorage.getItem('i18nextLng') || 'en';
+    const langMap = { en: 'en-IN', hi: 'hi-IN', gu: 'gu-IN' };
+    utterance.lang = langMap[currentLang] || 'hi-IN';
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const toggleListening = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+      return;
+    }
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) return alert("Speech Recognition not supported in this browser.");
+    
+    const recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    const currentLang = localStorage.getItem('i18nextLng') || 'en';
+    const langMap = { en: 'en-IN', hi: 'hi-IN', gu: 'gu-IN' };
+    recognition.lang = langMap[currentLang] || 'hi-IN'; // Adapts to selected UI language
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      setInput(transcript);
+    };
+    recognition.onend = () => setIsListening(false);
+    recognition.onerror = () => setIsListening(false);
+    
+    recognition.start();
+    recognitionRef.current = recognition;
+    setIsListening(true);
   };
 
   return (
@@ -85,13 +130,18 @@ const AIAssistant = () => {
                   <Bot className="w-5 h-5 text-slate-900 dark:text-white" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-slate-900 dark:text-white">àª¸à«àªµàª¾àª¸à«àª¥à«àª¯ àª¸àª¹àª¾àª¯àª• AI</h3>
+                  <h3 className="font-semibold text-slate-900 dark:text-white">સ્વાસ્થ્ય સહાયક AI</h3>
                   <p className="text-[10px] text-indigo-100">Government Medical Assistant</p>
                 </div>
               </div>
-              <button onClick={() => setIsOpen(false)} className="text-white/70 hover:text-slate-900 dark:text-white transition-colors">
-                <X className="w-5 h-5" />
-              </button>
+              <div className="flex gap-2">
+                <button onClick={() => setTtsEnabled(!ttsEnabled)} className={`p-1.5 rounded-lg transition-colors ${ttsEnabled ? 'bg-indigo-500/30 text-indigo-100' : 'text-white/50 hover:text-white'}`}>
+                  {ttsEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                </button>
+                <button onClick={() => setIsOpen(false)} className="text-white/70 hover:text-slate-900 dark:text-white transition-colors">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
 
             {/* Chat Area */}
@@ -131,6 +181,13 @@ const AIAssistant = () => {
                   placeholder="Ask a medical query..."
                   className="flex-1 bg-transparent border-none text-slate-900 dark:text-white text-sm px-3 py-2 focus:outline-none"
                 />
+                <button 
+                  type="button"
+                  onClick={toggleListening}
+                  className={`p-2 rounded-lg transition-colors ${isListening ? 'bg-rose-500/20 text-rose-500' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700'}`}
+                >
+                  {isListening ? <Mic className="w-4 h-4 animate-pulse" /> : <MicOff className="w-4 h-4" />}
+                </button>
                 <button 
                   type="submit"
                   disabled={!input.trim() || loading}

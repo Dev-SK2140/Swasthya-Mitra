@@ -63,6 +63,18 @@ const path = require('path');
 const triageRoutes = require('./routes/triageRoutes');
 app.use('/api/triage', triageRoutes);
 
+const patientRoutes = require('./routes/patientRoutes');
+app.use('/api/patients', patientRoutes);
+
+const bedRoutes = require('./routes/bedRoutes');
+app.use('/api/beds', bedRoutes);
+
+const surveyRoutes = require('./routes/surveyRoutes');
+app.use('/api/surveys', surveyRoutes);
+
+const referralRoutes = require('./routes/referralRoutes');
+app.use('/api/referrals', referralRoutes);
+
 // Auth routes (real JWT)
 const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
@@ -86,6 +98,10 @@ app.use('/api/inventory', inventoryRoutes);
 // Notification routes
 const notificationRoutes = require('./routes/notificationRoutes');
 app.use('/api/notifications', notificationRoutes);
+
+// Appointment routes
+const appointmentRoutes = require('./routes/appointmentRoutes');
+app.use('/api/appointments', appointmentRoutes);
 
 // Serve static frontend in production / single-service deployment
 const clientDistPath = path.join(__dirname, '../client/dist');
@@ -119,7 +135,10 @@ const seedDemoUsers = async () => {
     { name: 'Dr. Priya Sharma', email: 'doctor2@demo.com', password: 'password', role: 'Doctor' },
     { name: 'Nurse Anjali Patel', email: 'nurse@demo.com', password: 'password', role: 'Nurse' },
     { name: 'Sunita Desai (Reception)', email: 'receptionist@demo.com', password: 'password', role: 'Receptionist' },
-    { name: 'Shahid Sandhi (Admin)', email: 'shahidsandhi1786@gmail.com', password: 'sk2140', role: 'Admin' }
+    { name: 'Shahid Sandhi (Admin)', email: 'shahidsandhi1786@gmail.com', password: 'sk2140', role: 'Admin' },
+    { name: 'Ramesh Singh (Patient)', email: 'patient@demo.com', password: 'password', role: 'Patient' },
+    { name: 'Amit Verma (Lab)', email: 'lab@demo.com', password: 'password', role: 'Lab' },
+    { name: 'Sneha Patel (Pharmacy)', email: 'pharmacy@demo.com', password: 'password', role: 'Pharmacy' }
   ];
 
   for (let user of demoUsers) {
@@ -128,7 +147,7 @@ const seedDemoUsers = async () => {
     await User.findOneAndUpdate(
       { email: user.email },
       { $set: { ...user, password: hashedPassword } },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
     console.log(`✅ Seeded/Updated user: ${user.name} (${user.email}) -> Role: ${user.role}`);
   }

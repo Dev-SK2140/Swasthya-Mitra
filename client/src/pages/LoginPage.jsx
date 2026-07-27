@@ -68,13 +68,18 @@ const LoginPage = () => {
         className="sm:mx-auto sm:w-full sm:max-w-md z-10 text-center flex flex-col items-center"
       >
         <img src={logoImg} alt="Logo" className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-full mb-4 shadow-[0_0_25px_rgba(130,216,165,0.4)] border-2 border-[#07a9b0]/50" />
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-white to-[#82d8a5] bg-clip-text text-transparent mb-1">{t('login.title', 'Sign in to your account')}</h2>
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-700 to-emerald-600 dark:from-white dark:to-[#82d8a5] bg-clip-text text-transparent mb-1">{t('auth.login_title', 'Welcome Back to Swasthya Mitra')}</h2>
+        <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">{t('auth.login_subtitle', 'Login to access the intelligent triage dashboard')}</p>
         
         {/* Quick Demo Login Chips */}
         <div className="flex flex-wrap justify-center gap-1.5 mt-2">
-          <button type="button" onClick={() => handleQuickDemoLogin('doctor@demo.com')} className="text-[11px] bg-teal-500/10 text-teal-400 border border-teal-500/30 px-2.5 py-1 rounded-full hover:bg-teal-500/20 transition-all font-semibold">⚡ Doctor</button>
-          <button type="button" onClick={() => handleQuickDemoLogin('nurse@demo.com')} className="text-[11px] bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 px-2.5 py-1 rounded-full hover:bg-indigo-500/20 transition-all font-semibold">⚡ Nurse</button>
-          <button type="button" onClick={() => handleQuickDemoLogin('receptionist@demo.com')} className="text-[11px] bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2.5 py-1 rounded-full hover:bg-amber-500/20 transition-all font-semibold">⚡ Receptionist</button>
+          <button type="button" onClick={() => handleQuickDemoLogin('doctor@demo.com')} className="text-[11px] bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/30 px-2.5 py-1 rounded-full hover:bg-teal-500/20 transition-all font-semibold">⚡ Doctor</button>
+          <button type="button" onClick={() => handleQuickDemoLogin('nurse@demo.com')} className="text-[11px] bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 border border-indigo-500/30 px-2.5 py-1 rounded-full hover:bg-indigo-500/20 transition-all font-semibold">⚡ Nurse</button>
+          <button type="button" onClick={() => handleQuickDemoLogin('receptionist@demo.com')} className="text-[11px] bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30 px-2.5 py-1 rounded-full hover:bg-amber-500/20 transition-all font-semibold">⚡ Receptionist</button>
+          <button type="button" onClick={() => handleQuickDemoLogin('patient@demo.com')} className="text-[11px] bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-500/30 px-2.5 py-1 rounded-full hover:bg-purple-500/20 transition-all font-semibold">⚡ Patient</button>
+          <button type="button" onClick={() => handleQuickDemoLogin('lab@demo.com')} className="text-[11px] bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/30 px-2.5 py-1 rounded-full hover:bg-blue-500/20 transition-all font-semibold">⚡ Lab</button>
+          <button type="button" onClick={() => handleQuickDemoLogin('pharmacy@demo.com')} className="text-[11px] bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/30 px-2.5 py-1 rounded-full hover:bg-rose-500/20 transition-all font-semibold">⚡ Pharmacy</button>
+          <button type="button" onClick={() => handleQuickDemoLogin('shahidsandhi1786@gmail.com')} className="text-[11px] bg-slate-500/10 text-slate-700 dark:text-slate-400 border border-slate-500/30 px-2.5 py-1 rounded-full hover:bg-slate-500/20 transition-all font-semibold">⚡ Admin</button>
         </div>
       </motion.div>
 
@@ -92,14 +97,14 @@ const LoginPage = () => {
           )}
           <form className="space-y-6" onSubmit={handleLogin}>
             <div>
-              <label className="block text-sm font-medium text-slate-600 dark:text-slate-300">Email address</label>
+              <label className="block text-sm font-medium text-slate-800 dark:text-slate-300">{t('auth.email', 'Email Address')}</label>
               <div className="mt-1">
                 <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="appearance-none block w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg shadow-sm bg-slate-50/50 dark:bg-slate-900/50 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)]" />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-600 dark:text-slate-300">Password</label>
+              <label className="block text-sm font-medium text-slate-800 dark:text-slate-300">{t('auth.password', 'Password')}</label>
               <div className="relative mt-1">
                 <input required type={showPassword ? "text" : "password"} value={password} onChange={e => setPassword(e.target.value)} className="appearance-none block w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg shadow-sm bg-slate-50/50 dark:bg-slate-900/50 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] pr-12" />
                 <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white">
@@ -110,13 +115,13 @@ const LoginPage = () => {
 
             <div className="flex items-center justify-between">
               <div className="text-sm">
-                <Link to="/forgot-password" className="font-medium text-[var(--color-primary)] hover:text-[var(--color-secondary)]">Forgot your password?</Link>
+                <Link to="/forgot-password" className="font-medium text-[var(--color-primary)] hover:text-[var(--color-secondary)]">{t('auth.forgot_password', 'Forgot your password?')}</Link>
               </div>
             </div>
 
             <div>
-              <button type="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-slate-900 dark:text-white bg-[var(--color-primary)] hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)] focus:ring-offset-slate-900 transition-colors">
-                Sign in
+              <button type="submit" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white bg-[var(--color-primary)] hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--color-primary)] focus:ring-offset-slate-900 transition-colors">
+                {t('auth.login_btn', 'Sign in')}
               </button>
             </div>
           </form>
@@ -125,11 +130,11 @@ const LoginPage = () => {
             <div className="relative">
               <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-300 dark:border-slate-700"></div></div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400">Or</span>
+                <span className="px-2 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-400 font-medium">Or</span>
               </div>
             </div>
-            <div className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
-              Don't have an account? <Link to="/register" className="font-medium text-[var(--color-primary)] hover:text-[var(--color-secondary)]">Register now</Link>
+            <div className="mt-6 text-center text-sm text-slate-700 dark:text-slate-400 font-medium">
+              {t('auth.no_account', "Don't have an account?")} <Link to="/register" className="font-medium text-[var(--color-primary)] hover:text-[var(--color-secondary)]">{t('auth.register_here', 'Register now')}</Link>
             </div>
           </div>
 
@@ -167,9 +172,9 @@ const LoginPage = () => {
             />
           </div>
         </div>
-        <p className="text-center text-xs text-slate-500 dark:text-slate-400 mt-6 font-medium z-10">
-          Designed By <strong className="text-slate-900 dark:text-white">Shahid Khan</strong> from <strong className="text-[#07a9b0]">SyncHex Infosys</strong><br />
-          <a href="mailto:contect.synchex@gmail.com" className="text-[#82d8a5] hover:underline text-[11px]">contect.synchex@gmail.com</a>
+        <p className="text-center text-xs text-slate-600 dark:text-slate-400 mt-6 font-medium z-10">
+          Designed By <strong className="text-slate-900 dark:text-white">Shahid Khan</strong> from <strong className="text-teal-700 dark:text-[#07a9b0]">SyncHex Infosys</strong><br />
+          <a href="mailto:contact.synchex@gmail.com" className="text-teal-700 dark:text-[#82d8a5] hover:underline text-[11px]">contact.synchex@gmail.com</a>
         </p>
       </motion.div>
     </div>

@@ -10,6 +10,12 @@ const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const AdminDashboard = () => {
   const [patients, setPatients] = useState([]);
+  const [stats, setStats] = useState({
+    patients: { total: 0, highRisk: 0 },
+    mch: { total: 0, highRisk: 0 },
+    beds: { total: 0, occupied: 0, critical: 0 },
+    referrals: { active: 0 }
+  });
   const [loading, setLoading] = useState(true);
 
   // Layout configuration for the dashboard
@@ -45,14 +51,20 @@ const AdminDashboard = () => {
         if(Array.isArray(data)) {
           setPatients(data);
         }
+        
+        // Fetch Real Analytics from DB
+        const analyticsRes = await fetch(`${API_URL}/features/analytics`);
+        const analyticsData = await analyticsRes.json();
+        setStats(analyticsData);
+
       } catch (err) {
-        console.error("Failed to fetch patients:", err);
+        console.error("Failed to fetch dashboard data:", err);
       } finally {
         setLoading(false);
       }
     };
     fetchStats();
-    const interval = setInterval(fetchStats, 10000);
+    const interval = setInterval(fetchStats, 30000); // 30s instead of 10s to reduce load
     return () => clearInterval(interval);
   }, []);
 
@@ -61,8 +73,8 @@ const AdminDashboard = () => {
   };
 
   // Dynamic Data Calculation
-  const totalPatients = patients.length;
-  const criticalCases = patients.filter(p => p.riskLevel === 'High Risk' || p.riskLevel === 'Emergency').length;
+  const totalPatients = stats.patients?.total || patients.length;
+  const criticalCases = stats.patients?.highRisk || patients.filter(p => p.riskLevel === 'High Risk' || p.riskLevel === 'Emergency').length;
   
   // Aggregate mock trend data with real data to show a dynamic chart
   const diseaseData = [
@@ -155,9 +167,11 @@ const AdminDashboard = () => {
           </div>
           <div className="relative z-10 pointer-events-none">
             <div className="text-slate-500 dark:text-slate-400 text-sm mb-1">Bed Occupancy</div>
-            <div className="text-3xl font-bold text-slate-900 dark:text-white mb-2">86%</div>
+            <div className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
+              {stats.beds?.total > 0 ? Math.round((stats.beds.occupied / stats.beds.total) * 100) : 0}%
+            </div>
             <div className="w-full bg-slate-700 rounded-full h-1.5 mt-2">
-              <div className="bg-amber-400 h-1.5 rounded-full" style={{ width: '86%' }}></div>
+              <div className="bg-amber-400 h-1.5 rounded-full" style={{ width: `${stats.beds?.total > 0 ? (stats.beds.occupied / stats.beds.total) * 100 : 0}%` }}></div>
             </div>
           </div>
         </div>
@@ -168,9 +182,9 @@ const AdminDashboard = () => {
             <MapPin className="w-24 h-24" />
           </div>
           <div className="relative z-10 pointer-events-none">
-            <div className="text-slate-500 dark:text-slate-400 text-sm mb-1">PM-JAY Claims Processed</div>
-            <div className="text-3xl font-bold text-emerald-400 mb-2">₹14.8 Lakh</div>
-            <div className="text-xs text-[var(--color-secondary)] flex items-center gap-1">142 Cashless Claims Settled</div>
+            <div className="text-slate-500 dark:text-slate-400 text-sm mb-1">Active Referrals</div>
+            <div className="text-3xl font-bold text-emerald-400 mb-2">{stats.referrals?.active || 0}</div>
+            <div className="text-xs text-[var(--color-secondary)] flex items-center gap-1">Ambulances & Transfers</div>
           </div>
         </div>
 

@@ -18,10 +18,16 @@ const AshaSurveyModal = ({ isOpen, onClose }) => {
     const pregnantWomen = e.target.elements[2].value;
 
     try {
-      await fetch(`${API_URL}/features/asha-survey`, {
+      await fetch(`${API_URL}/surveys`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ district, households, pregnantWomen })
+        body: JSON.stringify({ 
+          village: district, 
+          familyHeadName: 'Survey Aggregation', 
+          familySize: parseInt(households),
+          notes: `Pregnant Women Logged: ${pregnantWomen}`,
+          submittedBy: 'ASHA Worker' 
+        })
       });
       setSubmitted(true);
       setTimeout(() => {

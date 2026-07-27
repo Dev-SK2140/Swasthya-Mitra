@@ -136,15 +136,25 @@ router.post('/scan-report', upload.single('reportImage'), async (req, res) => {
             { text: prompt }
           ]
         }
-      ]
+      ],
+      config: {
+        responseMimeType: 'application/json'
+      }
     });
 
-    // Parse the JSON from the markdown block
+    // Parse the JSON from the response
     let responseText = response.text;
+    
     // Clean up markdown ```json ... ``` formatting if present
     responseText = responseText.replace(/```json/g, '').replace(/```/g, '').trim();
     
-    const parsedData = JSON.parse(responseText);
+    let parsedData;
+    try {
+      parsedData = JSON.parse(responseText);
+    } catch (e) {
+      console.error("Failed to parse Gemini JSON:", responseText);
+      return res.status(400).json({ success: false, message: 'AI returned invalid format. Please ensure the image is a clear medical report.' });
+    }
 
     res.json({
       success: true,

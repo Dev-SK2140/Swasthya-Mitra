@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Pill, ShieldAlert, FileText, Download, Check, Sparkles, Printer } from 'lucide-react';
+import { X, Pill, ShieldAlert, FileText, Download, Check, Sparkles, Printer, Mic, MicOff } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
@@ -23,6 +23,10 @@ const PrescriptionModal = ({ isOpen, onClose, patient }) => {
   const [translating, setTranslating] = useState(false);
   const [translatedNotes, setTranslatedNotes] = useState('');
   const [targetLang, setTargetLang] = useState('gu'); // default Gujarati
+  
+  // Voice dictation state
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef(null);
 
   const printRef = useRef();
 
@@ -97,6 +101,52 @@ const PrescriptionModal = ({ isOpen, onClose, patient }) => {
     } finally {
       setTranslating(false);
     }
+  };
+
+  const handleToggleListening = () => {
+    if (isListening) {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      setIsListening(false);
+      return;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Your browser doesn't support speech recognition.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-IN'; // Indian English / Hindi accent supported better
+    
+    recognition.onresult = (event) => {
+      let finalTranscript = '';
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript;
+        }
+      }
+      if (finalTranscript) {
+        setNotes(prev => prev + (prev ? ' ' : '') + finalTranscript);
+      }
+    };
+
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error', event.error);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.start();
+    recognitionRef.current = recognition;
+    setIsListening(true);
   };
 
   return (
@@ -199,7 +249,17 @@ const PrescriptionModal = ({ isOpen, onClose, patient }) => {
 
             {/* Doctor Clinical Advice */}
             <div className="space-y-3">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Doctor Advice / Diet Instructions</label>
+              <div className="flex justify-between items-center">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Doctor Advice / Diet Instructions</label>
+                <button 
+                  onClick={handleToggleListening}
+                  className={`flex items-center gap-1 px-2 py-1 rounded-md text-[10px] font-bold transition-colors ${
+                    isListening ? 'bg-rose-500/20 text-rose-500 border border-rose-500/30' : 'bg-slate-200 dark:bg-slate-800 text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                  }`}
+                >
+                  {isListening ? <><Mic className="w-3 h-3 animate-pulse" /> Listening...</> : <><MicOff className="w-3 h-3" /> Dictate</>}
+                </button>
+              </div>
               <textarea 
                 rows={2} 
                 value={notes} 

@@ -19,7 +19,7 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#1b2532] overflow-hidden relative flex flex-col">
+    <div className="min-h-screen overflow-hidden relative flex flex-col transition-colors">
       {/* 2D Interactive Particle Background */}
       <Particles
         id="tsparticles"
@@ -65,11 +65,11 @@ const LandingPage = () => {
         </Canvas>
       </div>
 
-      <nav className="w-full px-8 py-4 flex justify-between items-center z-20 border-b border-[#07a9b0]/20 bg-[#1b2532]/80 backdrop-blur-md fixed top-0 shadow-lg">
+      <nav className="w-full px-8 py-4 flex justify-between items-center z-20 border-b border-slate-200 dark:border-[#07a9b0]/20 bg-white/80 dark:bg-[#1b2532]/80 backdrop-blur-md fixed top-0 shadow-lg">
         <div className="flex items-center gap-4">
           <img src={logoImg} alt="Logo" className="w-16 h-16 md:w-20 md:h-20 object-cover rounded-full shadow-[0_0_15px_rgba(130,216,165,0.3)]" />
           <div className="hidden sm:block">
-            <span className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-white to-[#82d8a5] bg-clip-text text-transparent block">{t('app_title')}</span>
+            <span className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:to-[#82d8a5] block">{t('app_title')}</span>
           </div>
         </div>
         <div className="hidden md:flex items-center gap-4">
@@ -87,10 +87,10 @@ const LandingPage = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-center max-w-5xl pointer-events-auto"
         >
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-white via-indigo-100 to-[var(--color-primary)] mb-6 leading-tight drop-shadow-2xl">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-slate-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-br dark:from-white dark:via-indigo-100 dark:to-[var(--color-primary)] mb-6 leading-tight dark:drop-shadow-2xl">
             {t('app_title')}
           </h1>
-          <p className="text-xl md:text-3xl text-indigo-200/80 font-light mb-12 max-w-3xl mx-auto">
+          <p className="text-xl md:text-3xl text-slate-700 dark:text-indigo-200/80 font-light mb-12 max-w-3xl mx-auto">
             {t('app_subtitle')}
           </p>
 
@@ -99,7 +99,7 @@ const LandingPage = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white text-indigo-900 px-8 py-4 rounded-xl font-bold text-lg shadow-[0_0_30px_rgba(255,255,255,0.4)] hover:shadow-[0_0_50px_rgba(255,255,255,0.6)] transition-shadow"
+                className="bg-[var(--color-primary)] text-white dark:bg-white dark:text-indigo-900 px-8 py-4 rounded-xl font-bold text-lg shadow-[0_0_30px_rgba(7,169,176,0.3)] dark:shadow-[0_0_30px_rgba(255,255,255,0.4)] hover:shadow-lg transition-shadow"
               >
                 Create Account
               </motion.button>
@@ -108,7 +108,7 @@ const LandingPage = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-indigo-900/40 text-slate-900 dark:text-white border border-[var(--color-primary)]/50 px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-800/60 transition-colors backdrop-blur-md"
+                className="bg-white/50 text-slate-800 dark:bg-indigo-900/40 dark:text-white border border-slate-300 dark:border-[var(--color-primary)]/50 px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-100/60 dark:hover:bg-indigo-800/60 transition-colors backdrop-blur-md shadow-sm"
               >
                 View Live Demo
               </motion.button>
@@ -125,34 +125,34 @@ const LandingPage = () => {
             <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-white/10 pb-4">Government of Gujarat Healthcare Schemes</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               
-              <a href="https://magujarat.com/" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group">
-                <h3 className="text-lg font-bold text-teal-400 group-hover:text-teal-300">PM-JAY MA Vatsalya</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Health cover of up to ₹5 lakhs per family per year for secondary and tertiary care hospitalization.</p>
+              <a href="https://magujarat.com/" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
+                <h3 className="text-lg font-bold text-teal-700 dark:text-teal-400 group-hover:text-teal-800 dark:group-hover:text-teal-300">PM-JAY MA Vatsalya</h3>
+                <p className="text-sm text-slate-700 dark:text-slate-400 mt-1 font-medium">Health cover of up to ₹5 lakhs per family per year for secondary and tertiary care hospitalization.</p>
               </a>
 
-              <a href="https://gujhealth.gujarat.gov.in/chiranjeevi-yojana.htm" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group">
-                <h3 className="text-lg font-bold text-pink-400 group-hover:text-pink-300">Chiranjeevi Yojana</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Free institutional delivery for BPL and tribal women in private hospitals to reduce maternal/infant mortality.</p>
+              <a href="https://gujhealth.gujarat.gov.in/chiranjeevi-yojana.htm" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
+                <h3 className="text-lg font-bold text-pink-700 dark:text-pink-400 group-hover:text-pink-800 dark:group-hover:text-pink-300">Chiranjeevi Yojana</h3>
+                <p className="text-sm text-slate-700 dark:text-slate-400 mt-1 font-medium">Free institutional delivery for BPL and tribal women in private hospitals to reduce maternal/infant mortality.</p>
               </a>
 
-              <a href="https://gujhealth.gujarat.gov.in/bal-sakha-yojana.htm" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group">
-                <h3 className="text-lg font-bold text-blue-400 group-hover:text-blue-300">Bal Sakha Yojana</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Free healthcare services for all infants born to BPL and tribal families by private pediatricians.</p>
+              <a href="https://gujhealth.gujarat.gov.in/bal-sakha-yojana.htm" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
+                <h3 className="text-lg font-bold text-blue-700 dark:text-blue-400 group-hover:text-blue-800 dark:group-hover:text-blue-300">Bal Sakha Yojana</h3>
+                <p className="text-sm text-slate-700 dark:text-slate-400 mt-1 font-medium">Free healthcare services for all infants born to BPL and tribal families by private pediatricians.</p>
               </a>
 
-              <a href="https://gujhealth.gujarat.gov.in/school-health-program.htm" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group">
-                <h3 className="text-lg font-bold text-yellow-400 group-hover:text-yellow-300">School Health Program (SHP)</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Health screening and free treatment for all children from newborn to 18 years in Gujarat.</p>
+              <a href="https://gujhealth.gujarat.gov.in/school-health-program.htm" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
+                <h3 className="text-lg font-bold text-yellow-700 dark:text-yellow-400 group-hover:text-yellow-800 dark:group-hover:text-yellow-300">School Health Program (SHP)</h3>
+                <p className="text-sm text-slate-700 dark:text-slate-400 mt-1 font-medium">Health screening and free treatment for all children from newborn to 18 years in Gujarat.</p>
               </a>
 
-              <a href="https://www.digitalgujarat.gov.in/" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group">
-                <h3 className="text-lg font-bold text-orange-400 group-hover:text-orange-300">Kasturba Poshan Sahay Yojana</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Nutritional assistance provided to poor pregnant women to reduce low birth weight.</p>
+              <a href="https://www.digitalgujarat.gov.in/" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
+                <h3 className="text-lg font-bold text-orange-700 dark:text-orange-400 group-hover:text-orange-800 dark:group-hover:text-orange-300">Kasturba Poshan Sahay Yojana</h3>
+                <p className="text-sm text-slate-700 dark:text-slate-400 mt-1 font-medium">Nutritional assistance provided to poor pregnant women to reduce low birth weight.</p>
               </a>
 
-              <a href="https://emri.in/gujarat/" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group">
-                <h3 className="text-lg font-bold text-red-400 group-hover:text-red-300">108 EMRI Services</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Free emergency medical, police, and fire response services operational 24x7 across the state.</p>
+              <a href="https://emri.in/gujarat/" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
+                <h3 className="text-lg font-bold text-red-700 dark:text-red-400 group-hover:text-red-800 dark:group-hover:text-red-300">108 EMRI Services</h3>
+                <p className="text-sm text-slate-700 dark:text-slate-400 mt-1 font-medium">Free emergency medical, police, and fire response services operational 24x7 across the state.</p>
               </a>
 
             </div>

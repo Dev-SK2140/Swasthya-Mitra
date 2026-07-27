@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const FeatureData = require('../models/FeatureData');
+const Patient = require('../models/Patient');
+const MaternalHealth = require('../models/MaternalHealth');
+const HospitalBed = require('../models/HospitalBed');
+const EmergencyReferral = require('../models/EmergencyReferral');
 
 // 1. ASHA Survey
 router.post('/asha-survey', async (req, res) => {
@@ -65,6 +69,33 @@ router.get('/', async (req, res) => {
         res.status(200).json(data);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching feature data', error: error.message });
+    }
+});
+
+// @route   GET /api/features/analytics
+// @desc    Get aggregated analytics for the admin dashboard
+router.get('/analytics', async (req, res) => {
+    try {
+        const totalPatients = await Patient.countDocuments();
+        const highRiskPatients = await Patient.countDocuments({ riskLevel: { $in: ['High Risk', 'Emergency', 'Critical'] } });
+        
+        const mchCases = await MaternalHealth.countDocuments({ status: 'Active' });
+        const highRiskMch = await MaternalHealth.countDocuments({ status: 'Active', highRisk: true });
+        
+        const totalBeds = await HospitalBed.countDocuments();
+        const occupiedBeds = await HospitalBed.countDocuments({ status: 'Occupied' });
+        const criticalBeds = await HospitalBed.countDocuments({ status: 'Critical' });
+        
+        const activeReferrals = await EmergencyReferral.countDocuments({ status: { $in: ['Pending', 'Dispatched'] } });
+
+        res.json({
+            patients: { total: totalPatients, highRisk: highRiskPatients },
+            mch: { total: mchCases, highRisk: highRiskMch },
+            beds: { total: totalBeds, occupied: occupiedBeds, critical: criticalBeds },
+            referrals: { active: activeReferrals }
+        });
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching analytics' });
     }
 });
 

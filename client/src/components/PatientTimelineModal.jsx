@@ -1,16 +1,46 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Clock, Pill, Activity, Stethoscope } from 'lucide-react';
+import { X, Pill, Activity, Stethoscope } from 'lucide-react';
+
+const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
 
 const PatientTimelineModal = ({ isOpen, onClose, patient }) => {
-  if (!isOpen || !patient) return null;
+  const [history, setHistory] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
 
-  const mockHistory = [
-    { date: 'Today', type: 'triage', desc: `Triage complete. Risk: ${patient.riskLevel}`, icon: Activity, color: 'text-rose-400', bg: 'bg-rose-500/20' },
-    { date: '1 Month Ago', type: 'visit', desc: 'Follow-up for Hypertension. Prescribed Amlodipine 5mg.', icon: Stethoscope, color: 'text-[var(--color-primary)]', bg: 'bg-[var(--color-primary)]/20' },
-    { date: '6 Months Ago', type: 'pharmacy', desc: 'Refilled prescription: Metformin 500mg.', icon: Pill, color: 'text-[var(--color-secondary)]', bg: 'bg-[var(--color-secondary)]/20' },
-    { date: '1 Year Ago', type: 'visit', desc: 'Initial registration. Baseline vitals recorded.', icon: Clock, color: 'text-slate-500 dark:text-slate-400', bg: 'bg-slate-500/20' }
-  ];
+  React.useEffect(() => {
+    if (isOpen && patient) {
+      const fetchHistory = async () => {
+        setLoading(true);
+        try {
+          const res = await fetch(`${API_URL}/patients/${patient._id}/history`);
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            setHistory(data.map(item => ({
+              date: new Date(item.date).toLocaleDateString(),
+              type: item.type.toLowerCase(),
+              desc: item.notes || `Consultation by ${item.doctor}`,
+              icon: item.type === 'Prescription' ? Pill : item.type === 'Lab Report' ? Activity : Stethoscope,
+              color: 'text-[var(--color-primary)]',
+              bg: 'bg-[var(--color-primary)]/20'
+            })));
+          } else {
+            // Fallback for new patients without real history yet
+            setHistory([
+              { date: 'Today', type: 'triage', desc: `Triage complete. Risk: ${patient.riskLevel}`, icon: Activity, color: 'text-rose-400', bg: 'bg-rose-500/20' }
+            ]);
+          }
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchHistory();
+    }
+  }, [isOpen, patient]);
+
+  if (!isOpen || !patient) return null;
 
   return (
     <AnimatePresence>
@@ -61,7 +91,11 @@ const PatientTimelineModal = ({ isOpen, onClose, patient }) => {
             <div>
               <h4 className="text-slate-500 dark:text-slate-400 text-sm font-medium mb-4">Patient History</h4>
               <div className="relative border-l-2 border-slate-300 dark:border-slate-700 ml-3 space-y-8">
-                {mockHistory.map((item, i) => {
+                {loading ? (
+                  <p className="text-xs text-slate-500 ml-4">Loading history...</p>
+                ) : history.length === 0 ? (
+                  <p className="text-xs text-slate-500 ml-4">No medical history found.</p>
+                ) : history.map((item, i) => {
                   const Icon = item.icon;
                   return (
                     <motion.div 

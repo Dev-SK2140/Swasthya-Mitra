@@ -5,7 +5,9 @@ import { X, Mic, MicOff, Sparkles, CheckCircle2, Volume2 } from 'lucide-react';
 const VoiceIntakeModal = ({ isOpen, onClose, onSymptomsExtracted }) => {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
-  const [language, setLanguage] = useState('gu-IN'); // Default Gujarati
+  const [language, setLanguage] = useState(
+    localStorage.getItem('i18nextLng') === 'hi' ? 'hi-IN' : 'gu-IN'
+  );
   const [analyzedData, setAnalyzedData] = useState(null);
 
   if (!isOpen) return null;

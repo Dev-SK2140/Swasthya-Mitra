@@ -17,6 +17,7 @@ import AdminDashboard from './components/AdminDashboard';
 import TelemedicineChat from './components/TelemedicineChat';
 import MapDashboard from './components/MapDashboard';
 import MCHDashboard from './components/MCHDashboard';
+import PatientDashboard from './components/PatientDashboard';
 import './i18n';
 import './index.css';
 
@@ -61,6 +62,7 @@ const RoleProtectedRoute = ({ children, allowedRoles }) => {
       else if (userRole === 'lab') userPath = '/app/lab';
       else if (userRole === 'pharmacy') userPath = '/app/pharmacy';
       else if (userRole === 'admin') userPath = '/app/admin';
+      else if (userRole === 'patient') userPath = '/app/patient';
 
       return <Navigate to={userPath} replace />;
     }
@@ -86,6 +88,7 @@ const AnimatedRoutes = () => {
           <Route path="lab" element={<RoleProtectedRoute allowedRoles={['Lab']}><PageTransition><LabDashboard /></PageTransition></RoleProtectedRoute>} />
           <Route path="pharmacy" element={<RoleProtectedRoute allowedRoles={['Pharmacy']}><PageTransition><PharmacyDashboard /></PageTransition></RoleProtectedRoute>} />
           <Route path="admin" element={<RoleProtectedRoute allowedRoles={['Admin']}><PageTransition><AdminDashboard /></PageTransition></RoleProtectedRoute>} />
+          <Route path="patient" element={<RoleProtectedRoute allowedRoles={['Patient']}><PageTransition><PatientDashboard /></PageTransition></RoleProtectedRoute>} />
           <Route path="map" element={<RoleProtectedRoute allowedRoles={['Admin', 'Doctor']}><PageTransition><MapDashboard /></PageTransition></RoleProtectedRoute>} />
           <Route path="mch" element={<RoleProtectedRoute allowedRoles={['Nurse', 'Doctor']}><PageTransition><MCHDashboard /></PageTransition></RoleProtectedRoute>} />
           <Route path="intake" element={<RoleProtectedRoute allowedRoles={['Nurse', 'Receptionist', 'Doctor']}><PageTransition><PatientIntakeForm /></PageTransition></RoleProtectedRoute>} />

@@ -9,12 +9,31 @@ const EmergencyAlertModal = ({ isOpen, onClose, patient }) => {
 
   if (!isOpen || !patient) return null;
 
-  const handleTriggerAlert = () => {
+  const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
+
+  const handleTriggerAlert = async () => {
     setBroadcasting(true);
-    setTimeout(() => {
+    
+    try {
+      await fetch(`${API_URL}/referrals`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          type: 'Emergency SOS',
+          toFacility: 'District Hospital ICU',
+          reason: `Critical Risk Detected: HR ${patient.vitals?.heartRate} SpO2 ${patient.vitals?.spO2}%`,
+          priority: 'Critical',
+          transportRequested: true,
+          patientName: patient.name
+        })
+      });
+
       setBroadcasting(false);
       setBroadcasted(true);
-    }, 1500);
+    } catch (err) {
+      console.error(err);
+      setBroadcasting(false);
+    }
   };
 
   return (

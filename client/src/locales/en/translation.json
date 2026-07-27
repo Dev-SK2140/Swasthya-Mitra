@@ -1,10 +1,55 @@
 {
-  "app_title": "સ્વાસ્થ્ય મિત્ર AI",
+  "app_title": "સ્વાસ્થ્ય મિત્ર",
   "app_subtitle": "Intelligent Rural Health Triage Platform",
   "nav": {
     "home": "Home",
-    "intake": "Intake Form",
-    "dashboard": "Doctor Dashboard"
+    "intake": "Patient Intake",
+    "doctor_dashboard": "Doctor Dashboard",
+    "nurse_dashboard": "Nurse Dashboard",
+    "reception_dashboard": "Reception",
+    "pharmacy": "Pharmacy",
+    "lab": "Laboratory",
+    "map": "Health Map",
+    "telemedicine": "Telemedicine",
+    "mch": "MCH Triage",
+    "logout": "Logout"
+  },
+  "auth": {
+    "login_title": "Welcome Back to સ્વાસ્થ્ય મિત્ર",
+    "login_subtitle": "Login to access the intelligent triage dashboard",
+    "email": "Email Address",
+    "password": "Password",
+    "login_btn": "Sign In",
+    "no_account": "Don't have an account?",
+    "register_here": "Register here",
+    "forgot_password": "Forgot your password?",
+    "register_title": "Create an Account",
+    "name": "Full Name",
+    "role": "Select Role",
+    "register_btn": "Create Account",
+    "has_account": "Already have an account?",
+    "login_here": "Login here",
+    "doctor": "Doctor",
+    "nurse": "Nurse",
+    "receptionist": "Receptionist",
+    "patient": "Patient",
+    "admin": "Admin"
+  },
+  "map": {
+    "title": "Gujarat Tracker",
+    "subtitle": "Live Hospitals & Emergency Network",
+    "search": "Search city or hospital...",
+    "filter": "Filter Map Data",
+    "govt": "Govt City Hospitals",
+    "private": "Private Hospitals",
+    "chc": "CHC (Community Centers)",
+    "phc": "PHC (Primary Centers)",
+    "ambulances": "Live 108 Ambulances",
+    "osm": "Live OSM Integration",
+    "osm_desc": "Zoom in (Level 10+) to automatically fetch real-world local clinics and hospitals from OpenStreetMap database for 14,000+ villages.",
+    "overview": "Overview",
+    "hospitals_count": "Hospitals",
+    "active_108": "Active 108"
   },
   "intake": {
     "title": "Patient Triage Intake",
@@ -15,19 +60,19 @@
     "hr": "Heart Rate (bpm)",
     "sys": "Systolic BP",
     "dia": "Diastolic BP",
-    "spo2": "SpO2 (%)",
+    "spo2": "Oxygen Level (%)",
     "symptoms": "Symptoms (comma separated)",
-    "submit": "Submit Triage",
+    "submit": "Submit Triage Data",
     "male": "Male",
     "female": "Female",
     "other": "Other"
   },
   "dashboard": {
-    "title": "Doctor Dashboard - Patient Queue",
+    "title": "Doctor Dashboard - Queue",
     "no_patients": "No patients in queue.",
     "vitals": "Vitals:",
     "symptoms": "Symptoms:",
-    "flags": "Flags:",
-    "arrived": "Arrived:"
+    "flags": "Alerts:",
+    "arrived": "Arrived at:"
   }
 }

@@ -6,6 +6,9 @@ const ReportScannerModal = ({ isOpen, onClose }) => {
   const [analyzing, setAnalyzing] = useState(false);
   const [reportResult, setReportResult] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [translatedSummary, setTranslatedSummary] = useState(null);
+  const [translating, setTranslating] = useState(false);
+  const [targetLang, setTargetLang] = useState('gu');
   const fileInputRef = React.useRef(null);
 
   const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
@@ -42,6 +45,31 @@ const ReportScannerModal = ({ isOpen, onClose }) => {
       alert('Error connecting to OCR service.');
     } finally {
       setAnalyzing(false);
+    }
+  };
+
+  const handleTranslate = async () => {
+    if (!reportResult || !reportResult.aiInterpretation) return;
+    
+    setTranslating(true);
+    try {
+      const languageMap = { gu: 'Gujarati', hi: 'Hindi', mr: 'Marathi' };
+      const res = await fetch(`${API_URL}/ai/translate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          text: reportResult.aiInterpretation, 
+          targetLanguage: languageMap[targetLang] 
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setTranslatedSummary(data.translation);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setTranslating(false);
     }
   };
 
@@ -143,11 +171,38 @@ const ReportScannerModal = ({ isOpen, onClose }) => {
                 </div>
 
                 {/* AI Interpretation */}
-                <div className="p-4 bg-gradient-to-r from-teal-500/10 to-indigo-500/10 border border-teal-500/20 rounded-xl">
-                  <span className="text-xs font-bold text-teal-400 flex items-center gap-1.5 mb-1">
-                    <Sparkles className="w-4 h-4" /> AI Clinical Insights
-                  </span>
-                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{reportResult.aiSummary}</p>
+                <div className="p-4 bg-gradient-to-r from-teal-500/10 to-indigo-500/10 border border-teal-500/20 rounded-xl space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-teal-400 flex items-center gap-1.5">
+                      <Sparkles className="w-4 h-4" /> AI Clinical Insights
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <select 
+                        value={targetLang}
+                        onChange={(e) => setTargetLang(e.target.value)}
+                        className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 rounded-lg px-2 py-1 focus:outline-none"
+                      >
+                        <option value="gu">Gujarati</option>
+                        <option value="hi">Hindi</option>
+                        <option value="mr">Marathi</option>
+                      </select>
+                      <button 
+                        onClick={handleTranslate}
+                        disabled={translating}
+                        className="bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 px-2 py-1 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1"
+                      >
+                        {translating ? 'Translating...' : 'Translate'}
+                      </button>
+                    </div>
+                  </div>
+                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{reportResult.aiInterpretation || reportResult.aiSummary}</p>
+                  
+                  {translatedSummary && (
+                    <div className="mt-3 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                      <span className="text-[10px] text-emerald-400 font-bold uppercase block mb-1">Translated Insights ({targetLang.toUpperCase()}):</span>
+                      <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">{translatedSummary}</p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}

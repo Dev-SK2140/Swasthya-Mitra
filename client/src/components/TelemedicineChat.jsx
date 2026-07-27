@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { Video, Phone, Mic, MicOff, VideoOff, MessageSquare, Send, X, Users } from 'lucide-react';
+import { Video, Phone, Mic, MicOff, VideoOff, MessageSquare, Send, X, Users, Calendar, Check } from 'lucide-react';
 import { io } from 'socket.io-client';
 
 const INDIAN_CONSULTANTS = [
@@ -25,6 +25,12 @@ const TelemedicineChat = () => {
   const [isVideoActive, setIsVideoActive] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isCamOff, setIsCamOff] = useState(false);
+  
+  // Booking State
+  const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [bookingDate, setBookingDate] = useState('');
+  const [bookingTime, setBookingTime] = useState('');
+  const [bookingSuccess, setBookingSuccess] = useState(false);
   
   const [isConnected, setIsConnected] = useState(false);
   
@@ -57,9 +63,32 @@ const TelemedicineChat = () => {
       }
     });
 
-    socket.on('newMessage', (message) => {
+    socket.on('newMessage', async (message) => {
       if (message.senderId !== socket.id) {
-        setMessages(prev => [...prev, { id: Date.now(), sender: 'other', text: message.text }]);
+        // Advanced Language Integration: Auto-translate incoming messages
+        const currentLang = localStorage.getItem('i18nextLng') || 'en';
+        let displayText = message.text;
+        
+        if (currentLang !== 'en') {
+           try {
+             const res = await fetch(`${API_URL}/ai/translate`, {
+               method: 'POST',
+               headers: { 'Content-Type': 'application/json' },
+               body: JSON.stringify({ 
+                 text: message.text, 
+                 targetLanguage: currentLang === 'hi' ? 'Hindi' : currentLang === 'gu' ? 'Gujarati' : 'English' 
+               })
+             });
+             const data = await res.json();
+             if (data.success && data.translation) {
+                displayText = data.translation;
+             }
+           } catch (e) {
+             console.error("Live translation error:", e);
+           }
+        }
+        
+        setMessages(prev => [...prev, { id: Date.now(), sender: 'other', text: displayText, originalText: message.text }]);
       }
     });
 
@@ -219,6 +248,39 @@ const TelemedicineChat = () => {
     setInput('');
   };
 
+  const handleBookAppointment = async (e) => {
+    e.preventDefault();
+    try {
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const res = await fetch(`${API_URL}/appointments`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          patientName: user.name || 'Unknown Patient',
+          patientEmail: user.email,
+          doctorId: selectedDoctor.id.toString(),
+          doctorName: selectedDoctor.name,
+          date: bookingDate,
+          time: bookingTime
+        })
+      });
+      if (res.ok) {
+        setBookingSuccess(true);
+        setTimeout(() => {
+          setBookingModalOpen(false);
+          setBookingSuccess(false);
+          setBookingDate('');
+          setBookingTime('');
+        }, 2000);
+      } else {
+        alert('Failed to book appointment');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error booking appointment');
+    }
+  };
+
   return (
     <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="h-full flex flex-col lg:flex-row gap-6">
       
@@ -334,20 +396,34 @@ const TelemedicineChat = () => {
           </div>
 
           {/* Indian Consultant Doctor Selector */}
-          <div className="grid grid-cols-3 gap-2 mt-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
             {INDIAN_CONSULTANTS.map((doc) => (
-              <button
+              <div
                 key={doc.id}
-                onClick={() => setSelectedDoctor(doc)}
-                className={`p-2 rounded-xl border text-left transition-all ${
+                className={`p-3 rounded-xl border transition-all flex flex-col justify-between h-full ${
                   selectedDoctor.id === doc.id
-                    ? 'bg-[var(--color-primary)]/20 border-[var(--color-primary)] text-slate-900 dark:text-white'
-                    : 'bg-slate-950/60 border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:border-slate-300 dark:border-slate-700'
+                    ? 'bg-[var(--color-primary)]/10 border-[var(--color-primary)]/50'
+                    : 'bg-slate-950/60 border-slate-200 dark:border-slate-800'
                 }`}
               >
-                <div className="font-bold text-xs truncate text-slate-900 dark:text-white">{doc.name}</div>
-                <div className="text-[9px] text-teal-400 truncate">{doc.specialty}</div>
-              </button>
+                <button
+                  onClick={() => setSelectedDoctor(doc)}
+                  className="text-left flex-1"
+                >
+                  <div className={`font-bold text-sm truncate ${selectedDoctor.id === doc.id ? 'text-[var(--color-primary)]' : 'text-slate-900 dark:text-white'}`}>{doc.name}</div>
+                  <div className="text-[10px] text-teal-400 truncate mb-1">{doc.specialty}</div>
+                  <div className="text-[10px] text-slate-500">{doc.hospital}</div>
+                </button>
+                <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                  <span className="text-[10px] bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded font-medium text-slate-700 dark:text-slate-300">{doc.status}</span>
+                  <button 
+                    onClick={() => { setSelectedDoctor(doc); setBookingModalOpen(true); }}
+                    className="text-[10px] flex items-center gap-1 font-bold text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] bg-[var(--color-primary)]/10 px-2 py-1 rounded"
+                  >
+                    <Calendar className="w-3 h-3" /> Book Slot
+                  </button>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -361,7 +437,7 @@ const TelemedicineChat = () => {
                   {msg.text}
                 </div>
               ) : (
-                <div className={`max-w-[80%] rounded-2xl p-3 text-xs leading-relaxed shadow-md ${
+                <div className={`max-w-[80%] rounded-2xl p-3 text-xs leading-relaxed shadow-md relative group ${
                   msg.sender === 'me' 
                     ? 'bg-[var(--color-primary)] text-slate-900 dark:text-white rounded-br-none' 
                     : 'bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-100 rounded-bl-none'
@@ -370,6 +446,11 @@ const TelemedicineChat = () => {
                     {msg.sender === 'me' ? 'You' : 'Participant'}
                   </span>
                   {msg.text}
+                  {msg.originalText && msg.originalText !== msg.text && (
+                    <div className="hidden group-hover:block absolute bottom-full left-0 mb-2 p-2 bg-slate-900 text-white text-[10px] rounded-lg w-max max-w-xs z-50 shadow-xl opacity-90">
+                      Original: {msg.originalText}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -397,6 +478,77 @@ const TelemedicineChat = () => {
           </form>
         </div>
       </div>
+
+      {/* Booking Modal */}
+      <AnimatePresence>
+        {bookingModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl"
+            >
+              <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+                <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-[var(--color-primary)]" /> Book Appointment
+                </h3>
+                <button onClick={() => setBookingModalOpen(false)} className="text-slate-500 hover:text-slate-900 dark:hover:text-white">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="p-6">
+                {bookingSuccess ? (
+                  <div className="text-center py-8">
+                    <div className="w-16 h-16 bg-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Check className="w-8 h-8" />
+                    </div>
+                    <h4 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Booking Confirmed!</h4>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">Your appointment with {selectedDoctor.name} has been scheduled.</p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleBookAppointment} className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Doctor</label>
+                      <div className="text-sm font-bold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800 p-2.5 rounded-lg border border-slate-200 dark:border-slate-700">
+                        {selectedDoctor.name}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Date</label>
+                      <input 
+                        type="date" 
+                        required
+                        value={bookingDate}
+                        onChange={e => setBookingDate(e.target.value)}
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-lg p-2.5 text-sm text-slate-900 dark:text-white focus:border-[var(--color-primary)] focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Time Slot</label>
+                      <select 
+                        required
+                        value={bookingTime}
+                        onChange={e => setBookingTime(e.target.value)}
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-lg p-2.5 text-sm text-slate-900 dark:text-white focus:border-[var(--color-primary)] focus:outline-none"
+                      >
+                        <option value="">Select Time</option>
+                        <option value="09:00 AM">09:00 AM</option>
+                        <option value="10:30 AM">10:30 AM</option>
+                        <option value="02:00 PM">02:00 PM</option>
+                        <option value="04:15 PM">04:15 PM</option>
+                      </select>
+                    </div>
+                    <button type="submit" className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-slate-900 dark:text-white font-bold py-3 rounded-xl mt-4 transition-all">
+                      Confirm Booking
+                    </button>
+                  </form>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };

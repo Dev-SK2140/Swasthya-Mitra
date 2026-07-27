@@ -12,13 +12,34 @@ const ReferralModal = ({ isOpen, onClose, patient }) => {
 
   if (!isOpen || !patient) return null;
 
-  const handleGenerate = () => {
+  const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
+
+  const handleGenerate = async () => {
     setIsGenerating(true);
-    setTimeout(() => {
-      setIsGenerating(false);
+    
+    try {
+      await fetch(`${API_URL}/referrals`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          type: 'Inter-Facility Referral',
+          toFacility: hospitalName,
+          reason: reason,
+          priority: 'High',
+          transportRequested: false,
+          patientName: patient.name,
+          patientId: patient._id
+        })
+      });
+
+      // Still print the physical copy as before
       window.print();
+      setIsGenerating(false);
       onClose();
-    }, 1500);
+    } catch (err) {
+      console.error(err);
+      setIsGenerating(false);
+    }
   };
 
   return (
