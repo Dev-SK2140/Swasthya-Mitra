@@ -15,6 +15,8 @@ import PharmacyDashboard from './components/PharmacyDashboard';
 import ReceptionistDashboard from './components/ReceptionistDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import TelemedicineChat from './components/TelemedicineChat';
+import MapDashboard from './components/MapDashboard';
+import MCHDashboard from './components/MCHDashboard';
 import './i18n';
 import './index.css';
 
@@ -84,6 +86,8 @@ const AnimatedRoutes = () => {
           <Route path="lab" element={<RoleProtectedRoute allowedRoles={['Lab']}><PageTransition><LabDashboard /></PageTransition></RoleProtectedRoute>} />
           <Route path="pharmacy" element={<RoleProtectedRoute allowedRoles={['Pharmacy']}><PageTransition><PharmacyDashboard /></PageTransition></RoleProtectedRoute>} />
           <Route path="admin" element={<RoleProtectedRoute allowedRoles={['Admin']}><PageTransition><AdminDashboard /></PageTransition></RoleProtectedRoute>} />
+          <Route path="map" element={<RoleProtectedRoute allowedRoles={['Admin', 'Doctor']}><PageTransition><MapDashboard /></PageTransition></RoleProtectedRoute>} />
+          <Route path="mch" element={<RoleProtectedRoute allowedRoles={['Nurse', 'Doctor']}><PageTransition><MCHDashboard /></PageTransition></RoleProtectedRoute>} />
           <Route path="intake" element={<RoleProtectedRoute allowedRoles={['Nurse', 'Receptionist', 'Doctor']}><PageTransition><PatientIntakeForm /></PageTransition></RoleProtectedRoute>} />
           <Route path="telemedicine" element={<PageTransition><TelemedicineChat /></PageTransition>} />
         </Route>

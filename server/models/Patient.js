@@ -12,9 +12,13 @@ const PatientSchema = new mongoose.Schema({
     spO2: { type: Number },
   },
   symptoms: [{ type: String }],
+  location: {
+    lat: { type: Number },
+    lng: { type: Number }
+  },
   riskLevel: {
     type: String,
-    enum: ['Normal', 'Elevated', 'High Risk', 'Emergency'],
+    enum: ['Normal', 'High', 'Critical'],
     default: 'Normal'
   },
   flaggedConditions: [{ type: String }],

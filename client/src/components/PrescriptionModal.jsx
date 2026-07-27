@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Pill, ShieldAlert, FileText, Download, Check, Sparkles } from 'lucide-react';
+import { X, Pill, ShieldAlert, FileText, Download, Check, Sparkles, Printer } from 'lucide-react';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 const COMMON_MEDICATIONS = [
   { name: 'Dolo 650mg (Paracetamol)', dose: '1 tab TDS after meals', type: 'Antipyretic', interaction: 'Max 4g/day. Safe in pregnancy.' },
@@ -16,6 +18,15 @@ const PrescriptionModal = ({ isOpen, onClose, patient }) => {
   const [notes, setNotes] = useState('');
   const [aiSuggestions, setAiSuggestions] = useState(false);
   const [printed, setPrinted] = useState(false);
+  
+  // Translation state
+  const [translating, setTranslating] = useState(false);
+  const [translatedNotes, setTranslatedNotes] = useState('');
+  const [targetLang, setTargetLang] = useState('gu'); // default Gujarati
+
+  const printRef = useRef();
+
+  const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
 
   if (!isOpen || !patient) return null;
 
@@ -39,11 +50,53 @@ const PrescriptionModal = ({ isOpen, onClose, patient }) => {
     setSelectedMeds(suggested);
   };
 
-  const handlePrint = () => {
+  const handlePrint = async () => {
     setPrinted(true);
-    setTimeout(() => {
-      window.print();
-    }, 300);
+    if (!printRef.current) return;
+
+    try {
+      const canvas = await html2canvas(printRef.current, { scale: 2, useCORS: true });
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`Prescription_${patient.name.replace(/\s+/g, '_')}.pdf`);
+    } catch (err) {
+      console.error('PDF Generation Error:', err);
+      alert('Failed to generate PDF.');
+    }
+  };
+
+  const handleTranslate = async () => {
+    if (!notes.trim()) return alert('Please enter some advice to translate.');
+    
+    setTranslating(true);
+    try {
+      const languageMap = { gu: 'Gujarati', hi: 'Hindi', mr: 'Marathi' };
+      
+      const res = await fetch(`${API_URL}/ai/translate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          text: notes, 
+          targetLanguage: languageMap[targetLang] 
+        })
+      });
+      
+      const data = await res.json();
+      if (data.success) {
+        setTranslatedNotes(data.translation);
+      } else {
+        alert('Translation failed.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error translating.');
+    } finally {
+      setTranslating(false);
+    }
   };
 
   return (
@@ -71,7 +124,17 @@ const PrescriptionModal = ({ isOpen, onClose, patient }) => {
             </button>
           </div>
 
-          <div className="p-6 overflow-y-auto space-y-6 flex-1">
+          <div className="p-6 overflow-y-auto space-y-6 flex-1" ref={printRef}>
+            {/* Header in PDF (only visible when printed or as a formal header) */}
+            <div className="border-b-2 border-indigo-500 pb-4 mb-4 hidden print:block">
+               <h1 className="text-2xl font-bold text-indigo-700 text-center">Swasthya Mitra Rural Clinic</h1>
+               <p className="text-center text-sm text-gray-500">Official E-Prescription Document</p>
+               <div className="flex justify-between mt-4 text-xs font-semibold">
+                 <span>Patient: {patient.name}</span>
+                 <span>Date: {new Date().toLocaleDateString()}</span>
+               </div>
+            </div>
+
             {/* AI Assist Button */}
             <div className="bg-gradient-to-r from-teal-500/10 to-indigo-500/10 border border-teal-500/20 p-4 rounded-xl flex items-center justify-between">
               <div>
@@ -135,8 +198,8 @@ const PrescriptionModal = ({ isOpen, onClose, patient }) => {
             </div>
 
             {/* Doctor Clinical Advice */}
-            <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Doctor Advice / Diet Instructions</label>
+            <div className="space-y-3">
+              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Doctor Advice / Diet Instructions</label>
               <textarea 
                 rows={2} 
                 value={notes} 
@@ -144,6 +207,33 @@ const PrescriptionModal = ({ isOpen, onClose, patient }) => {
                 placeholder="Take plenty of fluids, complete antibiotic course..."
                 className="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-3 text-xs text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:border-[var(--color-primary)]"
               />
+              
+              <div className="flex items-center gap-2 bg-slate-100 dark:bg-slate-950/50 p-2 rounded-xl border border-slate-200 dark:border-slate-800">
+                <select 
+                  value={targetLang}
+                  onChange={(e) => setTargetLang(e.target.value)}
+                  className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300 rounded-lg px-2 py-1.5 focus:outline-none"
+                >
+                  <option value="gu">Gujarati</option>
+                  <option value="hi">Hindi</option>
+                  <option value="mr">Marathi</option>
+                </select>
+                <button 
+                  onClick={handleTranslate}
+                  disabled={translating}
+                  className="bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1"
+                >
+                  {translating ? <Sparkles className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
+                  {translating ? 'Translating...' : 'AI Translate for Patient'}
+                </button>
+              </div>
+
+              {translatedNotes && (
+                <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl">
+                  <span className="text-[10px] text-emerald-400 font-bold uppercase block mb-1">Translated Patient Instructions ({targetLang.toUpperCase()}):</span>
+                  <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">{translatedNotes}</p>
+                </div>
+              )}
             </div>
           </div>
 

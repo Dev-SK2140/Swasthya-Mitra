@@ -1,11 +1,54 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const http = require('http');
+const { Server } = require('socket.io');
 require('dotenv').config();
 
 
 
 const app = express();
+const server = http.createServer(app);
+
+// Initialize Socket.io
+const io = new Server(server, {
+  cors: {
+    origin: '*', // Allow all origins for now, should restrict in production
+    methods: ['GET', 'POST']
+  }
+});
+
+// Socket.io Events for Telemedicine
+io.on('connection', (socket) => {
+  console.log(`🔌 New client connected: ${socket.id}`);
+
+  // Telemedicine Signaling
+  socket.on('join-room', (roomId) => {
+    socket.join(roomId);
+    socket.to(roomId).emit('user-joined', socket.id);
+  });
+
+  socket.on('sendMessage', (data) => {
+    io.to(data.roomId).emit('newMessage', data);
+  });
+
+  // WebRTC Signaling
+  socket.on('offer', (data) => {
+    socket.to(data.roomId).emit('offer', data);
+  });
+
+  socket.on('answer', (data) => {
+    socket.to(data.roomId).emit('answer', data);
+  });
+
+  socket.on('ice-candidate', (data) => {
+    socket.to(data.roomId).emit('ice-candidate', data);
+  });
+
+  socket.on('disconnect', () => {
+    console.log(`🔌 Client disconnected: ${socket.id}`);
+  });
+});
 
 // Middleware
 app.use(cors({
@@ -31,6 +74,18 @@ app.use('/api/ai', aiRoutes);
 // Feature routes
 const featureRoutes = require('./routes/featureRoutes');
 app.use('/api/features', featureRoutes);
+
+// MCH routes
+const mchRoutes = require('./routes/mchRoutes');
+app.use('/api/mch', mchRoutes);
+
+// Inventory routes
+const inventoryRoutes = require('./routes/inventory');
+app.use('/api/inventory', inventoryRoutes);
+
+// Notification routes
+const notificationRoutes = require('./routes/notificationRoutes');
+app.use('/api/notifications', notificationRoutes);
 
 // Serve static frontend in production / single-service deployment
 const clientDistPath = path.join(__dirname, '../client/dist');
@@ -124,10 +179,10 @@ mongoose.connect(MONGODB_URI || 'mongodb://127.0.0.1:27017/healthcare')
     console.log('✅ Connected to MongoDB');
     await seedDemoUsers();
     await seedDemoPatients();
-    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+    server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
   })
   .catch((err) => {
     console.error('❌ MongoDB connection error:', err.message);
     console.log('Starting server without DB connection for demo purposes...');
-    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT} (No DB)`));
+    server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT} (No DB)`));
   });

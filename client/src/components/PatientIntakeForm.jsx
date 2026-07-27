@@ -1,6 +1,7 @@
-﻿import React, { useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Mic } from 'lucide-react';
+import { savePatientOffline } from '../services/syncService';
 
 const PatientIntakeForm = ({ onPatientAdded }) => {
   const { t } = useTranslation();
@@ -81,8 +82,16 @@ const PatientIntakeForm = ({ onPatientAdded }) => {
         name: '', age: '', gender: 'Male', heartRate: '', bloodPressureSys: '', bloodPressureDia: '', spO2: '', symptoms: ''
       });
     } catch (err) {
-      console.error(err);
-      alert('Error submitting data');
+      console.error('API Error, falling back to Offline Mode', err);
+      const saved = await savePatientOffline({ ...payload, id: Date.now() });
+      if (saved) {
+        alert('You are offline. Patient data saved locally and will sync when internet is restored.');
+        setFormData({
+          name: '', age: '', gender: 'Male', heartRate: '', bloodPressureSys: '', bloodPressureDia: '', spO2: '', symptoms: ''
+        });
+      } else {
+        alert('Error submitting data both online and offline');
+      }
     } finally {
       setLoading(false);
     }

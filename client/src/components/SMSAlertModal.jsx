@@ -6,6 +6,9 @@ const SMSAlertModal = ({ isOpen, onClose, patient }) => {
   const [language, setLanguage] = useState('gu');
   const [msgType, setMsgType] = useState('followup');
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
 
   if (!isOpen || !patient) return null;
 
@@ -26,12 +29,28 @@ const SMSAlertModal = ({ isOpen, onClose, patient }) => {
 
   const currentMsg = messages[language][msgType];
 
-  const handleSend = () => {
-    setSent(true);
-    setTimeout(() => {
-      setSent(false);
-      onClose();
-    }, 1500);
+  const handleSend = async () => {
+    setLoading(true);
+    try {
+      await fetch(`${API_URL}/notifications/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phoneNumber: '1234567890', // Hardcoded mock number for demo
+          message: currentMsg,
+          type: 'whatsapp'
+        })
+      });
+      setSent(true);
+      setTimeout(() => {
+        setSent(false);
+        onClose();
+      }, 1500);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -111,7 +130,7 @@ const SMSAlertModal = ({ isOpen, onClose, patient }) => {
 
             {sent && (
               <div className="p-3 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 rounded-xl text-xs flex items-center justify-center gap-2 font-bold animate-bounce">
-                <CheckCircle2 className="w-4 h-4" /> Message Sent Successfully via WhatsApp API!
+                <CheckCircle2 className="w-4 h-4" /> Alert Sent Successfully via Email Fallback!
               </div>
             )}
           </div>
@@ -121,11 +140,11 @@ const SMSAlertModal = ({ isOpen, onClose, patient }) => {
               Cancel
             </button>
             <button 
-              disabled={sent}
+              disabled={sent || loading}
               onClick={handleSend}
               className="bg-emerald-600 hover:bg-emerald-500 text-slate-900 dark:text-white font-bold px-5 py-2 rounded-xl text-xs transition-all shadow-lg flex items-center gap-1.5"
             >
-              <Send className="w-3.5 h-3.5" /> Send Notice
+              <Send className={`w-3.5 h-3.5 ${loading ? 'animate-pulse' : ''}`} /> {loading ? 'Sending...' : 'Send Notice'}
             </button>
           </div>
         </motion.div>

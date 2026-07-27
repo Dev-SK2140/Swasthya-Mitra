@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import LanguageSelector from './LanguageSelector';
 import { useTranslation } from 'react-i18next';
-import { Menu, X, Activity, User, TestTube, Pill, Users, Building, ChevronDown, Video, WifiOff } from 'lucide-react';
+import { Menu, X, Activity, User, TestTube, Pill, Users, Building, ChevronDown, Video, WifiOff, MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AIAssistant from './AIAssistant';
 import ThemeToggle from './ThemeToggle';
@@ -37,7 +37,9 @@ const DashboardLayout = () => {
     { name: 'Admin', path: '/app/admin' },
     { name: 'Lab', path: '/app/lab' },
     { name: 'Pharmacy', path: '/app/pharmacy' },
-    { name: 'Intake', path: '/app/intake' }
+    { name: 'Intake', path: '/app/intake' },
+    { name: 'Map', path: '/app/map' },
+    { name: 'MCH Tracker', path: '/app/mch' }
   ];
 
   const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
@@ -69,6 +71,34 @@ const DashboardLayout = () => {
 
       <ThemeToggle />
       <LanguageSelector />
+
+      {/* Role Based Navigation */}
+      <div className={`flex items-center gap-2 ${mobile ? 'flex-col w-full' : ''}`}>
+        {roleNavItems
+          .filter(item => {
+            const role = (storedUser.role || 'Doctor').toLowerCase();
+            if (role === 'admin') return true;
+            if (item.name.toLowerCase() === role) return true;
+            if (item.name === 'Intake' && ['doctor', 'nurse', 'reception', 'receptionist'].includes(role)) return true;
+            if (item.name === 'Map' && ['doctor', 'admin'].includes(role)) return true;
+            if (item.name === 'MCH Tracker' && ['doctor', 'nurse'].includes(role)) return true;
+            return false;
+          })
+          .map((item, idx) => (
+            <Link 
+              key={idx}
+              to={item.path} 
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                location.pathname === item.path 
+                  ? 'bg-[var(--color-primary)] text-slate-900 dark:text-white' 
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800'
+              } ${mobile ? 'w-full text-center' : ''}`}
+            >
+              {item.name}
+            </Link>
+          ))
+        }
+      </div>
 
       <Link to="/app/telemedicine" className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs md:text-sm font-medium transition-all bg-[var(--color-secondary)]/10 border border-[var(--color-secondary)]/30 text-[var(--color-secondary)] hover:bg-[var(--color-secondary)]/20 ${mobile ? 'w-full justify-center mt-2' : ''}`}>
         <Video className="w-4 h-4" /> Consult

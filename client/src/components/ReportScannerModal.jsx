@@ -5,25 +5,44 @@ import { X, FileText, Upload, Sparkles, AlertCircle, CheckCircle, FileCheck } fr
 const ReportScannerModal = ({ isOpen, onClose }) => {
   const [analyzing, setAnalyzing] = useState(false);
   const [reportResult, setReportResult] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const fileInputRef = React.useRef(null);
+
+  const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
 
   if (!isOpen) return null;
 
-  const handleSimulateScan = () => {
+  const handleFileChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+    }
+  };
+
+  const handleScan = async () => {
+    if (!selectedFile) return alert('Please select a file first.');
     setAnalyzing(true);
-    setTimeout(() => {
-      setAnalyzing(false);
-      setReportResult({
-        patientName: "Ramesh Singh",
-        reportType: "Complete Blood Count (CBC) & Lipid Profile",
-        findings: [
-          { test: "Hemoglobin (Hb)", value: "10.2 g/dL", status: "Low", normal: "13.5 - 17.5 g/dL", flag: "Mild Anemia" },
-          { test: "White Blood Cells (WBC)", value: "11,800 /uL", status: "Elevated", normal: "4,500 - 11,000 /uL", flag: "Possible Infection" },
-          { test: "Platelet Count", value: "210,000 /uL", status: "Normal", normal: "150,000 - 450,000 /uL", flag: "Optimal" },
-          { test: "Fasting Blood Sugar", value: "168 mg/dL", status: "High", normal: "70 - 100 mg/dL", flag: "Hyperglycemia" }
-        ],
-        aiSummary: "Patient exhibits mild anemia, elevated WBC indicating potential infection, and elevated fasting glucose. Recommend follow-up HbA1c and antibiotic assessment."
+    
+    const formData = new FormData();
+    formData.append('reportImage', selectedFile);
+
+    try {
+      const response = await fetch(`${API_URL}/ai/scan-report`, {
+        method: 'POST',
+        body: formData
       });
-    }, 1500);
+      const data = await response.json();
+      
+      if (data.success) {
+        setReportResult(data.data);
+      } else {
+        alert(data.message || 'Failed to scan report.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error connecting to OCR service.');
+    } finally {
+      setAnalyzing(false);
+    }
   };
 
   return (
@@ -54,15 +73,27 @@ const ReportScannerModal = ({ isOpen, onClose }) => {
           <div className="p-6 overflow-y-auto space-y-6 flex-1">
             {/* Upload Area */}
             {!reportResult && (
-              <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-[var(--color-primary)] rounded-2xl p-8 text-center transition-colors bg-slate-950/40">
+              <div 
+                className="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-[var(--color-primary)] rounded-2xl p-8 text-center transition-colors bg-slate-950/40 cursor-pointer relative"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <input 
+                  type="file" 
+                  ref={fileInputRef} 
+                  onChange={handleFileChange} 
+                  accept="image/png, image/jpeg, application/pdf"
+                  className="hidden" 
+                />
                 <Upload className="w-12 h-12 text-slate-500 mx-auto mb-3" />
-                <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">Drag & Drop Blood Test or X-Ray PDF/Image</h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">Supports PDF, PNG, JPG (CBC, LFT, KFT, Lipid Profile, Sugar)</p>
+                <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1">
+                  {selectedFile ? selectedFile.name : 'Click to Upload Blood Test or X-Ray Image'}
+                </h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">Supports PNG, JPG</p>
                 
                 <button
-                  disabled={analyzing}
-                  onClick={handleSimulateScan}
-                  className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-slate-900 dark:text-white font-bold px-6 py-2.5 rounded-xl text-xs transition-all shadow-lg inline-flex items-center gap-2"
+                  disabled={analyzing || !selectedFile}
+                  onClick={(e) => { e.stopPropagation(); handleScan(); }}
+                  className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-50 text-slate-900 dark:text-white font-bold px-6 py-2.5 rounded-xl text-xs transition-all shadow-lg inline-flex items-center gap-2"
                 >
                   {analyzing ? (
                     <>
@@ -70,7 +101,7 @@ const ReportScannerModal = ({ isOpen, onClose }) => {
                     </>
                   ) : (
                     <>
-                      <Sparkles className="w-4 h-4" /> Scan Demo Report
+                      <Sparkles className="w-4 h-4" /> Extract Report Data
                     </>
                   )}
                 </button>
@@ -125,7 +156,7 @@ const ReportScannerModal = ({ isOpen, onClose }) => {
           <div className="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80 flex justify-end gap-2">
             {reportResult && (
               <button 
-                onClick={() => setReportResult(null)} 
+                onClick={() => { setReportResult(null); setSelectedFile(null); }} 
                 className="px-4 py-2 rounded-xl text-xs text-slate-600 dark:text-slate-300 hover:bg-white dark:bg-slate-800"
               >
                 Scan Another Report
