@@ -70,7 +70,7 @@ const LoginPage = () => {
         <img src={logoImg} alt="Logo" className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-full mb-4 shadow-[0_0_25px_rgba(130,216,165,0.4)] border-2 border-[#07a9b0]/50" />
         <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-700 to-emerald-600 dark:from-white dark:to-[#82d8a5] bg-clip-text text-transparent mb-1">{t('auth.login_title', 'Welcome Back to Swasthya Mitra')}</h2>
         <p className="text-sm text-slate-500 dark:text-slate-400 font-medium">{t('auth.login_subtitle', 'Login to access the intelligent triage dashboard')}</p>
-        
+
         {/* Quick Demo Login Chips */}
         <div className="flex flex-wrap justify-center gap-1.5 mt-2">
           <button type="button" onClick={() => handleQuickDemoLogin('doctor@demo.com')} className="text-[11px] bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/30 px-2.5 py-1 rounded-full hover:bg-teal-500/20 transition-all font-semibold">⚡ Doctor</button>
@@ -79,7 +79,6 @@ const LoginPage = () => {
           <button type="button" onClick={() => handleQuickDemoLogin('patient@demo.com')} className="text-[11px] bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-500/30 px-2.5 py-1 rounded-full hover:bg-purple-500/20 transition-all font-semibold">⚡ Patient</button>
           <button type="button" onClick={() => handleQuickDemoLogin('lab@demo.com')} className="text-[11px] bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/30 px-2.5 py-1 rounded-full hover:bg-blue-500/20 transition-all font-semibold">⚡ Lab</button>
           <button type="button" onClick={() => handleQuickDemoLogin('pharmacy@demo.com')} className="text-[11px] bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/30 px-2.5 py-1 rounded-full hover:bg-rose-500/20 transition-all font-semibold">⚡ Pharmacy</button>
-          <button type="button" onClick={() => handleQuickDemoLogin('shahidsandhi1786@gmail.com')} className="text-[11px] bg-slate-500/10 text-slate-700 dark:text-slate-400 border border-slate-500/30 px-2.5 py-1 rounded-full hover:bg-slate-500/20 transition-all font-semibold">⚡ Admin</button>
         </div>
       </motion.div>
 
