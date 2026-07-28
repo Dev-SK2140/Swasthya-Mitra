@@ -146,7 +146,7 @@ const ReferralModal = ({ isOpen, onClose, patient }) => {
             <button 
               onClick={handleGenerate}
               disabled={isGenerating || !hospitalName || !reason}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-slate-900 dark:text-white shadow-lg shadow-[var(--color-primary)]/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-medium bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white shadow-lg shadow-[var(--color-primary)]/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isGenerating ? (
                 <>

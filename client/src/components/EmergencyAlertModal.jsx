@@ -46,7 +46,7 @@ const EmergencyAlertModal = ({ isOpen, onClose, patient }) => {
           className="bg-slate-50 dark:bg-slate-900 border-2 border-red-500 rounded-3xl w-full max-w-xl overflow-hidden shadow-[0_0_50px_rgba(239,68,68,0.4)] relative"
         >
           {/* Top Red Bar */}
-          <div className="bg-red-600 text-slate-900 dark:text-white p-4 flex items-center justify-between animate-pulse">
+          <div className="bg-red-600 text-white p-4 flex items-center justify-between animate-pulse">
             <div className="flex items-center gap-2 font-bold text-lg tracking-wider uppercase">
               <Siren className="w-6 h-6 animate-spin" /> Critical Red-Alert Broadcast
             </div>
@@ -106,7 +106,7 @@ const EmergencyAlertModal = ({ isOpen, onClose, patient }) => {
             <button
               disabled={broadcasting || broadcasted}
               onClick={handleTriggerAlert}
-              className="flex-1 bg-red-600 hover:bg-red-500 text-slate-900 dark:text-white font-black py-3 rounded-xl text-sm transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)] flex items-center justify-center gap-2 disabled:opacity-50"
+              className="flex-1 bg-red-600 hover:bg-red-500 text-white font-black py-3 rounded-xl text-sm transition-all shadow-[0_0_20px_rgba(239,68,68,0.4)] flex items-center justify-center gap-2 disabled:opacity-50"
             >
               {broadcasting ? 'Broadcasting Siren...' : broadcasted ? 'Broadcast Sent' : 'BROADCAST EMERGENCY ALARM'}
               <Send className="w-4 h-4" />

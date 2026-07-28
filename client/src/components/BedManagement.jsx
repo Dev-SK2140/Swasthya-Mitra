@@ -45,7 +45,7 @@ const BedManagement = () => {
 
   const getStatusColor = (status) => {
     switch(status) {
-      case 'available': return 'bg-[var(--color-secondary)]/20 border-[var(--color-secondary)]/50 text-[var(--color-secondary)]';
+      case 'available': return 'bg-[var(--color-secondary)]/20 border-[var(--color-secondary)]/50 text-teal-700 dark:text-[var(--color-secondary)]';
       case 'occupied': return 'bg-blue-500/20 border-blue-500/50 text-blue-400';
       case 'critical': return 'bg-rose-500/20 border-rose-500/50 text-rose-400 animate-pulse';
       case 'maintenance': return 'bg-amber-500/20 border-amber-500/50 text-amber-400';
@@ -70,7 +70,7 @@ const BedManagement = () => {
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${filter === f ? 'bg-[var(--color-primary)] text-slate-900 dark:text-white shadow-lg' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white'}`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-all ${filter === f ? 'bg-[var(--color-primary)] text-white shadow-lg' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white'}`}
             >
               {f}
             </button>

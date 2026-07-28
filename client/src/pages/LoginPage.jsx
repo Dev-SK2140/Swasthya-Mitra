@@ -4,14 +4,24 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useCallback } from 'react';
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import { Canvas } from '@react-three/fiber';
+import { Environment, Float, Sparkles } from '@react-three/drei';
 import LanguageSelector from '../components/LanguageSelector';
 import ThemeToggle from '../components/ThemeToggle';
+import MedicalCross3D from '../components/MedicalCross3D';
 import logoImg from '../assets/logo.png';
 
 const LoginPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+
+  const particlesInit = useCallback(async (engine) => {
+    await loadSlim(engine);
+  }, []);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -62,10 +72,82 @@ const LoginPage = () => {
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#07a9b0]/20 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#82d8a5]/20 rounded-full blur-[120px] pointer-events-none"></div>
 
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        className="absolute inset-0 z-0 pointer-events-auto"
+        options={{
+          fullScreen: { enable: false },
+          background: { color: { value: "transparent" } },
+          fpsLimit: 60,
+          interactivity: {
+            events: {
+              onHover: { enable: true, mode: "grab" },
+              resize: true,
+            },
+            modes: { grab: { distance: 200, links: { opacity: 0.5 } } }
+          },
+          particles: {
+            color: { value: "#82d8a5" },
+            links: { color: "#07a9b0", distance: 150, enable: true, opacity: 0.2, width: 1 },
+            move: { direction: "none", enable: true, outModes: { default: "bounce" }, random: false, speed: 1, straight: false },
+            number: { density: { enable: true, area: 800 }, value: 60 },
+            opacity: { value: 0.3 },
+            shape: { type: "circle" },
+            size: { value: { min: 1, max: 3 } },
+          },
+          detectRetina: true,
+        }}
+      />
+
+      {/* 3D Canvas Background */}
+      <div className="absolute inset-0 z-10 opacity-70 pointer-events-none">
+        <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 5]} intensity={1} />
+          <Environment preset="city" />
+          <Float speed={2} rotationIntensity={1} floatIntensity={2}>
+            <MedicalCross3D position={[-4, 3, -4]} scale={0.8} />
+          </Float>
+          <Float speed={1.5} rotationIntensity={2} floatIntensity={1}>
+            <MedicalCross3D position={[4, -3, -6]} scale={0.7} />
+          </Float>
+          <Sparkles count={100} scale={15} size={4} speed={0.4} opacity={0.2} color="#82d8a5" />
+        </Canvas>
+      </div>
+
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        className="absolute inset-0 z-0 pointer-events-auto"
+        options={{
+          fullScreen: { enable: false },
+          background: { color: { value: "transparent" } },
+          fpsLimit: 60,
+          interactivity: {
+            events: {
+              onHover: { enable: true, mode: "grab" },
+              resize: true,
+            },
+            modes: { grab: { distance: 200, links: { opacity: 0.5 } } }
+          },
+          particles: {
+            color: { value: "#82d8a5" },
+            links: { color: "#07a9b0", distance: 150, enable: true, opacity: 0.2, width: 1 },
+            move: { direction: "none", enable: true, outModes: { default: "bounce" }, random: false, speed: 1, straight: false },
+            number: { density: { enable: true, area: 800 }, value: 60 },
+            opacity: { value: 0.3 },
+            shape: { type: "circle" },
+            size: { value: { min: 1, max: 3 } },
+          },
+          detectRetina: true,
+        }}
+      />
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="sm:mx-auto sm:w-full sm:max-w-md z-10 text-center flex flex-col items-center"
+        className="sm:mx-auto sm:w-full sm:max-w-md z-20 text-center flex flex-col items-center relative"
       >
         <img src={logoImg} alt="Logo" className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-full mb-4 shadow-[0_0_25px_rgba(130,216,165,0.4)] border-2 border-[#07a9b0]/50" />
         <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-700 to-emerald-600 dark:from-white dark:to-[#82d8a5] bg-clip-text text-transparent mb-1">{t('auth.login_title', 'Welcome Back to Swasthya Mitra')}</h2>
@@ -86,7 +168,7 @@ const LoginPage = () => {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.1 }}
-        className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10"
+        className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-20 relative"
       >
         <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl py-8 px-4 shadow-[0_8px_30px_rgb(0,0,0,0.5)] sm:rounded-2xl sm:px-10 border border-slate-200 dark:border-white/10">
           {error && (
@@ -114,7 +196,7 @@ const LoginPage = () => {
 
             <div className="flex items-center justify-between">
               <div className="text-sm">
-                <Link to="/forgot-password" className="font-medium text-[var(--color-primary)] hover:text-[var(--color-secondary)]">{t('auth.forgot_password', 'Forgot your password?')}</Link>
+                <Link to="/forgot-password" className="font-medium text-[var(--color-primary)] hover:text-teal-700 dark:text-[var(--color-secondary)]">{t('auth.forgot_password', 'Forgot your password?')}</Link>
               </div>
             </div>
 
@@ -133,7 +215,7 @@ const LoginPage = () => {
               </div>
             </div>
             <div className="mt-6 text-center text-sm text-slate-700 dark:text-slate-400 font-medium">
-              {t('auth.no_account', "Don't have an account?")} <Link to="/register" className="font-medium text-[var(--color-primary)] hover:text-[var(--color-secondary)]">{t('auth.register_here', 'Register now')}</Link>
+              {t('auth.no_account', "Don't have an account?")} <Link to="/register" className="font-medium text-[var(--color-primary)] hover:text-teal-700 dark:text-[var(--color-secondary)]">{t('auth.register_here', 'Register now')}</Link>
             </div>
           </div>
 

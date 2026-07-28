@@ -7,6 +7,10 @@ const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_UR
 const PatientTimelineModal = ({ isOpen, onClose, patient }) => {
   const [history, setHistory] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
+  const [noteText, setNoteText] = React.useState('');
+  const [addingNote, setAddingNote] = React.useState(false);
+  const [isOrderingLab, setIsOrderingLab] = React.useState(false);
+  const [labTestName, setLabTestName] = React.useState('');
 
   React.useEffect(() => {
     if (isOpen && patient) {
@@ -41,6 +45,70 @@ const PatientTimelineModal = ({ isOpen, onClose, patient }) => {
   }, [isOpen, patient]);
 
   if (!isOpen || !patient) return null;
+
+  const handleAddNote = async () => {
+    if (!noteText.trim()) return;
+    setAddingNote(true);
+    try {
+      const res = await fetch(`${API_URL}/patients/${patient._id}/history`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'Consultation', doctor: 'Dr. Sharma', notes: noteText, status: 'Completed' })
+      });
+      if (res.ok) {
+        const newRecord = await res.json();
+        setHistory([{
+          date: new Date(newRecord.date).toLocaleDateString(),
+          type: newRecord.type.toLowerCase(),
+          desc: newRecord.notes,
+          icon: Stethoscope,
+          color: 'text-[var(--color-primary)]',
+          bg: 'bg-[var(--color-primary)]/20'
+        }, ...history]);
+        setNoteText('');
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setAddingNote(false);
+    }
+  };
+
+  const handleOrderLab = async () => {
+    if (!labTestName.trim()) return;
+    setAddingNote(true);
+    try {
+      // 1. Send Lab Order
+      await fetch(`${API_URL}/lab`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ patientId: patient._id, patientName: patient.name, doctorId: 'Dr. Sharma', testName: labTestName, priority: 'Normal' })
+      });
+      // 2. Add History Note
+      const res = await fetch(`${API_URL}/patients/${patient._id}/history`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'Lab Report', doctor: 'Dr. Sharma', notes: `Ordered Lab Test: ${labTestName}`, status: 'Pending' })
+      });
+      if (res.ok) {
+        const newRecord = await res.json();
+        setHistory([{
+          date: new Date(newRecord.date).toLocaleDateString(),
+          type: newRecord.type.toLowerCase(),
+          desc: newRecord.notes,
+          icon: Activity,
+          color: 'text-[var(--color-primary)]',
+          bg: 'bg-[var(--color-primary)]/20'
+        }, ...history]);
+        setLabTestName('');
+        setIsOrderingLab(false);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setAddingNote(false);
+    }
+  };
 
   return (
     <AnimatePresence>
@@ -118,11 +186,42 @@ const PatientTimelineModal = ({ isOpen, onClose, patient }) => {
               </div>
             </div>
           </div>
-          
-          <div className="p-4 bg-white dark:bg-slate-800 border-t border-slate-300 dark:border-slate-700 flex justify-end">
-            <button onClick={onClose} className="bg-[var(--color-primary)] hover:bg-[var(--color-primary)] text-slate-900 dark:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
-              Close Record
-            </button>
+          <div className="p-4 bg-white dark:bg-slate-800 border-t border-slate-300 dark:border-slate-700 space-y-4">
+            {!isOrderingLab ? (
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  value={noteText}
+                  onChange={e => setNoteText(e.target.value)}
+                  placeholder="Add a consultation note..."
+                  className="flex-1 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-900 dark:text-white outline-none focus:border-[var(--color-primary)]"
+                  onKeyDown={e => e.key === 'Enter' && handleAddNote()}
+                />
+                <button onClick={handleAddNote} disabled={addingNote} className="bg-teal-600 hover:bg-teal-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                  {addingNote ? 'Saving...' : 'Add Note'}
+                </button>
+                <button onClick={() => setIsOrderingLab(true)} className="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                  Order Lab
+                </button>
+              </div>
+            ) : (
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  value={labTestName}
+                  onChange={e => setLabTestName(e.target.value)}
+                  placeholder="e.g. CBC, Lipid Profile, X-Ray"
+                  className="flex-1 bg-slate-50 dark:bg-slate-900 border border-purple-300 dark:border-purple-700 rounded-lg px-3 py-2 text-sm text-slate-900 dark:text-white outline-none focus:border-purple-500"
+                  onKeyDown={e => e.key === 'Enter' && handleOrderLab()}
+                />
+                <button onClick={handleOrderLab} disabled={addingNote} className="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                  {addingNote ? 'Ordering...' : 'Submit Order'}
+                </button>
+                <button onClick={() => setIsOrderingLab(false)} className="bg-slate-500 hover:bg-slate-400 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                  Cancel
+                </button>
+              </div>
+            )}
           </div>
         </motion.div>
       </div>

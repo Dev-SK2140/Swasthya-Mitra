@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { Building, TrendingUp, Users, Activity, MapPin, Download } from 'lucide-react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -9,7 +10,9 @@ import './AdminDashboard.css';
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const AdminDashboard = () => {
+  const { t } = useTranslation();
   const [patients, setPatients] = useState([]);
+  const [referrals, setReferrals] = useState([]);
   const [stats, setStats] = useState({
     patients: { total: 0, highRisk: 0 },
     mch: { total: 0, highRisk: 0 },
@@ -26,7 +29,8 @@ const AdminDashboard = () => {
     { i: "card-phcs", x: 3, y: 0, w: 1, h: 1, minW: 1, minH: 1 },
     { i: "chart-disease", x: 0, y: 1, w: 2, h: 2, minW: 2, minH: 2 },
     { i: "chart-district", x: 2, y: 1, w: 2, h: 2, minW: 2, minH: 2 },
-    { i: "bed-management", x: 0, y: 3, w: 4, h: 3, minW: 2, minH: 2 },
+    { i: "referrals-list", x: 0, y: 3, w: 2, h: 2, minW: 2, minH: 2 },
+    { i: "bed-management", x: 2, y: 3, w: 2, h: 2, minW: 2, minH: 2 },
   ];
 
   const getSavedLayout = () => {
@@ -56,6 +60,10 @@ const AdminDashboard = () => {
         const analyticsRes = await fetch(`${API_URL}/features/analytics`);
         const analyticsData = await analyticsRes.json();
         setStats(analyticsData);
+
+        const referralsRes = await fetch(`${API_URL}/referrals`);
+        const referralsData = await referralsRes.json();
+        setReferrals(Array.isArray(referralsData) ? referralsData : []);
 
       } catch (err) {
         console.error("Failed to fetch dashboard data:", err);
@@ -99,28 +107,28 @@ const AdminDashboard = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-2">
         <div>
           <h2 className="text-2xl font-semibold bg-gradient-to-r from-slate-200 to-slate-400 bg-clip-text text-transparent flex items-center gap-2">
-            <Building className="text-slate-600 dark:text-slate-300" /> Admin & Health Officer Portal
+            <Building className="text-slate-600 dark:text-slate-300" /> {t('dashboard.admin_portal')}
           </h2>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Drag and drop cards to organize your dashboard</p>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">{t('dashboard.admin_subtitle')}</p>
         </div>
         <div className="flex gap-4 items-center">
           <select className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-lg px-4 py-2 outline-none focus:border-[var(--color-primary)]">
-            <option>Ahmedabad District</option>
-            <option>Surat District</option>
-            <option>Vadodara District</option>
-            <option>Rajkot District</option>
+            <option>{t('dashboard.dist_ahmedabad')}</option>
+            <option>{t('dashboard.dist_surat')}</option>
+            <option>{t('dashboard.dist_vadodara')}</option>
+            <option>{t('dashboard.dist_rajkot')}</option>
           </select>
           <button 
             onClick={() => setLayouts({ lg: defaultLayout })}
             className="flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-slate-900 dark:text-white px-4 py-2 rounded-lg transition-colors font-medium shadow-lg"
           >
-            Reset Layout
+            {t('dashboard.reset_layout')}
           </button>
           <button 
             onClick={handleExportPDF}
-            className="flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary)] text-slate-900 dark:text-white px-4 py-2 rounded-lg transition-colors font-medium shadow-lg"
+            className="flex items-center gap-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary)] text-white px-4 py-2 rounded-lg transition-colors font-medium shadow-lg"
           >
-            <Download className="w-4 h-4" /> Export PDF
+            <Download className="w-4 h-4" /> {t('dashboard.export_pdf')}
           </button>
         </div>
       </div>
@@ -137,36 +145,36 @@ const AdminDashboard = () => {
         draggableHandle=".drag-handle"
       >
         <div key="card-users" className="glass-panel p-5 bg-slate-800/40 border border-slate-300/50 dark:border-slate-700/50 rounded-xl relative overflow-hidden group flex flex-col justify-center">
-          <div className="drag-handle absolute inset-0 cursor-grab active:cursor-grabbing z-0" title="Drag to move"></div>
+          <div className="drag-handle absolute inset-0 cursor-grab active:cursor-grabbing z-0" title={t('dashboard.drag_to_move')}></div>
           <div className="absolute right-0 top-0 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500 pointer-events-none">
             <Users className="w-24 h-24" />
           </div>
           <div className="relative z-10 pointer-events-none">
-            <div className="text-slate-500 dark:text-slate-400 text-sm mb-1">Total Patients (Live)</div>
+            <div className="text-slate-500 dark:text-slate-400 text-sm mb-1">{t('dashboard.total_patients')}</div>
             <div className="text-3xl font-bold text-slate-900 dark:text-white mb-2">{totalPatients}</div>
-            <div className="text-xs text-[var(--color-secondary)] flex items-center gap-1"><TrendingUp className="w-3 h-3" /> Updated in real-time</div>
+            <div className="text-xs text-teal-700 dark:text-[var(--color-secondary)] flex items-center gap-1"><TrendingUp className="w-3 h-3" /> {t('dashboard.updated_realtime')}</div>
           </div>
         </div>
         
         <div key="card-critical" className="glass-panel p-5 bg-slate-800/40 border border-slate-300/50 dark:border-slate-700/50 rounded-xl relative overflow-hidden group flex flex-col justify-center">
-          <div className="drag-handle absolute inset-0 cursor-grab active:cursor-grabbing z-0" title="Drag to move"></div>
+          <div className="drag-handle absolute inset-0 cursor-grab active:cursor-grabbing z-0" title={t('dashboard.drag_to_move')}></div>
           <div className="absolute right-0 top-0 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500 pointer-events-none">
             <Activity className="w-24 h-24" />
           </div>
           <div className="relative z-10 pointer-events-none">
-            <div className="text-slate-500 dark:text-slate-400 text-sm mb-1">Critical Cases (Live)</div>
+            <div className="text-slate-500 dark:text-slate-400 text-sm mb-1">{t('dashboard.critical_cases')}</div>
             <div className="text-3xl font-bold text-rose-400 mb-2">{criticalCases}</div>
-            <div className="text-xs text-rose-400 flex items-center gap-1"><TrendingUp className="w-3 h-3" /> Needs attention</div>
+            <div className="text-xs text-rose-400 flex items-center gap-1"><TrendingUp className="w-3 h-3" /> {t('dashboard.needs_attention')}</div>
           </div>
         </div>
 
         <div key="card-beds" className="glass-panel p-5 bg-slate-800/40 border border-slate-300/50 dark:border-slate-700/50 rounded-xl relative overflow-hidden group flex flex-col justify-center">
-          <div className="drag-handle absolute inset-0 cursor-grab active:cursor-grabbing z-0" title="Drag to move"></div>
+          <div className="drag-handle absolute inset-0 cursor-grab active:cursor-grabbing z-0" title={t('dashboard.drag_to_move')}></div>
           <div className="absolute right-0 top-0 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500 pointer-events-none">
             <Building className="w-24 h-24" />
           </div>
           <div className="relative z-10 pointer-events-none">
-            <div className="text-slate-500 dark:text-slate-400 text-sm mb-1">Bed Occupancy</div>
+            <div className="text-slate-500 dark:text-slate-400 text-sm mb-1">{t('dashboard.bed_occupancy')}</div>
             <div className="text-3xl font-bold text-slate-900 dark:text-white mb-2">
               {stats.beds?.total > 0 ? Math.round((stats.beds.occupied / stats.beds.total) * 100) : 0}%
             </div>
@@ -177,20 +185,20 @@ const AdminDashboard = () => {
         </div>
 
         <div key="card-phcs" className="glass-panel p-5 bg-slate-800/40 border border-slate-300/50 dark:border-slate-700/50 rounded-xl relative overflow-hidden group flex flex-col justify-center">
-          <div className="drag-handle absolute inset-0 cursor-grab active:cursor-grabbing z-0" title="Drag to move"></div>
+          <div className="drag-handle absolute inset-0 cursor-grab active:cursor-grabbing z-0" title={t('dashboard.drag_to_move')}></div>
           <div className="absolute right-0 top-0 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500 pointer-events-none">
             <MapPin className="w-24 h-24" />
           </div>
           <div className="relative z-10 pointer-events-none">
-            <div className="text-slate-500 dark:text-slate-400 text-sm mb-1">Active Referrals</div>
+            <div className="text-slate-500 dark:text-slate-400 text-sm mb-1">{t('dashboard.active_referrals')}</div>
             <div className="text-3xl font-bold text-emerald-400 mb-2">{stats.referrals?.active || 0}</div>
-            <div className="text-xs text-[var(--color-secondary)] flex items-center gap-1">Ambulances & Transfers</div>
+            <div className="text-xs text-teal-700 dark:text-[var(--color-secondary)] flex items-center gap-1">{t('dashboard.ambulances_transfers')}</div>
           </div>
         </div>
 
         <div key="chart-disease" className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-300/50 dark:border-slate-700/50 rounded-2xl p-6 flex flex-col">
-          <div className="drag-handle flex-1 absolute inset-0 cursor-grab active:cursor-grabbing z-0" title="Drag to move"></div>
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 relative z-10 pointer-events-none">Disease Trends (Gujarat)</h3>
+          <div className="drag-handle flex-1 absolute inset-0 cursor-grab active:cursor-grabbing z-0" title={t('dashboard.drag_to_move')}></div>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 relative z-10 pointer-events-none">{t('dashboard.disease_trends')}</h3>
           <div className="flex-1 w-full relative z-10 pointer-events-none">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={diseaseData}>
@@ -207,8 +215,8 @@ const AdminDashboard = () => {
         </div>
         
         <div key="chart-district" className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-300/50 dark:border-slate-700/50 rounded-2xl p-6 flex flex-col">
-          <div className="drag-handle flex-1 absolute inset-0 cursor-grab active:cursor-grabbing z-0" title="Drag to move"></div>
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 relative z-10 pointer-events-none">High-Risk Cases by District</h3>
+          <div className="drag-handle flex-1 absolute inset-0 cursor-grab active:cursor-grabbing z-0" title={t('dashboard.drag_to_move')}></div>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 relative z-10 pointer-events-none">{t('dashboard.high_risk_cases')}</h3>
           <div className="flex-1 w-full relative z-10 pointer-events-none">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={districtData}>
@@ -222,8 +230,30 @@ const AdminDashboard = () => {
           </div>
         </div>
 
+        <div key="referrals-list" className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-300/50 dark:border-slate-700/50 rounded-2xl p-6 overflow-auto relative">
+          <div className="drag-handle h-8 w-full cursor-grab active:cursor-grabbing absolute top-0 left-0 bg-slate-700/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 text-xs text-slate-900 dark:text-white">{t('dashboard.drag_to_move')}</div>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Active Emergencies & Referrals</h3>
+          <div className="space-y-3">
+            {referrals.length === 0 ? (
+              <p className="text-sm text-slate-500">No active referrals.</p>
+            ) : referrals.map(ref => (
+              <div key={ref._id} className={`p-3 rounded-xl border ${ref.priority === 'Critical' ? 'bg-red-500/10 border-red-500/30' : 'bg-amber-500/10 border-amber-500/30'}`}>
+                <div className="flex justify-between items-center mb-1">
+                  <span className={`text-xs font-bold px-2 py-0.5 rounded-md ${ref.priority === 'Critical' ? 'bg-red-500 text-white' : 'bg-amber-500 text-white'}`}>
+                    {ref.priority} • {ref.type}
+                  </span>
+                  <span className="text-xs text-slate-500">{new Date(ref.createdAt).toLocaleTimeString()}</span>
+                </div>
+                <div className="text-sm font-semibold text-slate-900 dark:text-white">{ref.patientName || 'Unknown Patient'}</div>
+                <div className="text-xs text-slate-700 dark:text-slate-300 mt-1">To: {ref.toFacility}</div>
+                <div className="text-xs text-slate-500 mt-1">{ref.reason}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div key="bed-management" className="bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-300/50 dark:border-slate-700/50 rounded-2xl p-6 overflow-auto">
-          <div className="drag-handle h-8 w-full cursor-grab active:cursor-grabbing absolute top-0 left-0 bg-slate-700/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 text-xs text-slate-900 dark:text-white">Drag to move</div>
+          <div className="drag-handle h-8 w-full cursor-grab active:cursor-grabbing absolute top-0 left-0 bg-slate-700/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity z-10 text-xs text-slate-900 dark:text-white">{t('dashboard.drag_to_move')}</div>
           <div className="mt-4 relative z-0">
             <BedManagement />
           </div>

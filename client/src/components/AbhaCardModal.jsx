@@ -103,7 +103,7 @@ const AbhaCardModal = ({ isOpen, onClose, patient }) => {
             </button>
             <button 
               onClick={handlePrint}
-              className="bg-emerald-600 hover:bg-emerald-500 text-slate-900 dark:text-white font-bold px-5 py-2 rounded-xl text-xs flex items-center gap-1.5 transition-all shadow-lg"
+              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2 rounded-xl text-xs flex items-center gap-1.5 transition-all shadow-lg"
             >
               <Download className="w-4 h-4" /> Download / Print ABHA Card
             </button>

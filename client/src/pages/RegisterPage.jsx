@@ -4,6 +4,12 @@ import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Eye, EyeOff } from 'lucide-react';
+import { useCallback } from 'react';
+import Particles from "@tsparticles/react";
+import { loadSlim } from "@tsparticles/slim";
+import { Canvas } from '@react-three/fiber';
+import { Environment, Float, Sparkles } from '@react-three/drei';
+import MedicalCross3D from '../components/MedicalCross3D';
 import LanguageSelector from '../components/LanguageSelector';
 import logoImg from '../assets/logo.png';
 
@@ -16,6 +22,10 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const particlesInit = useCallback(async (engine) => {
+    await loadSlim(engine);
+  }, []);
 
   // OTP States
   const [step, setStep] = useState(1);
@@ -104,20 +114,64 @@ const RegisterPage = () => {
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#07a9b0]/20 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-[#82d8a5]/20 rounded-full blur-[120px] pointer-events-none"></div>
 
+      <Particles
+        id="tsparticles"
+        init={particlesInit}
+        className="absolute inset-0 z-0 pointer-events-auto"
+        options={{
+          fullScreen: { enable: false },
+          background: { color: { value: "transparent" } },
+          fpsLimit: 60,
+          interactivity: {
+            events: {
+              onHover: { enable: true, mode: "grab" },
+              resize: true,
+            },
+            modes: { grab: { distance: 200, links: { opacity: 0.5 } } }
+          },
+          particles: {
+            color: { value: "#82d8a5" },
+            links: { color: "#07a9b0", distance: 150, enable: true, opacity: 0.2, width: 1 },
+            move: { direction: "none", enable: true, outModes: { default: "bounce" }, random: false, speed: 1, straight: false },
+            number: { density: { enable: true, area: 800 }, value: 60 },
+            opacity: { value: 0.3 },
+            shape: { type: "circle" },
+            size: { value: { min: 1, max: 3 } },
+          },
+          detectRetina: true,
+        }}
+      />
+
+      {/* 3D Canvas Background */}
+      <div className="absolute inset-0 z-10 opacity-70 pointer-events-none">
+        <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 5]} intensity={1} />
+          <Environment preset="city" />
+          <Float speed={2} rotationIntensity={1} floatIntensity={2}>
+            <MedicalCross3D position={[-4, 3, -4]} scale={0.8} />
+          </Float>
+          <Float speed={1.5} rotationIntensity={2} floatIntensity={1}>
+            <MedicalCross3D position={[4, -3, -6]} scale={0.7} />
+          </Float>
+          <Sparkles count={100} scale={15} size={4} speed={0.4} opacity={0.2} color="#82d8a5" />
+        </Canvas>
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="sm:mx-auto sm:w-full sm:max-w-md z-10 text-center flex flex-col items-center"
+        className="sm:mx-auto sm:w-full sm:max-w-md z-20 text-center flex flex-col items-center relative"
       >
-        <img src={logoImg} alt="Logo" className="w-20 h-20 object-contain mb-4 drop-shadow-[0_0_15px_rgba(130,216,165,0.3)]" />
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-white to-[#82d8a5] bg-clip-text text-transparent">{t('register.title', 'Create your account')}</h2>
+        <img src={logoImg} alt="Logo" className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-full mb-4 shadow-[0_0_25px_rgba(130,216,165,0.4)] border-2 border-[#07a9b0]/50" />
+        <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-700 to-emerald-600 dark:from-white dark:to-[#82d8a5] bg-clip-text text-transparent mb-1">{t('register.title', 'Create your account')}</h2>
       </motion.div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 1 }}
         transition={{ delay: 0.1 }}
-        className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10"
+        className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-20 relative"
       >
         <div className="bg-white/60 dark:bg-slate-800/60 backdrop-blur-xl py-8 px-4 shadow-[0_8px_30px_rgb(0,0,0,0.5)] sm:rounded-2xl sm:px-10 border border-slate-200 dark:border-white/10">
 
@@ -163,7 +217,7 @@ const RegisterPage = () => {
                   </button>
                 </div>
               </div>
-              <button type="submit" disabled={loading} className="w-full py-3 px-4 rounded-lg text-sm font-bold text-slate-900 dark:text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-50">
+              <button type="submit" disabled={loading} className="w-full py-3 px-4 rounded-lg text-sm font-bold text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-50">
                 {loading ? 'Sending OTP...' : 'Send OTP'}
               </button>
             </form>
@@ -178,7 +232,7 @@ const RegisterPage = () => {
                 <label className="block text-sm font-medium text-slate-600 dark:text-slate-300 text-center mb-1">Enter 6-Digit OTP</label>
                 <input required type="text" maxLength={6} value={otp} onChange={e => setOtp(e.target.value)} className="block w-full text-center tracking-widest text-2xl font-bold px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50/50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
               </div>
-              <button type="submit" disabled={loading || otp.length !== 6} className="w-full py-3 px-4 rounded-lg text-sm font-bold text-slate-900 dark:text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-50">
+              <button type="submit" disabled={loading || otp.length !== 6} className="w-full py-3 px-4 rounded-lg text-sm font-bold text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-50">
                 {loading ? 'Verifying...' : 'Verify & Create Account'}
               </button>
 
@@ -195,7 +249,7 @@ const RegisterPage = () => {
           )}
 
           <div className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
-            Already have an account? <Link to="/login" className="font-medium text-[var(--color-primary)] hover:text-[var(--color-secondary)]">Sign in</Link>
+            Already have an account? <Link to="/login" className="font-medium text-[var(--color-primary)] hover:text-teal-700 dark:text-[var(--color-secondary)]">Sign in</Link>
           </div>
 
           <div className="mt-6 flex justify-center">

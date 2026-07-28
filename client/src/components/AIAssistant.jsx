@@ -150,7 +150,7 @@ const AIAssistant = () => {
                 <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[85%] rounded-2xl p-3 text-sm ${
                     msg.role === 'user' 
-                      ? 'bg-[var(--color-primary)] text-slate-900 dark:text-white rounded-br-sm' 
+                      ? 'bg-[var(--color-primary)] text-white rounded-br-sm' 
                       : 'bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-bl-sm'
                   }`}>
                     {msg.content}
@@ -191,7 +191,7 @@ const AIAssistant = () => {
                 <button 
                   type="submit"
                   disabled={!input.trim() || loading}
-                  className="bg-[var(--color-primary)] hover:bg-[var(--color-primary)] disabled:opacity-50 text-slate-900 dark:text-white p-2 rounded-lg transition-colors"
+                  className="bg-[var(--color-primary)] hover:bg-[var(--color-primary)] disabled:opacity-50 text-white p-2 rounded-lg transition-colors"
                 >
                   <Send className="w-4 h-4" />
                 </button>

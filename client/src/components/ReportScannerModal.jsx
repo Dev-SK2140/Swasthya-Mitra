@@ -121,7 +121,7 @@ const ReportScannerModal = ({ isOpen, onClose }) => {
                 <button
                   disabled={analyzing || !selectedFile}
                   onClick={(e) => { e.stopPropagation(); handleScan(); }}
-                  className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-50 text-slate-900 dark:text-white font-bold px-6 py-2.5 rounded-xl text-xs transition-all shadow-lg inline-flex items-center gap-2"
+                  className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)]disabled:opacity-50 text-white font-bold px-6 py-2.5 rounded-xl text-xs transition-all shadow-lg inline-flex items-center gap-2"
                 >
                   {analyzing ? (
                     <>

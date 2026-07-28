@@ -58,13 +58,13 @@ const ForgotPasswordPage = () => {
                 <label className="block text-sm font-medium text-slate-600 dark:text-slate-300">Email address</label>
                 <input required type="email" value={email} onChange={e => setEmail(e.target.value)} className="mt-1 block w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50/50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-[var(--color-primary)]" />
               </div>
-              <button type="submit" className="w-full py-3 px-4 rounded-lg text-sm font-bold text-slate-900 dark:text-white bg-[var(--color-primary)] hover:bg-indigo-700 transition-colors">
+              <button type="submit" className="w-full py-3 px-4 rounded-lg text-sm font-bold text-white bg-[var(--color-primary)] hover:bg-indigo-700 transition-colors">
                 Send OTP
               </button>
             </form>
           ) : (
             <form className="space-y-6" onSubmit={handleReset}>
-              <p className="text-[var(--color-secondary)] text-sm text-center bg-[var(--color-secondary)]/10 py-2 rounded">OTP sent to your email! (Check server console if testing locally)</p>
+              <p className="text-teal-700 dark:text-[var(--color-secondary)] text-sm text-center bg-[var(--color-secondary)]/10 py-2 rounded">OTP sent to your email! (Check server console if testing locally)</p>
               <div>
                 <label className="block text-sm font-medium text-slate-600 dark:text-slate-300">Enter OTP</label>
                 <input required type="text" value={otp} onChange={e => setOtp(e.target.value)} className="mt-1 block w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-slate-50/50 dark:bg-slate-900/50 text-slate-900 dark:text-white focus:ring-2 focus:ring-[var(--color-primary)] text-center tracking-widest text-xl" placeholder="123456" />
@@ -78,14 +78,14 @@ const ForgotPasswordPage = () => {
                   </button>
                 </div>
               </div>
-              <button type="submit" className="w-full py-3 px-4 rounded-lg text-sm font-bold text-slate-900 dark:text-white bg-emerald-600 hover:bg-emerald-700 transition-colors">
+              <button type="submit" className="w-full py-3 px-4 rounded-lg text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors">
                 Reset Password
               </button>
             </form>
           )}
           
           <div className="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
-            Remember your password? <Link to="/login" className="font-medium text-[var(--color-primary)] hover:text-[var(--color-secondary)]">Sign in</Link>
+            Remember your password? <Link to="/login" className="font-medium text-[var(--color-primary)] hover:text-teal-700 dark:text-[var(--color-secondary)]">Sign in</Link>
           </div>
         </div>
       </motion.div>

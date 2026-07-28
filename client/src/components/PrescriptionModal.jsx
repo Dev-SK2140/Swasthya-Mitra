@@ -73,6 +73,36 @@ const PrescriptionModal = ({ isOpen, onClose, patient }) => {
     }
   };
 
+  const handleSendToPharmacy = async () => {
+    if (selectedMeds.length === 0) {
+      return alert('Please add at least one medicine before sending to pharmacy.');
+    }
+    
+    try {
+      const res = await fetch(`${API_URL}/prescriptions`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          patientId: patient._id,
+          patientName: patient.name,
+          doctorId: 'Doctor', // Can be dynamically pulled from logged-in user later
+          medicines: selectedMeds,
+          advice: notes
+        })
+      });
+      
+      if (res.ok) {
+        alert('Prescription sent to Pharmacy successfully!');
+        onClose();
+      } else {
+        alert('Failed to send prescription.');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error sending prescription.');
+    }
+  };
+
   const handleTranslate = async () => {
     if (!notes.trim()) return alert('Please enter some advice to translate.');
     
@@ -307,10 +337,16 @@ const PrescriptionModal = ({ isOpen, onClose, patient }) => {
                 Cancel
               </button>
               <button 
-                onClick={handlePrint}
-                className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-slate-900 dark:text-white font-bold px-5 py-2.5 rounded-xl text-xs flex items-center gap-2 transition-all shadow-lg"
+                onClick={handleSendToPharmacy}
+                className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-xl text-xs flex items-center gap-2 transition-all shadow-lg"
               >
-                <Download className="w-4 h-4" /> Print / Download Rx
+                <Check className="w-4 h-4" /> Send to Pharmacy
+              </button>
+              <button 
+                onClick={handlePrint}
+                className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-bold px-5 py-2.5 rounded-xl text-xs flex items-center gap-2 transition-all shadow-lg"
+              >
+                <Download className="w-4 h-4" /> Print Rx
               </button>
             </div>
           </div>

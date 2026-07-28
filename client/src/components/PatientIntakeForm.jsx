@@ -151,7 +151,7 @@ const PatientIntakeForm = ({ onPatientAdded }) => {
             <button 
               type="button" 
               onClick={startListening}
-              className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${isListening ? 'bg-rose-500/20 text-rose-400' : 'bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:text-white'}`}
+              className={`flex items-center gap-1 text-xs px-2 py-1 rounded transition-colors ${isListening ? 'bg-rose-500/20 text-rose-400' : 'bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-white'}`}
             >
               <Mic className={`w-3 h-3 ${isListening ? 'animate-pulse' : ''}`} />
               {isListening ? 'Listening...' : 'Dictate'}
@@ -160,7 +160,7 @@ const PatientIntakeForm = ({ onPatientAdded }) => {
           <textarea rows="3" name="symptoms" value={formData.symptoms} onChange={handleChange} className="w-full bg-white/60 dark:bg-slate-800/60 border border-slate-300 dark:border-slate-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] text-slate-900 dark:text-white"></textarea>
         </div>
 
-        <button type="submit" disabled={loading} className="w-full bg-[var(--color-primary)] hover:bg-indigo-700 text-slate-900 dark:text-white font-medium py-3 px-4 rounded-lg transition-colors">
+        <button type="submit" disabled={loading} className="w-full bg-[var(--color-primary)] hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
           {loading ? 'Processing...' : t('intake.submit')}
         </button>
       </form>

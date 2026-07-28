@@ -103,6 +103,14 @@ app.use('/api/notifications', notificationRoutes);
 const appointmentRoutes = require('./routes/appointmentRoutes');
 app.use('/api/appointments', appointmentRoutes);
 
+// Prescription routes
+const prescriptionRoutes = require('./routes/prescriptionRoutes');
+app.use('/api/prescriptions', prescriptionRoutes);
+
+// Lab routes
+const labRoutes = require('./routes/labRoutes');
+app.use('/api/lab', labRoutes);
+
 // Serve static frontend in production / single-service deployment
 const clientDistPath = path.join(__dirname, '../client/dist');
 app.use(express.static(clientDistPath));

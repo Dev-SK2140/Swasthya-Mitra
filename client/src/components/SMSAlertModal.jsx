@@ -84,19 +84,19 @@ const SMSAlertModal = ({ isOpen, onClose, patient }) => {
               <div className="grid grid-cols-3 gap-2">
                 <button 
                   onClick={() => setLanguage('gu')} 
-                  className={`py-1.5 rounded-lg text-xs font-bold transition-all border ${language === 'gu' ? 'bg-[var(--color-primary)] text-slate-900 dark:text-white border-[var(--color-primary)]' : 'bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'}`}
+                  className={`py-1.5 rounded-lg text-xs font-bold transition-all border ${language === 'gu' ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]' : 'bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'}`}
                 >
                   ગુજરાતી (Gujarati)
                 </button>
                 <button 
                   onClick={() => setLanguage('hi')} 
-                  className={`py-1.5 rounded-lg text-xs font-bold transition-all border ${language === 'hi' ? 'bg-[var(--color-primary)] text-slate-900 dark:text-white border-[var(--color-primary)]' : 'bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'}`}
+                  className={`py-1.5 rounded-lg text-xs font-bold transition-all border ${language === 'hi' ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]' : 'bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'}`}
                 >
                   हिन्दी (Hindi)
                 </button>
                 <button 
                   onClick={() => setLanguage('en')} 
-                  className={`py-1.5 rounded-lg text-xs font-bold transition-all border ${language === 'en' ? 'bg-[var(--color-primary)] text-slate-900 dark:text-white border-[var(--color-primary)]' : 'bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'}`}
+                  className={`py-1.5 rounded-lg text-xs font-bold transition-all border ${language === 'en' ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]' : 'bg-slate-100 dark:bg-slate-950 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'}`}
                 >
                   English
                 </button>
@@ -142,7 +142,7 @@ const SMSAlertModal = ({ isOpen, onClose, patient }) => {
             <button 
               disabled={sent || loading}
               onClick={handleSend}
-              className="bg-emerald-600 hover:bg-emerald-500 text-slate-900 dark:text-white font-bold px-5 py-2 rounded-xl text-xs transition-all shadow-lg flex items-center gap-1.5"
+              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-5 py-2 rounded-xl text-xs transition-all shadow-lg flex items-center gap-1.5"
             >
               <Send className={`w-3.5 h-3.5 ${loading ? 'animate-pulse' : ''}`} /> {loading ? 'Sending...' : 'Send Notice'}
             </button>

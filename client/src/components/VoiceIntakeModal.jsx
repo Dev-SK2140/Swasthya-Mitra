@@ -117,8 +117,8 @@ const VoiceIntakeModal = ({ isOpen, onClose, onSymptomsExtracted }) => {
                 onClick={handleToggleListen}
                 className={`w-24 h-24 rounded-full flex flex-col items-center justify-center gap-1 transition-all shadow-xl mx-auto border-2 ${
                   isListening 
-                    ? 'bg-red-500 text-slate-900 dark:text-white border-red-400 scale-105' 
-                    : 'bg-gradient-to-br from-teal-500 to-indigo-600 text-slate-900 dark:text-white border-teal-300 hover:scale-105'
+                    ? 'bg-red-500 text-white border-red-400 scale-105' 
+                    : 'bg-gradient-to-br from-teal-500 to-indigo-600 text-white border-teal-300 hover:scale-105'
                 }`}
               >
                 {isListening ? <MicOff className="w-8 h-8" /> : <Mic className="w-8 h-8" />}

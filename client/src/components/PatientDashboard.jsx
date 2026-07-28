@@ -44,16 +44,16 @@ const PatientDashboard = () => {
               <User className="w-8 h-8 text-slate-900" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold">Welcome, {user.name || 'Patient'}</h2>
-              <p className="font-medium opacity-90">Swasthya Mitra Personal Health Portal</p>
+              <h2 className="text-2xl font-bold">{t('dashboard.patient_welcome')}{user.name || 'Patient'}</h2>
+              <p className="font-medium opacity-90">{t('dashboard.patient_subtitle')}</p>
             </div>
           </div>
           <div className="flex gap-3">
             <button className="bg-white/20 hover:bg-white/30 backdrop-blur-md px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all">
-              <Calendar className="w-4 h-4" /> Appointments
+              <Calendar className="w-4 h-4" /> {t('dashboard.appointments')}
             </button>
             <button className="bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg transition-all hover:bg-slate-800">
-              <Bell className="w-4 h-4" /> Notifications
+              <Bell className="w-4 h-4" /> {t('dashboard.notifications')}
             </button>
           </div>
         </div>
@@ -62,14 +62,14 @@ const PatientDashboard = () => {
       {/* IoT Vitals Live Stream */}
       <div>
         <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-          <Activity className="w-5 h-5 text-rose-500 animate-pulse" /> Live Wearable Vitals 
-          <span className="text-xs bg-rose-500/10 text-rose-500 px-2 py-0.5 rounded-full border border-rose-500/20 font-mono tracking-wider animate-pulse ml-2">LIVE SYNC</span>
+          <Activity className="w-5 h-5 text-rose-500 animate-pulse" /> {t('dashboard.live_vitals')}
+          <span className="text-xs bg-rose-500/10 text-rose-500 px-2 py-0.5 rounded-full border border-rose-500/20 font-mono tracking-wider animate-pulse ml-2">{t('dashboard.live_sync')}</span>
         </h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <VitalsCard title="Heart Rate" value={Math.round(vitals.heartRate)} unit="BPM" icon={Heart} color="text-rose-500" bg="bg-rose-500/10" border="border-rose-500/20" />
-          <VitalsCard title="SpO2" value={Math.round(vitals.spO2)} unit="%" icon={Droplet} color="text-blue-500" bg="bg-blue-500/10" border="border-blue-500/20" />
-          <VitalsCard title="Blood Pressure" value={`${Math.round(vitals.bloodPressureSys)}/${Math.round(vitals.bloodPressureDia)}`} unit="mmHg" icon={Activity} color="text-emerald-500" bg="bg-emerald-500/10" border="border-emerald-500/20" />
-          <VitalsCard title="Temperature" value={vitals.temperature.toFixed(1)} unit="°F" icon={Thermometer} color="text-amber-500" bg="bg-amber-500/10" border="border-amber-500/20" />
+          <VitalsCard title={t('dashboard.heart_rate')} value={Math.round(vitals.heartRate)} unit="BPM" icon={Heart} color="text-rose-500" bg="bg-rose-500/10" border="border-rose-500/20" />
+          <VitalsCard title={t('dashboard.spo2')} value={Math.round(vitals.spO2)} unit="%" icon={Droplet} color="text-blue-500" bg="bg-blue-500/10" border="border-blue-500/20" />
+          <VitalsCard title={t('dashboard.blood_pressure')} value={`${Math.round(vitals.bloodPressureSys)}/${Math.round(vitals.bloodPressureDia)}`} unit="mmHg" icon={Activity} color="text-emerald-500" bg="bg-emerald-500/10" border="border-emerald-500/20" />
+          <VitalsCard title={t('dashboard.temperature')} value={vitals.temperature.toFixed(1)} unit="°F" icon={Thermometer} color="text-amber-500" bg="bg-amber-500/10" border="border-amber-500/20" />
         </div>
       </div>
 
@@ -77,21 +77,21 @@ const PatientDashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="glass-panel p-6">
           <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-            <FileText className="w-5 h-5 text-[var(--color-primary)]" /> My Recent Triage Reports
+            <FileText className="w-5 h-5 text-[var(--color-primary)]" /> {t('dashboard.recent_reports')}
           </h3>
           <div className="bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-4 text-center">
             <Activity className="w-8 h-8 text-slate-400 mx-auto mb-2 opacity-50" />
-            <p className="text-sm text-slate-500">No recent triage records found.</p>
+            <p className="text-sm text-slate-500">{t('dashboard.no_reports')}</p>
           </div>
         </div>
 
         <div className="glass-panel p-6">
           <h3 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-            <Pill className="w-5 h-5 text-[var(--color-secondary)]" /> My Prescriptions
+            <Pill className="w-5 h-5 text-teal-700 dark:text-[var(--color-secondary)]" /> {t('dashboard.prescriptions')}
           </h3>
           <div className="bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-4 text-center">
             <Pill className="w-8 h-8 text-slate-400 mx-auto mb-2 opacity-50" />
-            <p className="text-sm text-slate-500">No active prescriptions.</p>
+            <p className="text-sm text-slate-500">{t('dashboard.no_prescriptions')}</p>
           </div>
         </div>
       </div>

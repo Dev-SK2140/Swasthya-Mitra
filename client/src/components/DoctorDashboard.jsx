@@ -63,14 +63,14 @@ const DoctorDashboard = () => {
   }, []);
 
   if (loading) {
-    return <div className="text-center p-8 text-slate-500 dark:text-slate-400 italic">Loading dashboard...</div>;
+    return <div className="text-center p-8 text-slate-500 dark:text-slate-400 italic">{t('dashboard.loading')}</div>;
   }
 
   const getBadgeClass = (level) => {
     switch (level) {
       case 'High Risk': return 'bg-red-500/20 text-red-400 border border-red-500/30 animate-pulse';
       case 'Elevated': return 'bg-amber-500/20 text-amber-400 border border-amber-500/30';
-      default: return 'bg-[var(--color-secondary)]/20 text-[var(--color-secondary)] border border-[var(--color-secondary)]/30';
+      default: return 'bg-[var(--color-secondary)]/20 text-teal-700 dark:text-[var(--color-secondary)] border border-[var(--color-secondary)]/30';
     }
   };
 
@@ -92,7 +92,7 @@ const DoctorDashboard = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
           <h2 className="text-2xl font-semibold">{t('dashboard.title')}</h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Real-time triage queue for Primary Health Centers</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{t('dashboard.doctor_subtitle')}</p>
         </div>
         
         <div className="flex flex-wrap items-center gap-2">
@@ -100,40 +100,40 @@ const DoctorDashboard = () => {
             onClick={() => setIsDrugSafetyOpen(true)}
             className="flex items-center gap-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
           >
-            <ShieldAlert className="w-4 h-4" /> Drug Safety
+            <ShieldAlert className="w-4 h-4" /> {t('dashboard.drug_safety')}
           </button>
           <button 
             onClick={() => setIsAmbulanceOpen(true)}
             className="flex items-center gap-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
           >
-            <Navigation className="w-4 h-4" /> 108 Ambulance
+            <Navigation className="w-4 h-4" /> {t('dashboard.ambulance')}
           </button>
           <button 
             onClick={() => setIsAshaOpen(true)}
             className="flex items-center gap-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
           >
-            <MapPin className="w-4 h-4" /> ASHA Survey
+            <MapPin className="w-4 h-4" /> {t('dashboard.asha_survey')}
           </button>
           <button 
             onClick={() => setIsVoiceOpen(true)}
             className="flex items-center gap-1.5 bg-teal-500/10 hover:bg-teal-500/20 text-teal-400 border border-teal-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
           >
-            <Mic className="w-4 h-4" /> Voice Triage
+            <Mic className="w-4 h-4" /> {t('dashboard.voice_triage')}
           </button>
           <button 
             onClick={() => setIsVaccineOpen(true)}
             className="flex items-center gap-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
           >
-            <ShieldCheck className="w-4 h-4" /> Vaccines
+            <ShieldCheck className="w-4 h-4" /> {t('dashboard.vaccines')}
           </button>
           <button 
             onClick={() => setIsReportScannerOpen(true)}
             className="flex items-center gap-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
           >
-            <FileText className="w-4 h-4" /> Scan Lab Report
+            <FileText className="w-4 h-4" /> {t('dashboard.scan_lab')}
           </button>
           <span className="text-xs text-slate-500 dark:text-slate-400 bg-white/80 dark:bg-slate-800/80 px-3 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700">
-            🟢 Live Queue • {patients.length} Patients
+            {t('dashboard.live_queue')}{patients.length}{t('dashboard.patients_count')}
           </span>
         </div>
       </div>
@@ -257,7 +257,7 @@ const DoctorDashboard = () => {
                       setSelectedPatient(p);
                       setIsTimelineOpen(true);
                     }}
-                    className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-slate-900 dark:text-white py-2 rounded-xl font-medium transition-colors shadow-lg shadow-[var(--color-primary)]/20 text-xs"
+                    className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white py-2 rounded-xl font-medium transition-colors shadow-lg shadow-[var(--color-primary)]/20 text-xs"
                   >
                     {t('dashboard.consult')}
                   </button>

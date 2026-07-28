@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Baby, Activity, AlertCircle, Plus, CalendarClock, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const MCHDashboard = () => {
+  const { t } = useTranslation();
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -18,7 +20,7 @@ const MCHDashboard = () => {
             const eddDate = new Date(record.estimatedDeliveryDate);
             return {
               id: record._id,
-              name: record.patientId?.name || 'Unknown',
+              name: record.patientId?.name || t('dashboard.unknown'),
               age: record.patientId?.age || '-',
               lmp: new Date(record.lastMenstrualPeriod).toLocaleDateString(),
               edd: eddDate.toLocaleDateString(),
@@ -52,31 +54,31 @@ const MCHDashboard = () => {
         <div>
           <h1 className="text-3xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
             <Baby className="w-8 h-8 text-pink-500" /> 
-            Maternal & Child Health (MCH) Tracker
+            {t('dashboard.mch_title')}
           </h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Monitor ANC visits, high-risk pregnancies, and vaccination schedules.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">{t('dashboard.mch_subtitle')}</p>
         </div>
         <button className="bg-pink-600 hover:bg-pink-500 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all shadow-lg flex items-center gap-2">
-          <Plus className="w-4 h-4" /> Register Pregnancy
+          <Plus className="w-4 h-4" /> {t('dashboard.register_pregnancy')}
         </button>
       </div>
 
       {/* Stats Summary */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="glass-panel p-5 rounded-2xl border-l-4 border-l-pink-500">
-          <p className="text-xs text-slate-500 font-bold uppercase">Total Active</p>
+          <p className="text-xs text-slate-500 font-bold uppercase">{t('dashboard.total_active')}</p>
           <p className="text-2xl font-bold text-slate-900 dark:text-white mt-1">142</p>
         </div>
         <div className="glass-panel p-5 rounded-2xl border-l-4 border-l-rose-500">
-          <p className="text-xs text-slate-500 font-bold uppercase">High Risk</p>
+          <p className="text-xs text-slate-500 font-bold uppercase">{t('dashboard.high_risk')}</p>
           <p className="text-2xl font-bold text-slate-900 dark:text-white mt-1">12</p>
         </div>
         <div className="glass-panel p-5 rounded-2xl border-l-4 border-l-amber-500">
-          <p className="text-xs text-slate-500 font-bold uppercase">3rd Trimester</p>
+          <p className="text-xs text-slate-500 font-bold uppercase">{t('dashboard.trimester_3')}</p>
           <p className="text-2xl font-bold text-slate-900 dark:text-white mt-1">45</p>
         </div>
         <div className="glass-panel p-5 rounded-2xl border-l-4 border-l-emerald-500">
-          <p className="text-xs text-slate-500 font-bold uppercase">ANC Up to Date</p>
+          <p className="text-xs text-slate-500 font-bold uppercase">{t('dashboard.anc_uptodate')}</p>
           <p className="text-2xl font-bold text-slate-900 dark:text-white mt-1">89%</p>
         </div>
       </div>
@@ -84,11 +86,11 @@ const MCHDashboard = () => {
       {/* Patient List */}
       <div className="flex-1 glass-panel rounded-3xl overflow-hidden border border-slate-300 dark:border-slate-700 flex flex-col">
         <div className="p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
-          <h3 className="font-bold text-slate-900 dark:text-white">Active Pregnancies Tracking</h3>
+          <h3 className="font-bold text-slate-900 dark:text-white">{t('dashboard.active_pregnancies')}</h3>
         </div>
         <div className="flex-1 overflow-y-auto p-4 space-y-3">
           {loading ? (
-            <div className="flex items-center justify-center h-full text-slate-500">Loading MCH Records...</div>
+            <div className="flex items-center justify-center h-full text-slate-500">{t('dashboard.loading_mch')}</div>
           ) : (
             patients.map(p => (
               <motion.div 
@@ -102,28 +104,28 @@ const MCHDashboard = () => {
                     {p.name[0]}
                   </div>
                   <div>
-                    <h4 className="font-bold text-slate-900 dark:text-white">{p.name} <span className="text-xs font-normal text-slate-500">({p.age} y/o)</span></h4>
+                    <h4 className="font-bold text-slate-900 dark:text-white">{p.name} <span className="text-xs font-normal text-slate-500">({p.age} {t('dashboard.yo')})</span></h4>
                     <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex gap-3">
-                      <span><strong className="text-slate-700 dark:text-slate-300">EDD:</strong> {p.edd}</span>
-                      <span><strong className="text-slate-700 dark:text-slate-300">ANC Visits:</strong> {p.visits}/8</span>
+                      <span><strong className="text-slate-700 dark:text-slate-300">{t('dashboard.edd')}</strong> {p.edd}</span>
+                      <span><strong className="text-slate-700 dark:text-slate-300">{t('dashboard.anc_visits')}</strong> {p.visits}/8</span>
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-4">
                   <div className="text-center px-3 border-r border-slate-200 dark:border-slate-700">
-                    <span className="block text-[10px] uppercase text-slate-500 font-bold mb-1">Trimester</span>
-                    <span className="text-sm font-bold text-slate-900 dark:text-white">T{p.trimester}</span>
+                    <span className="block text-[10px] uppercase text-slate-500 font-bold mb-1">{t('dashboard.trimester')}</span>
+                    <span className="text-sm font-bold text-slate-900 dark:text-white">{t('dashboard.t_prefix')}{p.trimester}</span>
                   </div>
                   
                   <div className="w-28 text-center">
                     {p.risk === 'High Risk' ? (
                       <span className="flex items-center gap-1 text-xs text-rose-500 bg-rose-500/10 px-2 py-1 rounded border border-rose-500/20 font-bold">
-                        <AlertCircle className="w-3.5 h-3.5" /> High Risk
+                        <AlertCircle className="w-3.5 h-3.5" /> {t('dashboard.high_risk')}
                       </span>
                     ) : (
                       <span className="flex items-center gap-1 text-xs text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded border border-emerald-500/20 font-bold">
-                        <ShieldCheck className="w-3.5 h-3.5" /> Normal
+                        <ShieldCheck className="w-3.5 h-3.5" /> {t('dashboard.normal')}
                       </span>
                     )}
                     {p.factors.length > 0 && <span className="block mt-1 text-[9px] text-rose-400">{p.factors.join(', ')}</span>}

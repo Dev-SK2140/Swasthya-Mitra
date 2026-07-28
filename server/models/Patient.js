@@ -36,6 +36,12 @@ const PatientSchema = new mongoose.Schema({
     healthEducation: { type: String },
     explanation: { type: String }
   },
+  history: [{
+    date: { type: Date, default: Date.now },
+    type: { type: String, enum: ['Triage', 'Consultation', 'Lab Report', 'Prescription', 'Note'], default: 'Note' },
+    doctor: { type: String },
+    notes: { type: String }
+  }],
   
   createdAt: { type: Date, default: Date.now }
 });

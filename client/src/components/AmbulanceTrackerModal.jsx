@@ -96,7 +96,7 @@ const AmbulanceTrackerModal = ({ isOpen, onClose }) => {
                 </button>
                 <button
                   onClick={handleDispatch}
-                  className="bg-rose-600 hover:bg-rose-500 text-slate-900 dark:text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-all shadow-lg flex items-center gap-1.5"
+                  className="bg-rose-600 hover:bg-rose-500 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition-all shadow-lg flex items-center gap-1.5"
                 >
                   <Navigation className="w-3.5 h-3.5" /> Transmit Priority Route
                 </button>

@@ -388,7 +388,7 @@ const TelemedicineChat = () => {
             {!isVideoActive && (
               <button 
                 onClick={startVideo}
-                className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-slate-900 dark:text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-[0_0_15px_rgba(16,185,129,0.4)]"
+                className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-[0_0_15px_rgba(16,185,129,0.4)]"
               >
                 <Video className="w-4 h-4" /> Start Video Call
               </button>
@@ -439,7 +439,7 @@ const TelemedicineChat = () => {
               ) : (
                 <div className={`max-w-[80%] rounded-2xl p-3 text-xs leading-relaxed shadow-md relative group ${
                   msg.sender === 'me' 
-                    ? 'bg-[var(--color-primary)] text-slate-900 dark:text-white rounded-br-none' 
+                    ? 'bg-[var(--color-primary)] text-white rounded-br-none' 
                     : 'bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-100 rounded-bl-none'
                 }`}>
                   <span className="text-[9px] text-slate-500 dark:text-slate-400 block mb-1 font-bold">
@@ -471,7 +471,7 @@ const TelemedicineChat = () => {
             <button 
               type="submit" 
               disabled={!input.trim()} 
-              className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] disabled:opacity-50 text-slate-900 dark:text-white px-4 rounded-xl transition-all shadow-md flex items-center justify-center"
+              className="bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)]disabled:opacity-50 text-white px-4 rounded-xl transition-all shadow-md flex items-center justify-center"
             >
               <Send className="w-4 h-4" />
             </button>
@@ -539,7 +539,7 @@ const TelemedicineChat = () => {
                         <option value="04:15 PM">04:15 PM</option>
                       </select>
                     </div>
-                    <button type="submit" className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-slate-900 dark:text-white font-bold py-3 rounded-xl mt-4 transition-all">
+                    <button type="submit" className="w-full bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-white font-bold py-3 rounded-xl mt-4 transition-all">
                       Confirm Booking
                     </button>
                   </form>

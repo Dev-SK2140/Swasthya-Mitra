@@ -81,7 +81,7 @@ const DrugSafetyModal = ({ isOpen, onClose }) => {
 
             <button
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-500 text-slate-900 dark:text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-lg"
+              className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-lg"
             >
               <Sparkles className="w-4 h-4" /> Run AI Safety Analysis
             </button>
