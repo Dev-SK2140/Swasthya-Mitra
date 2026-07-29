@@ -46,7 +46,7 @@ const DoctorDashboard = () => {
     try {
       const res = await fetch(`${API_URL}/triage`);
       const data = await res.json();
-      if(Array.isArray(data)) {
+      if (Array.isArray(data)) {
         setPatients(data);
       }
     } catch (err) {
@@ -94,39 +94,39 @@ const DoctorDashboard = () => {
           <h2 className="text-2xl font-semibold">{t('dashboard.title')}</h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{t('dashboard.doctor_subtitle')}</p>
         </div>
-        
+
         <div className="flex flex-wrap items-center gap-2">
-          <button 
+          <button
             onClick={() => setIsDrugSafetyOpen(true)}
             className="flex items-center gap-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
           >
             <ShieldAlert className="w-4 h-4" /> {t('dashboard.drug_safety')}
           </button>
-          <button 
+          <button
             onClick={() => setIsAmbulanceOpen(true)}
             className="flex items-center gap-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
           >
             <Navigation className="w-4 h-4" /> {t('dashboard.ambulance')}
           </button>
-          <button 
+          <button
             onClick={() => setIsAshaOpen(true)}
             className="flex items-center gap-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
           >
             <MapPin className="w-4 h-4" /> {t('dashboard.asha_survey')}
           </button>
-          <button 
+          <button
             onClick={() => setIsVoiceOpen(true)}
             className="flex items-center gap-1.5 bg-teal-500/10 hover:bg-teal-500/20 text-teal-400 border border-teal-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
           >
             <Mic className="w-4 h-4" /> {t('dashboard.voice_triage')}
           </button>
-          <button 
+          <button
             onClick={() => setIsVaccineOpen(true)}
             className="flex items-center gap-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
           >
             <ShieldCheck className="w-4 h-4" /> {t('dashboard.vaccines')}
           </button>
-          <button 
+          <button
             onClick={() => setIsReportScannerOpen(true)}
             className="flex items-center gap-1.5 bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 border border-sky-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all"
           >
@@ -141,15 +141,15 @@ const DoctorDashboard = () => {
       {patients.length === 0 ? (
         <p className="text-slate-500 dark:text-slate-400">{t('dashboard.no_patients')}</p>
       ) : (
-        <motion.div 
+        <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="show"
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {patients.map(p => (
-            <motion.div 
-              key={p._id} 
+            <motion.div
+              key={p._id}
               variants={itemVariants}
               whileHover={{ y: -5, scale: 1.02 }}
               className="glass-panel flex flex-col transition-shadow hover:shadow-[0_10px_30px_rgba(79,70,229,0.15)]"
@@ -160,7 +160,7 @@ const DoctorDashboard = () => {
                   {p.riskLevel}
                 </span>
               </div>
-              
+
               <div className="mb-4">
                 <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">{t('dashboard.vitals')}</p>
                 <div className="flex gap-4 font-medium bg-slate-50/50 dark:bg-slate-900/50 p-3 rounded-lg">
@@ -188,11 +188,11 @@ const DoctorDashboard = () => {
                   </p>
                 </div>
               )}
-              
+
               <div className="mt-auto pt-4 border-t border-slate-300/50 dark:border-slate-700/50 flex flex-col gap-3">
                 <div className="flex justify-between items-center">
                   <span className="text-xs text-slate-500">{t('dashboard.arrived')} {new Date(p.createdAt).toLocaleTimeString()}</span>
-                  
+
                   <div className="flex gap-1.5">
                     {/* Digital ABHA Card */}
                     <button
@@ -230,9 +230,9 @@ const DoctorDashboard = () => {
                     </button>
                   </div>
                 </div>
-                
+
                 <div className="grid grid-cols-3 gap-2">
-                  <button 
+                  <button
                     onClick={() => {
                       setPatientToPrescribe(p);
                       setIsRxOpen(true);
@@ -242,7 +242,7 @@ const DoctorDashboard = () => {
                     <Pill size={14} />
                     AI Rx
                   </button>
-                  <button 
+                  <button
                     onClick={() => {
                       setPatientToRefer(p);
                       setIsReferralOpen(true);
@@ -252,7 +252,7 @@ const DoctorDashboard = () => {
                     <Send size={14} />
                     Refer
                   </button>
-                  <button 
+                  <button
                     onClick={() => {
                       setSelectedPatient(p);
                       setIsTimelineOpen(true);
@@ -269,10 +269,10 @@ const DoctorDashboard = () => {
       )}
 
       {selectedPatient && (
-        <PatientTimelineModal 
-          isOpen={isTimelineOpen} 
-          onClose={() => setIsTimelineOpen(false)} 
-          patient={selectedPatient} 
+        <PatientTimelineModal
+          isOpen={isTimelineOpen}
+          onClose={() => setIsTimelineOpen(false)}
+          patient={selectedPatient}
         />
       )}
 
