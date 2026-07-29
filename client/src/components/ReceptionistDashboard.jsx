@@ -65,6 +65,7 @@ const ReceptionistDashboard = () => {
           </div>
         </div>
 
+        <div className="space-y-6">
           <div className="glass-panel p-5 bg-white/60 dark:bg-slate-800/60 border border-slate-300/50 dark:border-slate-700/50 rounded-xl space-y-3">
             <h3 className="text-lg font-medium text-slate-900 dark:text-white flex items-center gap-2">
               <Calendar className="text-blue-400 w-5 h-5" /> {t('dashboard.opd_queue')}
@@ -137,6 +138,7 @@ const ReceptionistDashboard = () => {
               </div>
             </div>
           </div>
+        </div>
       </div>
 
       {/* Feature Hub - 10 Workable Features */}
