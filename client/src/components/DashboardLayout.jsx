@@ -6,6 +6,9 @@ import { Menu, X, Activity, User, TestTube, Pill, Users, Building, ChevronDown, 
 import { motion, AnimatePresence } from 'framer-motion';
 import AIAssistant from './AIAssistant';
 import ThemeToggle from './ThemeToggle';
+import { Canvas } from '@react-three/fiber';
+import { Environment, Float, Sparkles } from '@react-three/drei';
+import MedicalCross3D from './MedicalCross3D';
 
 
 const ALL_ROLES = ['Doctor', 'Nurse', 'Lab', 'Pharmacy', 'Receptionist', 'Admin', 'Patient'];
@@ -152,6 +155,25 @@ const DashboardLayout = () => {
 
   return (
     <div className="min-h-screen flex flex-col w-full max-w-7xl mx-auto p-4 md:p-8 relative z-10">
+      {/* 3D Canvas Background */}
+      <div className="fixed inset-0 z-[-1] opacity-30 dark:opacity-40 pointer-events-none">
+        <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 5]} intensity={1} />
+          <Environment preset="city" />
+          <Float speed={1.5} rotationIntensity={1} floatIntensity={2}>
+            <MedicalCross3D position={[-6, 4, -8]} scale={1} />
+          </Float>
+          <Float speed={2} rotationIntensity={2} floatIntensity={1.5}>
+            <MedicalCross3D position={[6, -3, -10]} scale={0.8} />
+          </Float>
+          <Float speed={1} rotationIntensity={1.5} floatIntensity={1}>
+            <MedicalCross3D position={[-2, -5, -12]} scale={1.2} />
+          </Float>
+          <Sparkles count={150} scale={20} size={5} speed={0.4} opacity={0.3} color="#82d8a5" />
+        </Canvas>
+      </div>
+
       <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolledDown ? '-translate-y-[150%] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'} flex justify-between items-center mb-6 md:mb-8 pb-4 border-b border-slate-200 dark:border-[#07a9b0]/30 bg-white/60 dark:bg-[#1b2532]/80 backdrop-blur-md rounded-2xl p-4 md:p-6 shadow-[0_4px_30px_rgba(7,169,176,0.15)]`}>
         <div className="flex items-center gap-4">
           <img src="/logo day theme.png" alt="App Logo" className="w-16 h-16 md:w-24 md:h-24 object-cover rounded-full shadow-[0_0_15px_rgba(130,216,165,0.3)] block dark:hidden transition-all duration-300" />
