@@ -63,7 +63,7 @@ const ReceptionistDashboard = () => {
                 <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">{t('dashboard.waiting_opd')}</div>
               </div>
             </div>
-            <button className="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-lg flex items-center justify-center gap-1.5">
+            <button onClick={() => window.print()} className="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-lg flex items-center justify-center gap-1.5">
               🎟️ {t('dashboard.print_opd')}
             </button>
           </div>

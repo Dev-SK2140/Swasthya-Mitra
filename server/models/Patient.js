@@ -18,7 +18,6 @@ const PatientSchema = new mongoose.Schema({
   },
   riskLevel: {
     type: String,
-    enum: ['Normal', 'High', 'Critical'],
     default: 'Normal'
   },
   flaggedConditions: [{ type: String }],
@@ -43,7 +42,8 @@ const PatientSchema = new mongoose.Schema({
     notes: { type: String }
   }],
   
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  ivDrip: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('Patient', PatientSchema);

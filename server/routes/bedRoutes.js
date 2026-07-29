@@ -4,25 +4,29 @@ const HospitalBed = require('../models/HospitalBed');
 
 // Initialize some default beds if none exist
 const initializeBeds = async () => {
-  const count = await HospitalBed.countDocuments();
-  if (count === 0) {
-    const bedsToCreate = [];
-    ['General', 'ICU', 'Maternity', 'Emergency'].forEach(ward => {
-      for (let i = 1; i <= 5; i++) {
-        bedsToCreate.push({
-          ward,
-          bedNumber: `${ward.substring(0, 1).toUpperCase()}-${100 + i}`,
-          status: 'Available'
-        });
-      }
-    });
-    await HospitalBed.insertMany(bedsToCreate);
-    console.log('✅ Initialized default hospital beds');
+  try {
+    const count = await HospitalBed.countDocuments();
+    if (count === 0) {
+      const bedsToCreate = [];
+      ['General', 'ICU', 'Maternity', 'Emergency'].forEach(ward => {
+        for (let i = 1; i <= 5; i++) {
+          bedsToCreate.push({
+            ward,
+            bedNumber: `${ward.substring(0, 1).toUpperCase()}-${100 + i}`,
+            status: 'Available'
+          });
+        }
+      });
+      await HospitalBed.insertMany(bedsToCreate);
+      console.log('✅ Initialized default hospital beds');
+    }
+  } catch (err) {
+    console.error('Error initializing beds:', err);
   }
 };
 
-// Call initialization (in a real app this might be in a seed file)
-initializeBeds().catch(console.error);
+// Export initializeBeds so it can be called AFTER DB connection in server.js
+module.exports.initializeBeds = initializeBeds;
 
 // @route   GET /api/beds
 // @desc    Get all hospital beds
@@ -63,4 +67,4 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports.router = router;

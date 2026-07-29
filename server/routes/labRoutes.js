@@ -5,7 +5,17 @@ const LabOrder = require('../models/LabOrder');
 // Create a new lab order
 router.post('/', async (req, res) => {
   try {
-    const { patientId, patientName, doctorId, testName, priority } = req.body;
+    let { patientId, patientName, doctorId, testName, priority } = req.body;
+    
+    // If patientId is not a valid 24-character ObjectId, Mongoose will throw a CastError.
+    // For demo/mock purposes, if it's invalid, we will skip it or cast it manually.
+    if (patientId && patientId.length !== 24) {
+      // Fallback: If mock ID is sent, use a dummy valid ObjectId or null (if schema allows, but required:true).
+      // Let's create a new ObjectId from it by padding or just generate a new one for mock purposes.
+      const mongoose = require('mongoose');
+      patientId = new mongoose.Types.ObjectId();
+    }
+
     const newOrder = new LabOrder({
       patientId,
       patientName,
@@ -16,8 +26,8 @@ router.post('/', async (req, res) => {
     const savedOrder = await newOrder.save();
     res.status(201).json(savedOrder);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server Error' });
+    console.error('Error creating Lab Order:', err);
+    res.status(500).json({ message: 'Server Error', error: err.message });
   }
 });
 

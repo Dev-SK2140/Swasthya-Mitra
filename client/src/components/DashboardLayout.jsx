@@ -6,7 +6,7 @@ import { Menu, X, Activity, User, TestTube, Pill, Users, Building, ChevronDown, 
 import { motion, AnimatePresence } from 'framer-motion';
 import AIAssistant from './AIAssistant';
 import ThemeToggle from './ThemeToggle';
-import logoImg from '../assets/logo.png';
+
 
 const ALL_ROLES = ['Doctor', 'Nurse', 'Lab', 'Pharmacy', 'Receptionist', 'Admin', 'Patient'];
 
@@ -154,7 +154,8 @@ const DashboardLayout = () => {
     <div className="min-h-screen flex flex-col w-full max-w-7xl mx-auto p-4 md:p-8 relative z-10">
       <header className={`sticky top-0 z-50 transition-all duration-300 ${isScrolledDown ? '-translate-y-[150%] opacity-0 pointer-events-none' : 'translate-y-0 opacity-100'} flex justify-between items-center mb-6 md:mb-8 pb-4 border-b border-slate-200 dark:border-[#07a9b0]/30 bg-white/60 dark:bg-[#1b2532]/80 backdrop-blur-md rounded-2xl p-4 md:p-6 shadow-[0_4px_30px_rgba(7,169,176,0.15)]`}>
         <div className="flex items-center gap-4">
-          <img src={logoImg} alt="App Logo" className="w-16 h-16 md:w-24 md:h-24 object-cover rounded-full shadow-[0_0_15px_rgba(130,216,165,0.3)]" />
+          <img src="/logo day theme.png" alt="App Logo" className="w-16 h-16 md:w-24 md:h-24 object-cover rounded-full shadow-[0_0_15px_rgba(130,216,165,0.3)] block dark:hidden transition-all duration-300" />
+          <img src="/logo night theme.png" alt="App Logo" className="w-16 h-16 md:w-24 md:h-24 object-cover rounded-full shadow-[0_0_15px_rgba(130,216,165,0.3)] hidden dark:block transition-all duration-300" />
           <div className="hidden sm:block">
             <div className="flex items-center gap-3">
               <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:to-[#82d8a5] whitespace-nowrap">સ્વાસ્થ્ય મિત્ર</h1>

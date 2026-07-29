@@ -18,7 +18,7 @@ const AshaSurveyModal = ({ isOpen, onClose }) => {
     const pregnantWomen = e.target.elements[2].value;
 
     try {
-      await fetch(`${API_URL}/surveys`, {
+      await fetch(`${API_URL}/features/asha-survey`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

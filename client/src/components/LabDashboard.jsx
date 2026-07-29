@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { TestTube, FileText, Upload, AlertTriangle, Check, Search } from 'lucide-react';
+import { TestTube, FileText, Upload, AlertTriangle, Check, Search, X } from 'lucide-react';
 
 const LabDashboard = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('pending');
   const [labOrders, setLabOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [testResult, setTestResult] = useState('');
 
   const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
 
@@ -31,15 +34,24 @@ const LabDashboard = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleCompleteTest = async (id) => {
+  const openResultModal = (order) => {
+    setSelectedOrder(order);
+    setTestResult('');
+    setIsResultModalOpen(true);
+  };
+
+  const handleCompleteTest = async (e) => {
+    e.preventDefault();
+    if (!selectedOrder) return;
     try {
-      const res = await fetch(`${API_URL}/lab/${id}/complete`, {
+      const res = await fetch(`${API_URL}/lab/${selectedOrder._id}/complete`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ results: 'Test completed via Lab Dashboard.' })
+        body: JSON.stringify({ results: testResult })
       });
       if (res.ok) {
-        setLabOrders(labOrders.map(order => order._id === id ? { ...order, status: 'Completed' } : order));
+        setLabOrders(labOrders.map(order => order._id === selectedOrder._id ? { ...order, status: 'Completed', results: testResult } : order));
+        setIsResultModalOpen(false);
       }
     } catch (err) {
       console.error(err);
@@ -124,7 +136,7 @@ const LabDashboard = () => {
                   <td className="p-4">
                     {test.status === 'Pending' ? (
                       <div className="flex gap-2">
-                        <button onClick={() => handleCompleteTest(test._id)} className="flex items-center gap-1 bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors shadow">
+                        <button onClick={() => openResultModal(test)} className="flex items-center gap-1 bg-purple-600 hover:bg-purple-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors shadow">
                           <Check className="w-3.5 h-3.5" /> Mark Completed
                         </button>
                       </div>
@@ -145,6 +157,47 @@ const LabDashboard = () => {
           </table>
         </div>
       </div>
+
+      {/* Lab Result Modal */}
+      {isResultModalOpen && selectedOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-md overflow-hidden border border-slate-200 dark:border-slate-700"
+          >
+            <div className="flex justify-between items-center p-4 border-b border-slate-200 dark:border-slate-700">
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                <TestTube className="text-purple-500 w-5 h-5" /> Enter Test Results
+              </h3>
+              <button onClick={() => setIsResultModalOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <form onSubmit={handleCompleteTest} className="p-4 space-y-4">
+              <div>
+                <p className="text-sm text-slate-600 dark:text-slate-300 mb-4">
+                  Entering results for <strong>{selectedOrder.patientName}</strong>'s <strong>{selectedOrder.testName}</strong> test.
+                </p>
+                <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Results Notes / Values</label>
+                <textarea 
+                  required 
+                  rows={4}
+                  value={testResult} 
+                  onChange={e => setTestResult(e.target.value)} 
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-purple-500 text-sm"
+                  placeholder="E.g., Haemoglobin 13.5 g/dL, normal."
+                ></textarea>
+              </div>
+              <div className="pt-4 flex justify-end gap-3">
+                <button type="button" onClick={() => setIsResultModalOpen(false)} className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">Cancel</button>
+                <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 rounded-lg transition-colors">Submit Results</button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
+
     </motion.div>
   );
 };

@@ -49,10 +49,10 @@ const PatientDashboard = () => {
             </div>
           </div>
           <div className="flex gap-3">
-            <button className="bg-white/20 hover:bg-white/30 backdrop-blur-md px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all">
+            <button onClick={() => alert('You have no upcoming appointments.')} className="bg-white/20 hover:bg-white/30 backdrop-blur-md px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 transition-all">
               <Calendar className="w-4 h-4" /> {t('dashboard.appointments')}
             </button>
-            <button className="bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg transition-all hover:bg-slate-800">
+            <button onClick={() => alert('No new notifications.')} className="bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 shadow-lg transition-all hover:bg-slate-800">
               <Bell className="w-4 h-4" /> {t('dashboard.notifications')}
             </button>
           </div>

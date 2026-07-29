@@ -9,7 +9,7 @@ import { Environment, Float, Sparkles } from '@react-three/drei';
 import LanguageSelector from '../components/LanguageSelector';
 import ThemeToggle from '../components/ThemeToggle';
 import MedicalCross3D from '../components/MedicalCross3D';
-import logoImg from '../assets/logo.png';
+
 
 const LandingPage = () => {
   const { t } = useTranslation();
@@ -67,7 +67,8 @@ const LandingPage = () => {
 
       <nav className="w-full px-8 py-4 flex justify-between items-center z-20 bg-transparent fixed top-0">
         <div className="flex items-center gap-4">
-          <img src={logoImg} alt="Logo" className="w-16 h-16 md:w-20 md:h-20 object-cover rounded-full shadow-[0_0_15px_rgba(130,216,165,0.3)]" />
+          <img src="/logo day theme.png" alt="Logo" className="w-16 h-16 md:w-20 md:h-20 object-cover rounded-full shadow-[0_0_15px_rgba(130,216,165,0.3)] block dark:hidden transition-all duration-300" />
+          <img src="/logo night theme.png" alt="Logo" className="w-16 h-16 md:w-20 md:h-20 object-cover rounded-full shadow-[0_0_15px_rgba(130,216,165,0.3)] hidden dark:block transition-all duration-300" />
           <div className="hidden sm:block">
             <span className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-white dark:to-[#82d8a5] block">સ્વાસ્થ્ય મિત્ર</span>
             <p className="text-xs text-slate-600 dark:text-[#d0b875] opacity-90 font-medium tracking-wide">Intelligent Rural Health Triage Platform</p>

@@ -11,7 +11,7 @@ import { Canvas } from '@react-three/fiber';
 import { Environment, Float, Sparkles } from '@react-three/drei';
 import MedicalCross3D from '../components/MedicalCross3D';
 import LanguageSelector from '../components/LanguageSelector';
-import logoImg from '../assets/logo.png';
+
 
 const RegisterPage = () => {
   const { t } = useTranslation();
@@ -163,7 +163,8 @@ const RegisterPage = () => {
         animate={{ opacity: 1, y: 0 }}
         className="sm:mx-auto sm:w-full sm:max-w-md z-20 text-center flex flex-col items-center relative"
       >
-        <img src={logoImg} alt="Logo" className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-full mb-4 shadow-[0_0_25px_rgba(130,216,165,0.4)] border-2 border-[#07a9b0]/50" />
+        <img src="/logo day theme.png" alt="Logo" className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-full mb-4 shadow-[0_0_25px_rgba(130,216,165,0.4)] border-2 border-[#07a9b0]/50 block dark:hidden transition-all duration-300" />
+        <img src="/logo night theme.png" alt="Logo" className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-full mb-4 shadow-[0_0_25px_rgba(130,216,165,0.4)] border-2 border-[#07a9b0]/50 hidden dark:block transition-all duration-300" />
         <h2 className="text-3xl font-bold bg-gradient-to-r from-teal-700 to-emerald-600 dark:from-white dark:to-[#82d8a5] bg-clip-text text-transparent mb-1">{t('register.title', 'Create your account')}</h2>
       </motion.div>
 

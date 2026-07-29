@@ -82,4 +82,44 @@ router.get('/', async (req, res) => {
   }
 });
 
+// @route   PUT /api/triage/:id/vitals
+// @desc    Update patient vitals
+router.put('/:id/vitals', async (req, res) => {
+  try {
+    const { vitals } = req.body;
+    const patient = await Patient.findById(req.params.id);
+    if (!patient) return res.status(404).json({ message: 'Patient not found' });
+    
+    patient.vitals = { ...patient.vitals, ...vitals };
+    
+    // Recalculate risk if needed based on new vitals
+    const { riskLevel, flaggedConditions } = calculateRisk(patient.vitals, patient.symptoms);
+    patient.riskLevel = riskLevel;
+    patient.flaggedConditions = flaggedConditions;
+    
+    const updatedPatient = await patient.save();
+    res.json(updatedPatient);
+  } catch (error) {
+    console.error('Triage PUT Vitals Error:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
+// @route   PUT /api/triage/:id/iv
+// @desc    Toggle patient IV drip status
+router.put('/:id/iv', async (req, res) => {
+  try {
+    const patient = await Patient.findById(req.params.id);
+    if (!patient) return res.status(404).json({ message: 'Patient not found' });
+    
+    patient.ivDrip = !patient.ivDrip;
+    
+    const updatedPatient = await patient.save();
+    res.json(updatedPatient);
+  } catch (error) {
+    console.error('Triage PUT IV Error:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});
+
 module.exports = router;

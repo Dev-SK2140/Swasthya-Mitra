@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Activity, Heart, Thermometer, Droplets, Users, CheckCircle, Clock } from 'lucide-react';
+import { Activity, Heart, Thermometer, Droplets, Users, CheckCircle, Clock, X } from 'lucide-react';
 
 const NurseDashboard = () => {
   const { t } = useTranslation();
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isVitalsModalOpen, setIsVitalsModalOpen] = useState(false);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [vitalsForm, setVitalsForm] = useState({ heartRate: '', bloodPressureSys: '', bloodPressureDia: '', spO2: '', temp: '98.6' });
 
   const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
 
@@ -26,6 +29,49 @@ const NurseDashboard = () => {
     };
     fetchPatients();
   }, []);
+
+  const handleToggleIV = async (id) => {
+    try {
+      const res = await fetch(`${API_URL}/triage/${id}/iv`, { method: 'PUT' });
+      if (res.ok) {
+        const updated = await res.json();
+        setPatients(patients.map(p => p._id === id ? updated : p));
+      }
+    } catch (err) {
+      console.error('Failed to toggle IV', err);
+    }
+  };
+
+  const openVitalsModal = (patient) => {
+    setSelectedPatient(patient);
+    setVitalsForm({
+      heartRate: patient.vitals?.heartRate || '',
+      bloodPressureSys: patient.vitals?.bloodPressureSys || '',
+      bloodPressureDia: patient.vitals?.bloodPressureDia || '',
+      spO2: patient.vitals?.spO2 || '',
+      temp: '98.6'
+    });
+    setIsVitalsModalOpen(true);
+  };
+
+  const handleUpdateVitals = async (e) => {
+    e.preventDefault();
+    if (!selectedPatient) return;
+    try {
+      const res = await fetch(`${API_URL}/triage/${selectedPatient._id}/vitals`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ vitals: vitalsForm })
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setPatients(patients.map(p => p._id === selectedPatient._id ? updated : p));
+        setIsVitalsModalOpen(false);
+      }
+    } catch (err) {
+      console.error('Failed to update vitals', err);
+    }
+  };
 
   if (loading) {
     return <div className="text-center p-8 text-slate-500 dark:text-slate-400 animate-pulse">{t('dashboard.nurse_loading')}</div>;
@@ -125,16 +171,65 @@ const NurseDashboard = () => {
             </div>
 
             <div className="grid grid-cols-2 gap-2 mt-2">
-              <button className="py-2 bg-white dark:bg-slate-800 hover:bg-slate-700 text-teal-300 rounded-lg text-xs font-semibold border border-slate-300 dark:border-slate-700 transition-colors">
-                💧 {t('dashboard.iv_drip')}
+              <button 
+                onClick={() => handleToggleIV(p._id)}
+                className={`py-2 rounded-lg text-xs font-semibold border transition-colors ${p.ivDrip ? 'bg-teal-500/20 text-teal-400 border-teal-500/50' : 'bg-white dark:bg-slate-800 hover:bg-slate-700 text-teal-300 border-slate-300 dark:border-slate-700'}`}>
+                💧 {p.ivDrip ? t('dashboard.iv_drip') + ' (Active)' : t('dashboard.iv_drip')}
               </button>
-              <button className="py-2 bg-slate-700 hover:bg-emerald-600 text-white rounded-lg text-xs font-semibold transition-colors">
+              <button 
+                onClick={() => openVitalsModal(p)}
+                className="py-2 bg-slate-700 hover:bg-emerald-600 text-white rounded-lg text-xs font-semibold transition-colors">
                 ✏️ {t('dashboard.update_vitals')}
               </button>
             </div>
           </motion.div>
         ))}
       </div>
+
+      {/* Vitals Update Modal */}
+      {isVitalsModalOpen && selectedPatient && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl w-full max-w-md overflow-hidden border border-slate-200 dark:border-slate-700"
+          >
+            <div className="flex justify-between items-center p-4 border-b border-slate-200 dark:border-slate-700">
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                <Activity className="text-teal-500 w-5 h-5" /> Update Vitals for {selectedPatient.name}
+              </h3>
+              <button onClick={() => setIsVitalsModalOpen(false)} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <form onSubmit={handleUpdateVitals} className="p-4 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Heart Rate (bpm)</label>
+                  <input type="number" required value={vitalsForm.heartRate} onChange={e => setVitalsForm({...vitalsForm, heartRate: e.target.value})} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-teal-500 text-sm" />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">SpO2 (%)</label>
+                  <input type="number" required value={vitalsForm.spO2} onChange={e => setVitalsForm({...vitalsForm, spO2: e.target.value})} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-teal-500 text-sm" />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">BP Systolic</label>
+                  <input type="number" required value={vitalsForm.bloodPressureSys} onChange={e => setVitalsForm({...vitalsForm, bloodPressureSys: e.target.value})} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-teal-500 text-sm" />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">BP Diastolic</label>
+                  <input type="number" required value={vitalsForm.bloodPressureDia} onChange={e => setVitalsForm({...vitalsForm, bloodPressureDia: e.target.value})} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg focus:outline-none focus:border-teal-500 text-sm" />
+                </div>
+              </div>
+              <div className="pt-4 flex justify-end gap-3">
+                <button type="button" onClick={() => setIsVitalsModalOpen(false)} className="px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors">Cancel</button>
+                <button type="submit" className="px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-lg transition-colors">Save Vitals</button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
+
     </motion.div>
   );
 };

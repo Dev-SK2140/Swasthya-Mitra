@@ -67,7 +67,7 @@ const patientRoutes = require('./routes/patientRoutes');
 app.use('/api/patients', patientRoutes);
 
 const bedRoutes = require('./routes/bedRoutes');
-app.use('/api/beds', bedRoutes);
+app.use('/api/beds', bedRoutes.router);
 
 const surveyRoutes = require('./routes/surveyRoutes');
 app.use('/api/surveys', surveyRoutes);
@@ -93,7 +93,7 @@ app.use('/api/mch', mchRoutes);
 
 // Inventory routes
 const inventoryRoutes = require('./routes/inventory');
-app.use('/api/inventory', inventoryRoutes);
+app.use('/api/inventory', inventoryRoutes.router);
 
 // Notification routes
 const notificationRoutes = require('./routes/notificationRoutes');
@@ -206,6 +206,8 @@ mongoose.connect(MONGODB_URI || 'mongodb://127.0.0.1:27017/healthcare')
     console.log('✅ Connected to MongoDB');
     await seedDemoUsers();
     await seedDemoPatients();
+    if(bedRoutes.initializeBeds) await bedRoutes.initializeBeds();
+    if(inventoryRoutes.seedInventory) await inventoryRoutes.seedInventory();
     server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
   })
   .catch((err) => {

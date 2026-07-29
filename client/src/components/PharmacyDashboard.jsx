@@ -10,6 +10,14 @@ const PharmacyDashboard = () => {
   const [prescriptions, setPrescriptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [rxLoading, setRxLoading] = useState(true);
+  const [pmbjpSearch, setPmbjpSearch] = useState('');
+  
+  const PMBJP_DB = [
+    { brand: 'Dolo 650', generic: 'Paracetamol 650mg', price: '₹10', vs: '₹34' },
+    { brand: 'Augmentin 625', generic: 'Amoxicillin + Clavulanic Acid', price: '₹45', vs: '₹160' },
+    { brand: 'Pan 40', generic: 'Pantoprazole 40mg', price: '₹12', vs: '₹95' },
+    { brand: 'Calpol', generic: 'Paracetamol Syrup', price: '₹15', vs: '₹40' }
+  ];
 
   const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://swasthya-mitra-o4st.onrender.com/api');
 
@@ -60,6 +68,22 @@ const PharmacyDashboard = () => {
       }
     } catch (err) {
       console.error('Failed to dispense:', err);
+    }
+  };
+
+  const handleOrderStock = async (id, quantity = 100) => {
+    try {
+      const res = await fetch(`${API_URL}/inventory/${id}/order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderQuantity: quantity })
+      });
+      if (res.ok) {
+        const updatedItem = await res.json();
+        setInventory(inventory.map(item => item._id === id ? updatedItem : item));
+      }
+    } catch (err) {
+      console.error('Failed to order stock:', err);
     }
   };
 
@@ -177,7 +201,7 @@ const PharmacyDashboard = () => {
                         {t('dashboard.critical')} {item.quantity} {item.unit} {t('dashboard.left')} <span className="text-slate-400 font-normal ml-2">{t('dashboard.exp')} {new Date(item.expiryDate).toLocaleDateString()}</span>
                       </div>
                     </div>
-                    <button className="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg shadow-sm transition-colors font-bold whitespace-nowrap">{t('dashboard.auto_reorder')}</button>
+                    <button onClick={() => handleOrderStock(item._id, item.threshold * 2)} className="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg shadow-sm transition-colors font-bold whitespace-nowrap">{t('dashboard.auto_reorder')}</button>
                   </div>
                 ))}
 
@@ -189,7 +213,7 @@ const PharmacyDashboard = () => {
                         {t('dashboard.low_stock')} {item.quantity} {item.unit} <span className="text-slate-400 font-normal ml-2">{t('dashboard.thr')} {item.threshold}</span>
                       </div>
                     </div>
-                    <button className="text-xs bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg shadow-sm transition-colors font-bold whitespace-nowrap">{t('dashboard.order')}</button>
+                    <button onClick={() => handleOrderStock(item._id, 50)} className="text-xs bg-slate-800 hover:bg-slate-700 text-white px-3 py-1.5 rounded-lg shadow-sm transition-colors font-bold whitespace-nowrap">{t('dashboard.order')}</button>
                   </div>
                 ))}
                 
@@ -215,14 +239,29 @@ const PharmacyDashboard = () => {
             <p className="text-xs text-slate-400">
               {t('dashboard.pmbjp_desc')}
             </p>
-            <div className="space-y-2 text-xs">
-              <div className="p-2 bg-slate-50/10 dark:bg-slate-900/80 rounded-lg border border-slate-200/20 dark:border-slate-800 flex justify-between items-center">
-                <div>
-                  <span className="text-slate-900 dark:text-white font-bold block">Brand: Dolo 650</span>
-                  <span className="text-emerald-400 font-semibold">Jan Aushadhi Paracetamol 650mg</span>
+            <div className="relative mb-2">
+              <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-400" />
+              <input 
+                type="text" 
+                placeholder="Search brand medicine..."
+                value={pmbjpSearch}
+                onChange={e => setPmbjpSearch(e.target.value)}
+                className="w-full pl-7 pr-2 py-1.5 text-xs bg-slate-800/50 border border-slate-700 rounded focus:outline-none focus:border-indigo-500 text-white"
+              />
+            </div>
+            <div className="space-y-2 text-xs max-h-40 overflow-y-auto pr-1">
+              {PMBJP_DB.filter(med => med.brand.toLowerCase().includes(pmbjpSearch.toLowerCase())).map((med, idx) => (
+                <div key={idx} className="p-2 bg-slate-50/10 dark:bg-slate-900/80 rounded-lg border border-slate-200/20 dark:border-slate-800 flex justify-between items-center">
+                  <div>
+                    <span className="text-slate-900 dark:text-white font-bold block">Brand: {med.brand}</span>
+                    <span className="text-emerald-400 font-semibold">Jan Aushadhi: {med.generic}</span>
+                  </div>
+                  <span className="text-xs font-mono text-emerald-400 font-bold">{med.price} (vs {med.vs})</span>
                 </div>
-                <span className="text-xs font-mono text-emerald-400 font-bold">₹10 (vs ₹34)</span>
-              </div>
+              ))}
+              {PMBJP_DB.filter(med => med.brand.toLowerCase().includes(pmbjpSearch.toLowerCase())).length === 0 && (
+                <div className="text-center text-slate-500 py-2">No substitutes found.</div>
+              )}
             </div>
           </div>
         </div>

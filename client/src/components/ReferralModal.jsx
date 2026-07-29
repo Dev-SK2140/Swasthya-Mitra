@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, FileText, Send, Building2 } from 'lucide-react';
+import { X, FileText, Send, Building2, Activity } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const ReferralModal = ({ isOpen, onClose, patient }) => {
