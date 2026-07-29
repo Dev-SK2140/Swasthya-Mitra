@@ -50,7 +50,10 @@ const LoginPage = () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      navigate(`/app/${data.user.role.toLowerCase()}`);
+      let routeRole = data.user.role.toLowerCase();
+      if (routeRole === 'receptionist') routeRole = 'reception';
+      
+      navigate(`/app/${routeRole}`);
     } catch (err) {
       setError(err.message);
     } finally {
