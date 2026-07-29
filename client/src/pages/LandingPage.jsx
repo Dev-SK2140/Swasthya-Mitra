@@ -84,19 +84,37 @@ const LandingPage = () => {
 
       <main className="flex-1 flex items-center justify-center px-4 mt-20 z-10 relative pointer-events-none">
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: { staggerChildren: 0.2, delayChildren: 0.1 }
+            }
+          }}
           className="text-center max-w-5xl pointer-events-auto"
         >
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-slate-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-br dark:from-white dark:via-indigo-100 dark:to-[var(--color-primary)] mb-6 leading-tight dark:drop-shadow-2xl">
+          <motion.h1 
+            variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-5xl md:text-7xl lg:text-8xl font-extrabold text-slate-900 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-br dark:from-white dark:via-indigo-100 dark:to-[var(--color-primary)] mb-6 leading-tight dark:drop-shadow-2xl"
+          >
             સ્વાસ્થ્ય મિત્ર
-          </h1>
-          <p className="text-xl md:text-3xl text-slate-700 dark:text-indigo-200/80 font-light mb-12 max-w-3xl mx-auto">
+          </motion.h1>
+          <motion.p 
+            variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-xl md:text-3xl text-slate-700 dark:text-indigo-200/80 font-light mb-12 max-w-3xl mx-auto"
+          >
             Intelligent Rural Health Triage Platform
-          </p>
+          </motion.p>
 
-          <div className="flex flex-wrap justify-center gap-6 mb-16">
+          <motion.div 
+            variants={{ hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1 } }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-wrap justify-center gap-6 mb-16"
+          >
             <Link to="/register">
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -115,7 +133,7 @@ const LandingPage = () => {
                 View Live Demo
               </motion.button>
             </Link>
-          </div>
+          </motion.div>
 
           {/* Government of Gujarat Healthcare Schemes */}
           <motion.div
@@ -127,35 +145,35 @@ const LandingPage = () => {
             <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-6 border-b border-slate-200 dark:border-white/10 pb-4">Government of Gujarat Healthcare Schemes</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               
-              <a href="https://magujarat.com/" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
+              <motion.a whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 400 }} href="https://magujarat.com/" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
                 <h3 className="text-lg font-bold text-teal-700 dark:text-teal-400 group-hover:text-teal-800 dark:group-hover:text-teal-300">PM-JAY MA Vatsalya</h3>
                 <p className="text-sm text-slate-700 dark:text-slate-400 mt-1 font-medium">Health cover of up to ₹5 lakhs per family per year for secondary and tertiary care hospitalization.</p>
-              </a>
+              </motion.a>
 
-              <a href="https://gujhealth.gujarat.gov.in/chiranjeevi-yojana.htm" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
+              <motion.a whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 400 }} href="https://gujhealth.gujarat.gov.in/chiranjeevi-yojana.htm" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
                 <h3 className="text-lg font-bold text-pink-700 dark:text-pink-400 group-hover:text-pink-800 dark:group-hover:text-pink-300">Chiranjeevi Yojana</h3>
                 <p className="text-sm text-slate-700 dark:text-slate-400 mt-1 font-medium">Free institutional delivery for BPL and tribal women in private hospitals to reduce maternal/infant mortality.</p>
-              </a>
+              </motion.a>
 
-              <a href="https://gujhealth.gujarat.gov.in/bal-sakha-yojana.htm" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
+              <motion.a whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 400 }} href="https://gujhealth.gujarat.gov.in/bal-sakha-yojana.htm" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
                 <h3 className="text-lg font-bold text-blue-700 dark:text-blue-400 group-hover:text-blue-800 dark:group-hover:text-blue-300">Bal Sakha Yojana</h3>
                 <p className="text-sm text-slate-700 dark:text-slate-400 mt-1 font-medium">Free healthcare services for all infants born to BPL and tribal families by private pediatricians.</p>
-              </a>
+              </motion.a>
 
-              <a href="https://gujhealth.gujarat.gov.in/school-health-program.htm" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
+              <motion.a whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 400 }} href="https://gujhealth.gujarat.gov.in/school-health-program.htm" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
                 <h3 className="text-lg font-bold text-yellow-700 dark:text-yellow-400 group-hover:text-yellow-800 dark:group-hover:text-yellow-300">School Health Program (SHP)</h3>
                 <p className="text-sm text-slate-700 dark:text-slate-400 mt-1 font-medium">Health screening and free treatment for all children from newborn to 18 years in Gujarat.</p>
-              </a>
+              </motion.a>
 
-              <a href="https://www.digitalgujarat.gov.in/" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
+              <motion.a whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 400 }} href="https://www.digitalgujarat.gov.in/" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
                 <h3 className="text-lg font-bold text-orange-700 dark:text-orange-400 group-hover:text-orange-800 dark:group-hover:text-orange-300">Kasturba Poshan Sahay Yojana</h3>
                 <p className="text-sm text-slate-700 dark:text-slate-400 mt-1 font-medium">Nutritional assistance provided to poor pregnant women to reduce low birth weight.</p>
-              </a>
+              </motion.a>
 
-              <a href="https://emri.in/gujarat/" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
+              <motion.a whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 400 }} href="https://emri.in/gujarat/" target="_blank" rel="noopener noreferrer" className="block p-4 rounded-xl bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-700/50 border border-slate-300 dark:border-slate-700 transition-colors group shadow-sm">
                 <h3 className="text-lg font-bold text-red-700 dark:text-red-400 group-hover:text-red-800 dark:group-hover:text-red-300">108 EMRI Services</h3>
                 <p className="text-sm text-slate-700 dark:text-slate-400 mt-1 font-medium">Free emergency medical, police, and fire response services operational 24x7 across the state.</p>
-              </a>
+              </motion.a>
 
             </div>
           </motion.div>
