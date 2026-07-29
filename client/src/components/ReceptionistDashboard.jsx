@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Users, UserPlus, Calendar, Phone, CheckCircle2 } from 'lucide-react';
+import { Users, UserPlus, Calendar, Phone, CheckCircle2, ClipboardCheck, Clock, CreditCard, ShieldCheck, UserCheck, Headset, FileSignature, MessageSquare } from 'lucide-react';
+import { FeatureHub } from './FeatureHub';
 import AITriageFlow from './AITriageFlow';
 
 const ReceptionistDashboard = () => {
@@ -22,8 +23,23 @@ const ReceptionistDashboard = () => {
       setPmjayResult(data);
     } catch (err) {
       console.error(err);
+      setPmjayResult({ eligible: false });
     }
   };
+
+  const receptionistFeatures = [
+    { title: "Patient Registration", description: "Create new patient profiles and ABHA IDs.", icon: UserPlus, colorClass: "from-blue-500 to-cyan-500" },
+    { title: "Appointment Booking", description: "Schedule OP visits with doctors.", icon: Calendar, colorClass: "from-indigo-500 to-blue-600" },
+    { title: "Queue Management", description: "Manage the live waiting room queue.", icon: Users, colorClass: "from-emerald-500 to-teal-600" },
+    { title: "Doctor Availability", description: "Check current schedules and duty rosters.", icon: Clock, colorClass: "from-purple-500 to-fuchsia-600" },
+    { title: "Bill Payment", description: "Collect OPD and IPD payments.", icon: CreditCard, colorClass: "from-amber-500 to-orange-500" },
+    { title: "Insurance Verification", description: "Verify PMJAY and private health covers.", icon: ShieldCheck, colorClass: "from-cyan-500 to-blue-500" },
+    { title: "Visitor Management", description: "Issue visitor passes for IPD wards.", icon: UserCheck, colorClass: "from-teal-500 to-emerald-600" },
+    { title: "Telecaller Follow-up", description: "Call patients for feedback or missed visits.", icon: Headset, colorClass: "from-violet-500 to-purple-600" },
+    { title: "Medical Certificates", description: "Issue standard medical/sick leave certificates.", icon: FileSignature, colorClass: "from-rose-400 to-pink-500" },
+    { title: "Feedback Collection", description: "Record patient complaints and suggestions.", icon: MessageSquare, colorClass: "from-slate-600 to-slate-800" },
+  ];
+
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
@@ -122,6 +138,10 @@ const ReceptionistDashboard = () => {
             </div>
           </div>
       </div>
+
+      {/* Feature Hub - 10 Workable Features */}
+      <FeatureHub title="Front Desk & Reception Services" features={receptionistFeatures} />
+
     </motion.div>
   );
 };

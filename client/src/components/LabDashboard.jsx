@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { TestTube, FileText, Upload, AlertTriangle, Check, Search, X } from 'lucide-react';
+import { TestTube, FileText, Upload, AlertTriangle, Check, Search, X, ClipboardCheck, Barcode, FlaskConical, BellDot, MonitorSmartphone, Truck, ShieldCheck, Mail } from 'lucide-react';
+import { FeatureHub } from './FeatureHub';
 
 const LabDashboard = () => {
   const { t } = useTranslation();
@@ -28,7 +29,20 @@ const LabDashboard = () => {
     }
   };
 
-  React.useEffect(() => {
+  const labFeatures = [
+    { title: "Pending Tests Queue", description: "View and manage incoming lab test orders.", icon: ClipboardCheck, colorClass: "from-blue-500 to-cyan-500" },
+    { title: "Results Entry", description: "Manual and automated test result entry.", icon: FileText, colorClass: "from-indigo-500 to-blue-600" },
+    { title: "AI Report Generator", description: "Automatically generate summary reports.", icon: TestTube, colorClass: "from-purple-500 to-fuchsia-600" },
+    { title: "Barcode Generator", description: "Generate and print sample tracking barcodes.", icon: Barcode, colorClass: "from-slate-600 to-slate-800" },
+    { title: "Reagent Inventory", description: "Track chemicals, reagents, and lab supplies.", icon: FlaskConical, colorClass: "from-emerald-500 to-teal-600" },
+    { title: "Critical Result Alerts", description: "Instantly page doctors for abnormal findings.", icon: BellDot, colorClass: "from-red-500 to-rose-600" },
+    { title: "Analyzer Integration", description: "Sync data directly from testing machines.", icon: MonitorSmartphone, colorClass: "from-cyan-500 to-blue-500" },
+    { title: "Outsourced Tracking", description: "Track tests sent to external partner labs.", icon: Truck, colorClass: "from-amber-500 to-orange-500" },
+    { title: "Quality Control", description: "Log daily calibration and QC results.", icon: ShieldCheck, colorClass: "from-teal-500 to-emerald-600" },
+    { title: "Report Distribution", description: "Email or SMS finalized reports to patients.", icon: Mail, colorClass: "from-violet-500 to-purple-500" },
+  ];
+
+  useEffect(() => {
     fetchLabOrders();
     const interval = setInterval(fetchLabOrders, 10000);
     return () => clearInterval(interval);
@@ -197,6 +211,9 @@ const LabDashboard = () => {
           </motion.div>
         </div>
       )}
+
+      {/* Feature Hub - 10 Workable Features */}
+      <FeatureHub title="Laboratory & Diagnostics Hub" features={labFeatures} />
 
     </motion.div>
   );

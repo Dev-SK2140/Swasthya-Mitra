@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Building, TrendingUp, Users, Activity, MapPin, Download } from 'lucide-react';
+import { Building, TrendingUp, Users, Activity, MapPin, Download, ShieldCheck, PieChart, AlertTriangle, MessageSquare, ClipboardCheck, Briefcase, FileText } from 'lucide-react';
+import { FeatureHub } from './FeatureHub';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Responsive, WidthProvider } from "react-grid-layout/legacy";
 import BedManagement from './BedManagement';
@@ -75,6 +76,19 @@ const AdminDashboard = () => {
     const interval = setInterval(fetchStats, 30000); // 30s instead of 10s to reduce load
     return () => clearInterval(interval);
   }, []);
+
+  const adminFeatures = [
+    { title: "Performance Metrics", description: "View hospital-wide KPI and performance data.", icon: TrendingUp, colorClass: "from-blue-500 to-cyan-500" },
+    { title: "User Management", description: "Manage roles, access, and accounts for all staff.", icon: Users, colorClass: "from-indigo-500 to-blue-600" },
+    { title: "Financial Overview", description: "View revenue, billing, and insurance claims.", icon: PieChart, colorClass: "from-teal-500 to-emerald-600" },
+    { title: "Live Bed Map", description: "Monitor bed occupancy across all wards in real-time.", icon: Building, colorClass: "from-amber-500 to-orange-500" },
+    { title: "Ambulance Dispatch", description: "Track and dispatch emergency fleet vehicles.", icon: Activity, colorClass: "from-red-500 to-rose-600" },
+    { title: "Outbreak Heatmap", description: "Monitor epidemiological data across the district.", icon: MapPin, colorClass: "from-purple-500 to-fuchsia-600" },
+    { title: "Inventory Alerts", description: "Check pharmacy and blood bank stock shortages.", icon: AlertTriangle, colorClass: "from-rose-400 to-pink-500" },
+    { title: "Grievance Portal", description: "Review and respond to patient feedback/complaints.", icon: MessageSquare, colorClass: "from-cyan-500 to-blue-500" },
+    { title: "Audit Logs", description: "View system-wide security and access audit logs.", icon: ClipboardCheck, colorClass: "from-emerald-500 to-green-600" },
+    { title: "Staff Roster", description: "Manage duty hours and attendance of hospital staff.", icon: Briefcase, colorClass: "from-violet-500 to-purple-500" },
+  ];
 
   const handleExportPDF = () => {
     window.print();
@@ -259,6 +273,9 @@ const AdminDashboard = () => {
           </div>
         </div>
       </ResponsiveGridLayout>
+
+      {/* Feature Hub - 10 Workable Features */}
+      <FeatureHub title="Administrative & Management Features" features={adminFeatures} />
 
     </motion.div>
   );

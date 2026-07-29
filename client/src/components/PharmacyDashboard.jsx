@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Pill, Search, CheckCircle2, AlertCircle, RefreshCw } from 'lucide-react';
+import { Pill, Search, CheckCircle2, AlertCircle, RefreshCw, ClipboardList, ShieldAlert, CalendarClock, ArrowRightLeft, ShoppingCart, History, Lock, RotateCcw, TrendingUp } from 'lucide-react';
+import { FeatureHub } from './FeatureHub';
 
 const PharmacyDashboard = () => {
   const { t } = useTranslation();
@@ -266,6 +267,10 @@ const PharmacyDashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Feature Hub - 10 Workable Features */}
+      <FeatureHub title="Pharmacy Management Systems" features={pharmacyFeatures} />
+
     </motion.div>
   );
 };

@@ -14,6 +14,8 @@ import AbhaCardModal from './AbhaCardModal';
 import AshaSurveyModal from './AshaSurveyModal';
 import DrugSafetyModal from './DrugSafetyModal';
 import AmbulanceTrackerModal from './AmbulanceTrackerModal';
+import { FeatureHub } from './FeatureHub';
+import { Stethoscope, Pill, History, Video, ArrowRightRight, FileSearch, Mic, ShieldAlert, Calendar, Activity } from 'lucide-react';
 
 const DoctorDashboard = () => {
   const { t } = useTranslation();
@@ -86,6 +88,19 @@ const DoctorDashboard = () => {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
   };
+
+  const doctorFeatures = [
+    { title: "AI Diagnosis Copilot", description: "Get AI-assisted differential diagnosis based on symptoms.", icon: Activity, colorClass: "from-blue-500 to-indigo-500" },
+    { title: "E-Prescription", description: "Generate digital prescriptions with digital signature.", icon: Pill, colorClass: "from-emerald-500 to-teal-500" },
+    { title: "Patient Timeline", description: "View complete medical history and past visits.", icon: History, colorClass: "from-purple-500 to-fuchsia-500" },
+    { title: "Telemedicine Call", description: "Initiate secure video consultation with remote patients.", icon: Video, colorClass: "from-rose-500 to-pink-500" },
+    { title: "Specialist Referral", description: "Refer patient to tertiary care or specialists.", icon: ArrowRightRight, colorClass: "from-amber-500 to-orange-500" },
+    { title: "Lab Report Scanner", description: "AI extraction of physical lab reports via OCR.", icon: FileSearch, colorClass: "from-cyan-500 to-blue-500" },
+    { title: "Voice Notes", description: "Record clinical notes with automatic text transcription.", icon: Mic, colorClass: "from-violet-500 to-purple-500" },
+    { title: "Emergency Override", description: "Trigger red-code emergency protocols for critical patients.", icon: ShieldAlert, colorClass: "from-red-500 to-rose-600" },
+    { title: "Drug Safety Check", description: "Verify contraindications and allergy interactions automatically.", icon: Stethoscope, colorClass: "from-teal-500 to-emerald-600" },
+    { title: "Follow-up Scheduler", description: "Schedule automated SMS reminders for patient follow-ups.", icon: Calendar, colorClass: "from-indigo-500 to-blue-600" },
+  ];
 
   return (
     <div>
@@ -268,6 +283,10 @@ const DoctorDashboard = () => {
         </motion.div>
       )}
 
+      {/* Feature Hub - 10 Workable Features */}
+      <FeatureHub title="Doctor Workstation Features" features={doctorFeatures} />
+
+      {/* Existing Modals */}
       {selectedPatient && (
         <PatientTimelineModal
           isOpen={isTimelineOpen}

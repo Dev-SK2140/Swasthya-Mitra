@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Heart, Activity, Droplet, Thermometer, User, FileText, Pill, Calendar, Bell } from 'lucide-react';
+import { Heart, Activity, Droplet, Thermometer, User, FileText, Pill, Calendar, Bell, PhoneCall, ShieldCheck, Stethoscope, Video, Users, Crosshair, HelpCircle, FileSearch, TrendingUp, Target } from 'lucide-react';
+import { FeatureHub } from './FeatureHub';
 
 const PatientDashboard = () => {
   const { t } = useTranslation();
@@ -31,6 +32,19 @@ const PatientDashboard = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  const patientFeatures = [
+    { title: "My Health Records", description: "View your complete digital health records safely.", icon: FileSearch, colorClass: "from-blue-500 to-cyan-500" },
+    { title: "Telemedicine Booking", description: "Schedule and join virtual consultations.", icon: Video, colorClass: "from-rose-500 to-pink-500" },
+    { title: "ABHA Card Connect", description: "Link and sync your Ayushman Bharat Health Account.", icon: ShieldCheck, colorClass: "from-amber-500 to-orange-500" },
+    { title: "Appointment Reminders", description: "Manage your upcoming visits and SMS alerts.", icon: Calendar, colorClass: "from-purple-500 to-fuchsia-500" },
+    { title: "Live Queue Status", description: "Track your real-time waiting number at the clinic.", icon: Activity, colorClass: "from-emerald-500 to-teal-500" },
+    { title: "Family Members", description: "Link dependent family members to your account.", icon: Users, colorClass: "from-indigo-500 to-blue-500" },
+    { title: "E-Pharmacy Orders", description: "Order prescribed medicines directly to your home.", icon: Pill, colorClass: "from-teal-500 to-emerald-600" },
+    { title: "Health Goals", description: "Set and track personal wellness and dietary goals.", icon: Target, colorClass: "from-violet-500 to-purple-600" },
+    { title: "AI Symptom Checker", description: "Pre-check your symptoms before seeing a doctor.", icon: HelpCircle, colorClass: "from-cyan-500 to-blue-600" },
+    { title: "SOS Ambulance", description: "Call an emergency ambulance with live tracking.", icon: PhoneCall, colorClass: "from-red-500 to-rose-600" },
+  ];
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
@@ -95,6 +109,9 @@ const PatientDashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Feature Hub - 10 Workable Features */}
+      <FeatureHub title="Patient Services & Quick Actions" features={patientFeatures} />
 
     </motion.div>
   );

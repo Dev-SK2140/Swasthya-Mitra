@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Activity, Heart, Thermometer, Droplets, Users, CheckCircle, Clock, X } from 'lucide-react';
+import { Activity, Heart, Thermometer, Droplets, Users, CheckCircle, Clock, X, ClipboardList, Bed, Pill, BookOpen, Stethoscope, FilePlus, Bandage, FileSignature, ShieldCheck, Map } from 'lucide-react';
+import { FeatureHub } from './FeatureHub';
 
 const NurseDashboard = () => {
   const { t } = useTranslation();
@@ -29,6 +30,19 @@ const NurseDashboard = () => {
     };
     fetchPatients();
   }, []);
+
+  const nurseFeatures = [
+    { title: "Vitals Entry", description: "Quickly record patient vitals during rounds.", icon: Thermometer, colorClass: "from-blue-500 to-cyan-500" },
+    { title: "Bed Management", description: "View and allocate ward beds dynamically.", icon: Bed, colorClass: "from-indigo-500 to-blue-600" },
+    { title: "MAR System", description: "Medication Administration Record and tracking.", icon: Pill, colorClass: "from-teal-500 to-emerald-600" },
+    { title: "Shift Handover", description: "Digital handover notes for incoming nursing staff.", icon: ClipboardList, colorClass: "from-amber-500 to-orange-500" },
+    { title: "Sample Collection", description: "Track blood and fluid sample collections.", icon: Droplets, colorClass: "from-red-500 to-rose-600" },
+    { title: "Ward Supply", description: "Request pharmacy or general supplies to the ward.", icon: BookOpen, colorClass: "from-purple-500 to-fuchsia-600" },
+    { title: "Wound Care", description: "Upload images and logs for wound dressing changes.", icon: Bandage, colorClass: "from-rose-400 to-pink-500" },
+    { title: "Discharge Summary", description: "Prepare preliminary discharge notes for doctor approval.", icon: FileSignature, colorClass: "from-cyan-500 to-blue-500" },
+    { title: "Triage Questionnaire", description: "Run initial triage assessment for new admissions.", icon: Stethoscope, colorClass: "from-emerald-500 to-green-600" },
+    { title: "Immunization Log", description: "Record newborn and child vaccinations.", icon: ShieldCheck, colorClass: "from-violet-500 to-purple-500" },
+  ];
 
   const handleToggleIV = async (id) => {
     try {
@@ -229,6 +243,9 @@ const NurseDashboard = () => {
           </motion.div>
         </div>
       )}
+
+      {/* Feature Hub - 10 Workable Features */}
+      <FeatureHub title="Nurse Station Features" features={nurseFeatures} />
 
     </motion.div>
   );
