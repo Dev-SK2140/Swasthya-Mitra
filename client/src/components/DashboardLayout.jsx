@@ -111,6 +111,7 @@ const DashboardLayout = () => {
             const role = (storedUser.role || 'Doctor').toLowerCase();
             if (role === 'admin') return true;
             if (item.name.toLowerCase() === role) return true;
+            if (item.name.toLowerCase() === 'reception' && role === 'receptionist') return true;
             if (role === 'patient') {
               return item.name === 'Patient';
             }

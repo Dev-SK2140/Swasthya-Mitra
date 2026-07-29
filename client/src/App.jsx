@@ -93,6 +93,9 @@ const AnimatedRoutes = () => {
           <Route path="mch" element={<RoleProtectedRoute allowedRoles={['Nurse', 'Doctor']}><PageTransition><MCHDashboard /></PageTransition></RoleProtectedRoute>} />
           <Route path="intake" element={<RoleProtectedRoute allowedRoles={['Nurse', 'Receptionist', 'Doctor']}><PageTransition><PatientIntakeForm /></PageTransition></RoleProtectedRoute>} />
           <Route path="telemedicine" element={<PageTransition><TelemedicineChat /></PageTransition>} />
+          
+          {/* Catch-all for invalid /app/* routes, redirects to correct role dashboard */}
+          <Route path="*" element={<RoleProtectedRoute allowedRoles={['NONE']}><div /></RoleProtectedRoute>} />
         </Route>
         
         <Route path="*" element={<Navigate to="/" replace />} />
