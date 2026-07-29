@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import { Send, AlertTriangle, Pill, Siren, FileText, MessageSquare, Mic, ShieldCheck, CreditCard, MapPin, ShieldAlert, Navigation } from 'lucide-react';
+import { Send, AlertTriangle, Pill, Siren, FileText, MessageSquare, Mic, ShieldCheck, CreditCard, MapPin, ShieldAlert, Navigation, Stethoscope, History, Video, ExternalLink, FileSearch, Calendar, Activity } from 'lucide-react';
 import PatientTimelineModal from './PatientTimelineModal';
 import ReferralModal from './ReferralModal';
 import PrescriptionModal from './PrescriptionModal';
@@ -15,7 +15,7 @@ import AshaSurveyModal from './AshaSurveyModal';
 import DrugSafetyModal from './DrugSafetyModal';
 import AmbulanceTrackerModal from './AmbulanceTrackerModal';
 import { FeatureHub } from './FeatureHub';
-import { Stethoscope, Pill, History, Video, ArrowRightRight, FileSearch, Mic, ShieldAlert, Calendar, Activity } from 'lucide-react';
+
 
 const DoctorDashboard = () => {
   const { t } = useTranslation();
@@ -94,7 +94,7 @@ const DoctorDashboard = () => {
     { title: "E-Prescription", description: "Generate digital prescriptions with digital signature.", icon: Pill, colorClass: "from-emerald-500 to-teal-500" },
     { title: "Patient Timeline", description: "View complete medical history and past visits.", icon: History, colorClass: "from-purple-500 to-fuchsia-500" },
     { title: "Telemedicine Call", description: "Initiate secure video consultation with remote patients.", icon: Video, colorClass: "from-rose-500 to-pink-500" },
-    { title: "Specialist Referral", description: "Refer patient to tertiary care or specialists.", icon: ArrowRightRight, colorClass: "from-amber-500 to-orange-500" },
+    { title: "Specialist Referral", description: "Refer patient to tertiary care or specialists.", icon: ExternalLink, colorClass: "from-amber-500 to-orange-500" },
     { title: "Lab Report Scanner", description: "AI extraction of physical lab reports via OCR.", icon: FileSearch, colorClass: "from-cyan-500 to-blue-500" },
     { title: "Voice Notes", description: "Record clinical notes with automatic text transcription.", icon: Mic, colorClass: "from-violet-500 to-purple-500" },
     { title: "Emergency Override", description: "Trigger red-code emergency protocols for critical patients.", icon: ShieldAlert, colorClass: "from-red-500 to-rose-600" },
