@@ -142,8 +142,8 @@ export const GenericMockFeature = ({ title, description }) => {
         <div>
           <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Select Patient / Target</label>
           <select className="w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-3 outline-none focus:border-[var(--color-primary)]">
-            <option>John Doe (ID: PT-10293)</option>
-            <option>Jane Smith (ID: PT-10294)</option>
+            <option>Ramesh Patel (ID: PT-10293)</option>
+            <option>Bhavna Desai (ID: PT-10294)</option>
             <option>General Operation</option>
           </select>
         </div>
