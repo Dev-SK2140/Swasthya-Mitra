@@ -45,6 +45,7 @@ const TelemedicineChat = () => {
   const [bookingSuccess, setBookingSuccess] = useState(false);
   
   const [isConnected, setIsConnected] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   
   const messagesEndRef = useRef(null);
   const localVideoRef = useRef(null);
@@ -53,9 +54,61 @@ const TelemedicineChat = () => {
   const streamRef = useRef(null);
   const socketRef = useRef(null);
   const peerConnectionRef = useRef(null);
+  const recognitionRef = useRef(null);
 
   const ROOM_ID = 'telemed-room-1';
   const API_URL = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:5000' : 'https://swasthya-mitra-o4st.onrender.com');
+
+  useEffect(() => {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = false;
+      recognitionRef.current.interimResults = false;
+      
+      recognitionRef.current.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setInput(prev => prev + (prev ? ' ' : '') + transcript);
+        setIsListening(false);
+      };
+      recognitionRef.current.onerror = (event) => {
+        console.error("Speech error", event.error);
+        setIsListening(false);
+      };
+      recognitionRef.current.onend = () => {
+        setIsListening(false);
+      };
+    }
+  }, []);
+
+  const toggleListening = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+    } else {
+      const currentLang = localStorage.getItem('i18nextLng') || 'en';
+      if (recognitionRef.current) {
+        recognitionRef.current.lang = currentLang === 'hi' ? 'hi-IN' : currentLang === 'gu' ? 'gu-IN' : 'en-IN';
+        try {
+          recognitionRef.current.start();
+          setIsListening(true);
+        } catch (e) {
+          console.error(e);
+        }
+      } else {
+        alert("Speech recognition not supported in this browser.");
+      }
+    }
+  };
+
+  const speakText = (text) => {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    const currentLang = localStorage.getItem('i18nextLng') || 'en';
+    utterance.lang = currentLang === 'hi' ? 'hi-IN' : currentLang === 'gu' ? 'gu-IN' : 'en-IN';
+    window.speechSynthesis.speak(utterance);
+  };
 
   useEffect(() => {
     // Connect Socket
@@ -278,6 +331,7 @@ const TelemedicineChat = () => {
           sender: 'system', 
           text: data.reply 
         }]);
+        speakText(data.reply);
       }
     } catch (err) {
       console.error("AI chat error:", err);
@@ -512,6 +566,14 @@ const TelemedicineChat = () => {
               placeholder={`Message Room...`} 
               className="flex-1 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl px-4 py-2.5 text-xs text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:border-[var(--color-primary)]"
             />
+            <button 
+              type="button" 
+              onClick={toggleListening}
+              className={`px-3 py-2.5 rounded-xl transition-all shadow-md flex items-center justify-center ${isListening ? 'bg-rose-500 hover:bg-rose-600 text-white animate-pulse' : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-700'}`}
+              title="Speak"
+            >
+              <Mic className="w-4 h-4" />
+            </button>
             <button 
               type="submit" 
               disabled={!input.trim()} 
