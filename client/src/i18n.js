@@ -13,7 +13,7 @@ i18n
       hi: { translation: hiTranslation },
       gu: { translation: guTranslation }
     },
-    lng: 'en', // default language
+    lng: localStorage.getItem('i18nextLng') || 'en', // default language
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false // react already safes from xss

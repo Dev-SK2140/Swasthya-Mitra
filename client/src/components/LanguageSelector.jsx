@@ -8,7 +8,10 @@ const LanguageSelector = () => {
     <div className="relative inline-block text-left">
       <select 
         value={i18n.language} 
-        onChange={(e) => i18n.changeLanguage(e.target.value)}
+        onChange={(e) => {
+          i18n.changeLanguage(e.target.value);
+          localStorage.setItem('i18nextLng', e.target.value);
+        }}
         className="bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border border-slate-300 dark:border-slate-700 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] cursor-pointer shadow-sm"
       >
         <option value="en">English</option>

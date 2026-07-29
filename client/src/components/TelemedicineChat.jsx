@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Video, Phone, Mic, MicOff, VideoOff, MessageSquare, Send, X, Users, Calendar, Check } from 'lucide-react';
 import { io } from 'socket.io-client';
 
