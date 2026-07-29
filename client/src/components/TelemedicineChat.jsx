@@ -253,7 +253,7 @@ const TelemedicineChat = () => {
         text: m.text
       }));
       
-      const res = await fetch(`${API_URL}/ai/assistant`, {
+      const res = await fetch(`${API_URL}/api/ai/assistant`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ history, currentInput: text })
