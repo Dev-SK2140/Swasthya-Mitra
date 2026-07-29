@@ -234,7 +234,7 @@ const TelemedicineChat = () => {
     }
   }, [isMuted, isCamOff]);
 
-  const handleSend = (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
     if (!input.trim()) return;
     
@@ -246,6 +246,30 @@ const TelemedicineChat = () => {
       socketRef.current.emit('sendMessage', msgObj);
     }
     setInput('');
+
+    try {
+      const history = messages.map(m => ({
+        role: m.sender === 'me' ? 'user' : 'model',
+        text: m.text
+      }));
+      
+      const res = await fetch(`${API_URL}/ai/assistant`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ history, currentInput: text })
+      });
+      const data = await res.json();
+      
+      if (data && data.reply) {
+        setMessages(prev => [...prev, { 
+          id: Date.now() + 1, 
+          sender: 'system', 
+          text: data.reply 
+        }]);
+      }
+    } catch (err) {
+      console.error("AI chat error:", err);
+    }
   };
 
   const handleBookAppointment = async (e) => {
