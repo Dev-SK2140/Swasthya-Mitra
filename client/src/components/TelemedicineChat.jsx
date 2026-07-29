@@ -18,9 +18,21 @@ const ICE_SERVERS = {
 
 const TelemedicineChat = () => {
   const [selectedDoctor, setSelectedDoctor] = useState(INDIAN_CONSULTANTS[0]);
-  const [messages, setMessages] = useState([
-    { id: 1, sender: 'system', text: 'e-Sanjeevani National Teleconsultation Network (Govt. of India) - End-to-End Encrypted.' }
-  ]);
+  const [messages, setMessages] = useState(() => {
+    const saved = localStorage.getItem('telemedicine_chat_history');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {}
+    }
+    return [
+      { id: 1, sender: 'system', text: 'e-Sanjeevani National Teleconsultation Network (Govt. of India) - End-to-End Encrypted.' }
+    ];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('telemedicine_chat_history', JSON.stringify(messages));
+  }, [messages]);
   const [input, setInput] = useState('');
   const [isVideoActive, setIsVideoActive] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -409,14 +421,22 @@ const TelemedicineChat = () => {
               </div>
             </div>
 
-            {!isVideoActive && (
+            <div className="flex items-center gap-2">
               <button 
-                onClick={startVideo}
-                className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-[0_0_15px_rgba(16,185,129,0.4)]"
+                onClick={() => setMessages([{ id: 1, sender: 'system', text: 'e-Sanjeevani National Teleconsultation Network (Govt. of India) - End-to-End Encrypted.' }])}
+                className="text-[10px] bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 px-3 py-1.5 rounded-lg transition-all font-semibold"
               >
-                <Video className="w-4 h-4" /> Start Video Call
+                Clear History
               </button>
-            )}
+              {!isVideoActive && (
+                <button 
+                  onClick={startVideo}
+                  className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-[0_0_15px_rgba(16,185,129,0.4)]"
+                >
+                  <Video className="w-4 h-4" /> Start Video Call
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Indian Consultant Doctor Selector */}
