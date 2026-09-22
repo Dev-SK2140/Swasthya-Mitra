@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: swasthya-mitra
+    env: docker
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false # Requires manual entry in the Render dashboard for security
