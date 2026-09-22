@@ -12,7 +12,15 @@ const PharmacyDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [rxLoading, setRxLoading] = useState(true);
   const [pmbjpSearch, setPmbjpSearch] = useState('');
-  
+  const pharmacyFeatures = [
+    { title: "Inventory Management", description: "Real-time tracking of medicine stock and automated low-stock alerts.", icon: Pill, colorClass: "from-emerald-500 to-teal-500" },
+    { title: "Prescription Dispensing", description: "Receive and process digital E-Prescriptions directly from doctors.", icon: ClipboardList, colorClass: "from-blue-500 to-indigo-500" },
+    { title: "Jan Aushadhi Substitutes", description: "Find generic alternatives with 80% cost savings for patients.", icon: ArrowRightLeft, colorClass: "from-amber-500 to-orange-500" },
+    { title: "Expiry Tracking", description: "Automated alerts for medicines approaching expiration dates.", icon: CalendarClock, colorClass: "from-red-500 to-rose-500" },
+    { title: "Automated Reordering", description: "One-click auto-reorder for critical stock directly to distributors.", icon: ShoppingCart, colorClass: "from-purple-500 to-fuchsia-500" },
+    { title: "Drug Safety & Interactions", description: "Verify combinations for contraindications automatically.", icon: ShieldAlert, colorClass: "from-cyan-500 to-blue-500" }
+  ];
+
   const PMBJP_DB = [
     { brand: 'Dolo 650', generic: 'Paracetamol 650mg', price: '₹10', vs: '₹34' },
     { brand: 'Augmentin 625', generic: 'Amoxicillin + Clavulanic Acid', price: '₹45', vs: '₹160' },
