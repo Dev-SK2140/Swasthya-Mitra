@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { TestTube, FileText, Upload, AlertTriangle, Check, Search, X, ClipboardCheck, Barcode, FlaskConical, BellDot, MonitorSmartphone, Truck, ShieldCheck, Mail } from 'lucide-react';
